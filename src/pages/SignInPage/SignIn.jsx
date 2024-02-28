@@ -1,0 +1,147 @@
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import ViteLogo from "../../../public/vite.svg";
+
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [isEmailTouched, setIsEmailTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    // Email validation only when the input is touched
+    setIsEmailTouched(true);
+    if (newEmail === "") {
+      setEmailError("");
+    } else {
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
+      setEmailError(isValidEmail ? "" : "Invalid email format");
+    }
+  };
+
+  const handleEmailBlur = () => {
+    setIsEmailTouched(true);
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setEmailError(isValidEmail || email === "" ? "" : "Invalid email format");
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!emailError) {
+      // Proceed with authentication if email is valid
+      console.log("Email:", email);
+      console.log("Password:", password);
+    } else {
+      // Handle invalid email scenario
+      console.log("Invalid email:", emailError);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-md sm:max-w-md flex flex-col items-center justify-center">
+        <img src={ViteLogo} className="h-20 w-20 mb-5" alt="Vite Logo" />
+        <h2 className="text-center text-3xl font-bold text-gray-900">
+          Sign in to your account
+        </h2>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className={`mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
+                  emailError ? "border-red-500" : ""
+                }`}
+                style={{ height: "2.5rem" }} // Adjust the height here
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
+              />
+              {isEmailTouched && emailError && (
+                <p className="mt-2 text-sm text-red-600">{emailError}</p>
+              )}
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10"
+                style={{ height: "2.5rem" }} // Adjust the height here
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400"
+                style={{ top: "35%" }} // Vertically centering
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Sign In
+              </button>
+            </div>
+          </form>
+
+          {/* Not a member? Sign up */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Not a member?{" "}
+              <Link
+                to="/sign-up"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SignIn;
