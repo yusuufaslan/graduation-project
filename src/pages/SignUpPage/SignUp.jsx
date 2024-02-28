@@ -35,7 +35,8 @@ function SignUp() {
     address: "",
   });
   const [invalidEmail, setInvalidEmail] = useState(false);
-  
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordsMatchMessage, setPasswordsMatchMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,17 +44,30 @@ function SignUp() {
       ...prevData,
       [name]: value,
     }));
+
+    if (name === "confirmPassword") {
+      const match = formData.password === value;
+      setPasswordsMatch(match);
+      setPasswordsMatchMessage(
+        match ? "Passwords match" : "Passwords do not match"
+      );
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Email validation using regular expression
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setInvalidEmail(true);
-      return; // Stop form submission if email is invalid
+      return;
     }
-    // Here you can handle form submission, such as sending data to a server
+
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordsMatch(false);
+      setPasswordsMatchMessage("Passwords do not match");
+      return;
+    }
+
     console.log("Form Data:", formData);
   };
 
@@ -152,6 +166,7 @@ function SignUp() {
                 onChange={handleChange}
               />
             </div>
+            {/* Confirm Password */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -165,11 +180,22 @@ function SignUp() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                className={`mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
+                  !passwordsMatch ? "border-red-500" : ""
+                }`}
                 style={{ height: "2rem" }}
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
+              {passwordsMatchMessage && (
+                <p
+                  className={`mt-2 text-sm ${
+                    passwordsMatch && formData.password? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {passwordsMatchMessage}
+                </p>
+              )}
             </div>
             <div>
               <label
