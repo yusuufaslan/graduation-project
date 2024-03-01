@@ -49,6 +49,14 @@ function SignUp() {
       setInvalidEmail(false);
     }
 
+    if (name === "password") {
+      const match = formData.confirmPassword === value;
+      setPasswordsMatch(match);
+      setPasswordsMatchMessage(
+        match ? "Passwords match" : "Passwords do not match"
+      );
+    }
+
     if (name === "confirmPassword") {
       const match = formData.password === value;
       setPasswordsMatch(match);
