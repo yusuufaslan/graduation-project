@@ -45,6 +45,10 @@ function SignUp() {
       [name]: value,
     }));
 
+    if (name === "email") {
+      setInvalidEmail(false);
+    }
+
     if (name === "confirmPassword") {
       const match = formData.password === value;
       setPasswordsMatch(match);
@@ -80,47 +84,50 @@ function SignUp() {
         </h2>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ height: "2rem" }}
-                value={formData.name}
-                onChange={handleChange}
-              />
+            <div className="flex gap-x-5">
+              <div className="flex-grow">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  style={{ height: "2rem" }}
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex-grow">
+                <label
+                  htmlFor="surname"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Surname
+                </label>
+                <input
+                  id="surname"
+                  name="surname"
+                  type="text"
+                  autoComplete="surname"
+                  required
+                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  style={{ height: "2rem" }}
+                  value={formData.surname}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="surname"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Surname
-              </label>
-              <input
-                id="surname"
-                name="surname"
-                type="text"
-                autoComplete="surname"
-                required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ height: "2rem" }}
-                value={formData.surname}
-                onChange={handleChange}
-              />
-            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -190,60 +197,65 @@ function SignUp() {
               {passwordsMatchMessage && (
                 <p
                   className={`mt-2 text-sm ${
-                    passwordsMatch && formData.password? "text-green-500" : "text-red-500"
+                    passwordsMatch && formData.password
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
                   {passwordsMatchMessage}
                 </p>
               )}
             </div>
-            <div>
-              <label
-                htmlFor="role"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Role or Profession
-              </label>
-              <select
-                id="role"
-                name="role"
-                autoComplete="role"
-                required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ height: "2rem" }}
-                value={formData.role}
-                onChange={handleChange}
-              >
-                {roleOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="institution"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Institution
-              </label>
-              <select
-                id="institution"
-                name="institution"
-                autoComplete="institution"
-                required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ height: "2rem" }}
-                value={formData.institution}
-                onChange={handleChange}
-              >
-                {institutionOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+
+            <div className="flex gap-x-5">
+              <div className="flex-grow">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Role
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  autoComplete="role"
+                  required
+                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  style={{ height: "2rem" }}
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  {roleOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-grow">
+                <label
+                  htmlFor="institution"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Institution
+                </label>
+                <select
+                  id="institution"
+                  name="institution"
+                  autoComplete="institution"
+                  required
+                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  style={{ height: "2rem" }}
+                  value={formData.institution}
+                  onChange={handleChange}
+                >
+                  {institutionOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div>
               <label
