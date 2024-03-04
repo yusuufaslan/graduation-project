@@ -47,93 +47,114 @@ const NewProjectForm = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4">Create New Project</h1>
-      <form className="border-2 p-10 rounded-md border-gray-400">
-        <label className="block my-2">
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={project.name}
-            onChange={handleChange}
-            className="border border-gray-400 rounded-md p-2 w-full"
-          />
-        </label>
-        <label className="block my-2">
-          Description:
-          <textarea
-            name="description"
-            value={project.description}
-            onChange={handleChange}
-            className="border border-gray-400 rounded-md p-2 w-full"
-          ></textarea>
-        </label>
-        <label className="block my-2">
-          Abstract:
-          <textarea
-            name="abstract"
-            value={project.abstract}
-            onChange={handleChange}
-            className="border border-gray-400 rounded-md p-2 w-full"
-          ></textarea>
-        </label>
-        <label className="block my-2">
-          Is Public:
-          <input
-            type="checkbox"
-            name="isPublic"
-            checked={project.isPublic}
-            onChange={handleCheckboxChange}
-            className="mx-2"
-          />
-        </label>
-        <label className="block my-2">
-          Tags:
-          <input
-            type="text"
-            name="tags"
-            value={project.tags}
-            onChange={handleTagChange}
-            className="border border-gray-400 rounded-md p-2 w-full"
-          />
-        </label>
-        {/* Owner Field */}
-        {/* Datasets Fields */}
+      <h1 className="text-2xl font-bold my-4 text-center">Create New Project</h1>
+      <form className="max-w-2xl mx-auto border-2 p-5 rounded-md border-gray-400">
+        <div className="mb-4">
+          <label className="block mb-1">
+            Name:
+            <input
+              type="text"
+              name="name"
+              value={project.name}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full"
+              placeholder="Enter project name"
+            />
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">
+            Description:
+            <textarea
+              name="description"
+              value={project.description}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full"
+              placeholder="Enter project description"
+              rows="4"
+            ></textarea>
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">
+            Abstract:
+            <textarea
+              name="abstract"
+              value={project.abstract}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full"
+              placeholder="Enter project abstract"
+              rows="4"
+            ></textarea>
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              name="isPublic"
+              checked={project.isPublic}
+              onChange={handleCheckboxChange}
+              className="mr-2"
+            />
+            <span>Is Public</span>
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">
+            Tags:
+            <input
+              type="text"
+              name="tags"
+              value={project.tags}
+              onChange={handleTagChange}
+              className="border border-gray-400 rounded-md p-2 w-full"
+              placeholder="Enter tags (comma-separated)"
+            />
+          </label>
+        </div>
         {project.datasets.map((dataset, index) => (
           <div key={index} className="border border-gray-400 p-4 my-4 rounded-md">
-            <h2 className="text-lg font-bold">Dataset {index + 1}</h2>
-            <label className="block my-2">
-              Name:
-              <input
-                type="text"
-                name="name"
-                value={dataset.name}
-                onChange={(e) => handleDatasetChange(e, index)}
-                className="border border-gray-400 rounded-md p-2 w-full"
-              />
-            </label>
-            <label className="block my-2">
-              Description:
-              <textarea
-                name="description"
-                value={dataset.description}
-                onChange={(e) => handleDatasetChange(e, index)}
-                className="border border-gray-400 rounded-md p-2 w-full"
-              ></textarea>
-            </label>
+            <h2 className="text-lg font-bold mb-2">Dataset {index + 1}</h2>
+            <div className="mb-2">
+              <label className="block mb-1">
+                Name:
+                <input
+                  type="text"
+                  name="name"
+                  value={dataset.name}
+                  onChange={(e) => handleDatasetChange(e, index)}
+                  className="border border-gray-400 rounded-md p-2 w-full"
+                  placeholder="Enter dataset name"
+                />
+              </label>
+            </div>
+            <div>
+              <label className="block mb-1">
+                Description:
+                <textarea
+                  name="description"
+                  value={dataset.description}
+                  onChange={(e) => handleDatasetChange(e, index)}
+                  className="border border-gray-400 rounded-md p-2 w-full"
+                  placeholder="Enter dataset description"
+                  rows="3"
+                ></textarea>
+              </label>
+            </div>
           </div>
         ))}
         <button
           type="button"
           onClick={handleAddDataset}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md my-4 mr-10"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md my-4 mr-4"
         >
           Add Dataset
         </button>
         <button
           type="button"
           onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 rounded-md"
+          className="bg-green-500 text-white px-4 py-2 rounded-md my-4"
         >
           Create Project
         </button>
