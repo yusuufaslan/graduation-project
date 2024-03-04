@@ -46,34 +46,51 @@ const NewProjectForm = () => {
   const handleFileUpload = (e, index) => {
     const file = e.target.files[0];
     const fileExtension = file.name.split(".").pop().toLowerCase();
+
     if (fileExtension === "json" || fileExtension === "csv") {
+      // Read file content
       const reader = new FileReader();
       reader.onload = (event) => {
-        const csvData = event.target.result;
-        const lines = csvData.split(/\r\n|\n/);
-        const columns = lines[0].split(","); // Assuming first row contains column names
+        const content = event.target.result;
+        let columnNames = [];
+
+        if (fileExtension === "json") {
+          // If JSON, assume array of objects and read keys of the first object
+          const jsonArray = JSON.parse(content);
+          if (jsonArray.length > 0) {
+            columnNames = Object.keys(jsonArray[0]);
+          }
+        } else if (fileExtension === "csv") {
+          // If CSV, assume first row contains column headers
+          const csvArray = content.split("\n");
+          if (csvArray.length > 0) {
+            columnNames = csvArray[0].split(",");
+          }
+        }
+
+        // Update datasets with column names
         const updatedDatasets = [...project.datasets];
         updatedDatasets[index] = {
           ...updatedDatasets[index],
           file: file,
           extension: fileExtension,
-          columns: columns, // Store column names in the dataset object
-          selectedColumns: [], // Initialize selectedColumns array
+          columnNames: columnNames,
+          columnActions: Array(columnNames.length).fill(null), // Initialize actions for each column
         };
         setProject({ ...project, datasets: updatedDatasets });
       };
+
+      // Read file as text
       reader.readAsText(file);
     } else {
       alert("Please upload a JSON or CSV file.");
     }
   };
 
-  const handleColumnSelection = (index, selectedColumns) => {
+  const handleColumnActionChange = (e, datasetIndex, columnIndex) => {
+    const { value } = e.target;
     const updatedDatasets = [...project.datasets];
-    updatedDatasets[index] = {
-      ...updatedDatasets[index],
-      selectedColumns: selectedColumns,
-    };
+    updatedDatasets[datasetIndex].columnActions[columnIndex] = value;
     setProject({ ...project, datasets: updatedDatasets });
   };
 
@@ -82,13 +99,7 @@ const NewProjectForm = () => {
       ...project,
       datasets: [
         ...project.datasets,
-        {
-          name: "",
-          description: "",
-          file: null,
-          columns: [],
-          selectedColumns: [],
-        },
+        { name: "", description: "", file: null },
       ],
     });
   };
@@ -223,32 +234,28 @@ const NewProjectForm = () => {
                 {dataset.file.name.split(".").pop().toLowerCase()}
               </p>
             )}
-            {/* Column selection */}
-            <div className="mb-4">
-              <label className="block mb-1">
-                Select Columns:
-                <select
-                  multiple
-                  value={dataset.selectedColumns}
-                  onChange={(e) =>
-                    handleColumnSelection(
-                      index,
-                      Array.from(
-                        e.target.selectedOptions,
-                        (option) => option.value
-                      )
-                    )
-                  }
-                  className="border border-gray-400 rounded-md p-2 w-full"
-                >
-                  {dataset.columns.map((column, columnIndex) => (
-                    <option key={columnIndex} value={column}>
-                      {column}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+            {/* Display column names and actions */}
+            {dataset.columnNames && (
+              <div className="mb-2">
+                <h3 className="font-semibold">Column Actions:</h3>
+                {dataset.columnNames.map((columnName, columnIndex) => (
+                  <div key={columnIndex} className="flex items-center mt-1">
+                    <label className="mr-2">{columnName}</label>
+                    <select
+                      value={dataset.columnActions[columnIndex] || ""}
+                      onChange={(e) =>
+                        handleColumnActionChange(e, index, columnIndex)
+                      }
+                      className="border border-gray-400 rounded-md p-1"
+                    >
+                      <option value="">No Action</option>
+                      <option value="remove">Remove</option>
+                      <option value="encrypt">Encrypt</option>
+                    </select>
+                  </div>
+                ))}
+              </div>
+            )}
             {/* Description textarea */}
             <div>
               <label className="block mb-1">
