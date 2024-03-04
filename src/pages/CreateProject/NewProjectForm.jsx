@@ -7,9 +7,10 @@ const NewProjectForm = () => {
     abstract: "",
     isPublic: false,
     tags: [],
-    owner: "",
+    owner: "Yusuf Aslan",
     datasets: [],
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +34,22 @@ const NewProjectForm = () => {
     setProject({ ...project, datasets: updatedDatasets });
   };
 
+  const handleFileUpload = (e, index) => {
+    const file = e.target.files[0];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    if (fileExtension === 'json' || fileExtension === 'csv') {
+      const updatedDatasets = [...project.datasets];
+      updatedDatasets[index] = { ...updatedDatasets[index], file: file, extension: fileExtension };
+      setProject({ ...project, datasets: updatedDatasets });
+    } else {
+      alert("Please upload a JSON or CSV file.");
+    }
+  };  
+
   const handleAddDataset = () => {
     setProject({
       ...project,
-      datasets: [...project.datasets, { name: "", description: "" }],
+      datasets: [...project.datasets, { name: "", description: "", file: null }],
     });
   };
 
@@ -47,7 +60,9 @@ const NewProjectForm = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4 text-center">Create New Project</h1>
+      <h1 className="text-2xl font-bold my-4 text-center">
+        Create New Project
+      </h1>
       <form className="max-w-2xl mx-auto border-2 p-5 rounded-md border-gray-400">
         <div className="mb-4">
           <label className="block mb-1">
@@ -114,8 +129,12 @@ const NewProjectForm = () => {
           </label>
         </div>
         {project.datasets.map((dataset, index) => (
-          <div key={index} className="border border-gray-400 p-4 my-4 rounded-md">
+          <div
+            key={index}
+            className="border border-gray-400 p-4 my-4 rounded-md"
+          >
             <h2 className="text-lg font-bold mb-2">Dataset {index + 1}</h2>
+            {/* Name input */}
             <div className="mb-2">
               <label className="block mb-1">
                 Name:
@@ -129,6 +148,26 @@ const NewProjectForm = () => {
                 />
               </label>
             </div>
+            {/* File upload */}
+            <div className="mb-2">
+              <label className="block mb-1">
+                File:
+                <input
+                  type="file"
+                  accept=".json, .csv"
+                  onChange={(e) => handleFileUpload(e, index)}
+                  className="border border-gray-400 rounded-md p-2 w-full"
+                />
+              </label>
+            </div>
+            {/* Display file extension */}
+            {dataset.file && (
+              <p className="mb-2">
+                File Extension:{" "}
+                {dataset.file.name.split(".").pop().toLowerCase()}
+              </p>
+            )}
+            {/* Description textarea */}
             <div>
               <label className="block mb-1">
                 Description:
