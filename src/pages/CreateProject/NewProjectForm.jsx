@@ -110,7 +110,7 @@ const NewProjectForm = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto overflow-x-hidden">
       <h1 className="text-2xl font-bold my-4 text-center">
         Create New Project
       </h1>
@@ -163,7 +163,7 @@ const NewProjectForm = () => {
               onChange={handleCheckboxChange}
               className="mr-2"
             />
-            <span>Is Public</span>
+            <span>Is thisPublic</span>
           </label>
         </div>
         <div className="mb-4">

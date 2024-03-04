@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SignIn from './pages/SignInPage/SignIn'
 import SignUp from './pages/SignUpPage/SignUp'
 import NewProjectForm from './pages/CreateProject/NewProjectForm'
+import Welcome from './pages/Welcome/Welcome'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/create-project' element={<NewProjectForm />} />
+          <Route path='/welcome' element={<Welcome />} />
         </Routes>
       </Router>
     </div>
