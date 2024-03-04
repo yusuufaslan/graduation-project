@@ -45,20 +45,51 @@ const NewProjectForm = () => {
 
   const handleFileUpload = (e, index) => {
     const file = e.target.files[0];
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    if (fileExtension === 'json' || fileExtension === 'csv') {
-      const updatedDatasets = [...project.datasets];
-      updatedDatasets[index] = { ...updatedDatasets[index], file: file, extension: fileExtension };
-      setProject({ ...project, datasets: updatedDatasets });
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    if (fileExtension === "json" || fileExtension === "csv") {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const csvData = event.target.result;
+        const lines = csvData.split(/\r\n|\n/);
+        const columns = lines[0].split(","); // Assuming first row contains column names
+        const updatedDatasets = [...project.datasets];
+        updatedDatasets[index] = {
+          ...updatedDatasets[index],
+          file: file,
+          extension: fileExtension,
+          columns: columns, // Store column names in the dataset object
+          selectedColumns: [], // Initialize selectedColumns array
+        };
+        setProject({ ...project, datasets: updatedDatasets });
+      };
+      reader.readAsText(file);
     } else {
       alert("Please upload a JSON or CSV file.");
     }
-  };  
+  };
+
+  const handleColumnSelection = (index, selectedColumns) => {
+    const updatedDatasets = [...project.datasets];
+    updatedDatasets[index] = {
+      ...updatedDatasets[index],
+      selectedColumns: selectedColumns,
+    };
+    setProject({ ...project, datasets: updatedDatasets });
+  };
 
   const handleAddDataset = () => {
     setProject({
       ...project,
-      datasets: [...project.datasets, { name: "", description: "", file: null }],
+      datasets: [
+        ...project.datasets,
+        {
+          name: "",
+          description: "",
+          file: null,
+          columns: [],
+          selectedColumns: [],
+        },
+      ],
     });
   };
 
@@ -137,9 +168,16 @@ const NewProjectForm = () => {
           </label>
           <div className="flex flex-wrap mt-2">
             {project.tags.map((tag, index) => (
-              <div key={index} className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center">
+              <div
+                key={index}
+                className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center"
+              >
                 <span className="mr-1">{tag}</span>
-                <button type="button" onClick={() => handleRemoveTag(tag)} className="text-red-600 font-bold focus:outline-none">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTag(tag)}
+                  className="text-red-600 font-bold focus:outline-none"
+                >
                   X
                 </button>
               </div>
@@ -185,6 +223,32 @@ const NewProjectForm = () => {
                 {dataset.file.name.split(".").pop().toLowerCase()}
               </p>
             )}
+            {/* Column selection */}
+            <div className="mb-4">
+              <label className="block mb-1">
+                Select Columns:
+                <select
+                  multiple
+                  value={dataset.selectedColumns}
+                  onChange={(e) =>
+                    handleColumnSelection(
+                      index,
+                      Array.from(
+                        e.target.selectedOptions,
+                        (option) => option.value
+                      )
+                    )
+                  }
+                  className="border border-gray-400 rounded-md p-2 w-full"
+                >
+                  {dataset.columns.map((column, columnIndex) => (
+                    <option key={columnIndex} value={column}>
+                      {column}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
             {/* Description textarea */}
             <div>
               <label className="block mb-1">
