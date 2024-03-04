@@ -11,7 +11,6 @@ const NewProjectForm = () => {
     datasets: [],
   });
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProject({ ...project, [name]: value });
@@ -23,8 +22,18 @@ const NewProjectForm = () => {
   };
 
   const handleTagChange = (e) => {
-    const { value } = e.target;
-    setProject({ ...project, tags: [...project.tags, value] });
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
+      const newTag = e.target.value.trim();
+      setProject({ ...project, tags: [...project.tags, newTag] });
+      e.target.value = ""; // Clear the input field after adding the tag
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setProject({
+      ...project,
+      tags: project.tags.filter((tag) => tag !== tagToRemove),
+    });
   };
 
   const handleDatasetChange = (e, index) => {
@@ -121,12 +130,21 @@ const NewProjectForm = () => {
             <input
               type="text"
               name="tags"
-              value={project.tags}
-              onChange={handleTagChange}
+              onKeyDown={handleTagChange}
               className="border border-gray-400 rounded-md p-2 w-full"
-              placeholder="Enter tags (comma-separated)"
+              placeholder="Enter tags and press Enter"
             />
           </label>
+          <div className="flex flex-wrap mt-2">
+            {project.tags.map((tag, index) => (
+              <div key={index} className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center">
+                <span className="mr-1">{tag}</span>
+                <button type="button" onClick={() => handleRemoveTag(tag)} className="text-red-600 font-bold focus:outline-none">
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         {project.datasets.map((dataset, index) => (
           <div
