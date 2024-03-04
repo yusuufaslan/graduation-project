@@ -236,26 +236,31 @@ const NewProjectForm = () => {
             )}
             {/* Display column names and actions */}
             {dataset.columnNames && (
-              <div className="mb-2">
+              <div className="mb-4">
                 <h3 className="font-semibold">Column Actions:</h3>
-                {dataset.columnNames.map((columnName, columnIndex) => (
-                  <div key={columnIndex} className="flex items-center mt-1">
-                    <label className="mr-2">{columnName}</label>
-                    <select
-                      value={dataset.columnActions[columnIndex] || ""}
-                      onChange={(e) =>
-                        handleColumnActionChange(e, index, columnIndex)
-                      }
-                      className="border border-gray-400 rounded-md p-1"
-                    >
-                      <option value="">No Action</option>
-                      <option value="remove">Remove</option>
-                      <option value="encrypt">Encrypt</option>
-                    </select>
-                  </div>
-                ))}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
+                  {dataset.columnNames.map((columnName, columnIndex) => (
+                    <div key={columnIndex} className="flex flex-col">
+                      <label className="mb-1">{columnName}</label>
+                      <div className="flex items-center">
+                        <select
+                          value={dataset.columnActions[columnIndex] || ""}
+                          onChange={(e) =>
+                            handleColumnActionChange(e, index, columnIndex)
+                          }
+                          className="border border-gray-400 rounded-md p-1 mr-2"
+                        >
+                          <option value="">No Action</option>
+                          <option value="remove">Remove</option>
+                          <option value="encrypt">Encrypt</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
+
             {/* Description textarea */}
             <div>
               <label className="block mb-1">
