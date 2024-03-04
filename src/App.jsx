@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import SignIn from './pages/SignInPage/SignIn'
 import SignUp from './pages/SignUpPage/SignUp'
+import NewProjectForm from './pages/CreateProject/NewProjectForm'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/create-project' element={<NewProjectForm />} />
         </Routes>
       </Router>
     </div>
