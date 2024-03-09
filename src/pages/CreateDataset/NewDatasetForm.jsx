@@ -1,9 +1,10 @@
 // NewDatasetForm.jsx
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const NewDatasetForm = () => {
   const { projectId } = useParams();
+  const navigate = useNavigate();
 
   const [dataset, setDataset] = useState({
     projectId: projectId,
@@ -87,6 +88,7 @@ const NewDatasetForm = () => {
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error));
     */
+    navigate(`/project/edit/${dataset.projectId}`);
   };
 
   return (
