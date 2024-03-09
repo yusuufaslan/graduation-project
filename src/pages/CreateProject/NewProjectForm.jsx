@@ -45,6 +45,7 @@ const NewProjectForm = () => {
     });
   };
 
+  // Function to handle tag selection
   const handleTagSelection = (tagId) => {
     const selectedTags = [...project.selectedTags];
     if (selectedTags.includes(tagId)) {
@@ -226,13 +227,28 @@ const NewProjectForm = () => {
             {tagList.map((tag) => (
               <div
                 key={tag.id}
-                className={`bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer ${
-                  project.selectedTags.includes(tag.id) &&
-                  "bg-blue-500 text-white"
+                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 ${
+                  project.selectedTags.includes(tag.id)
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
                 }`}
                 onClick={() => handleTagSelection(tag.id)}
               >
                 <span className="mr-1">{tag.name}</span>
+                {project.selectedTags.includes(tag.id) && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 4.293a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-7-7a1 1 0 1 1 1.414-1.414L6 13.586l10.293-10.293a1 1 0 0 1 1.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
               </div>
             ))}
           </div>
