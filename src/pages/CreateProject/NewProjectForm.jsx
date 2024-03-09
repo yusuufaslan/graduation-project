@@ -70,7 +70,7 @@ const NewProjectForm = () => {
     console.log("Creating project:", project);
     // Assuming project is created successfully and we have received a project ID
     const projectId = Math.floor(Math.random() * 1000); // Simulated project ID
-    navigate(`/edit-project/${projectId}`); // Navigate to edit project screen
+    navigate(`/project/edit/${projectId}`); // Navigate to edit project screen
   };
 
   return (

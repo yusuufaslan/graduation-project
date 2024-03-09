@@ -17,7 +17,7 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/project/create' element={<NewProjectForm />} />
-          <Route path="/edit-project/:projectId" element={<EditProjectForm />} />
+          <Route path="/project/edit/:projectId" element={<EditProjectForm />} />
           <Route path="/create-dataset/:projectId" element={<NewDatasetForm />} />
           <Route path='/welcome' element={<Welcome />} />
         </Routes>
