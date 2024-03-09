@@ -1,4 +1,4 @@
-// NewProjectForm.js
+// NewProjectForm.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
