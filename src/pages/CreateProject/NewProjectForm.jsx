@@ -1,5 +1,6 @@
+// NewProjectForm.js
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 // Define a list of tags
@@ -11,7 +12,10 @@ const tagList = [
 ];
 
 const NewProjectForm = () => {
+  const navigate = useNavigate();
+
   const [project, setProject] = useState({
+    id: 123,
     name: "",
     description: "",
     abstract: "",
@@ -60,77 +64,14 @@ const NewProjectForm = () => {
     }
   };
 
-  const handleDatasetChange = (e, index) => {
-    const { name, value } = e.target;
-    const updatedDatasets = [...project.datasets];
-    updatedDatasets[index] = { ...updatedDatasets[index], [name]: value };
-    setProject({ ...project, datasets: updatedDatasets });
-  };
-
-  const handleFileUpload = (e, index) => {
-    const file = e.target.files[0];
-    const fileExtension = file.name.split(".").pop().toLowerCase();
-
-    if (fileExtension === "json" || fileExtension === "csv") {
-      // Read file content
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const content = event.target.result;
-        let columnNames = [];
-
-        if (fileExtension === "json") {
-          // If JSON, assume array of objects and read keys of the first object
-          const jsonArray = JSON.parse(content);
-          if (jsonArray.length > 0) {
-            columnNames = Object.keys(jsonArray[0]);
-          }
-        } else if (fileExtension === "csv") {
-          // If CSV, assume first row contains column headers
-          const csvArray = content.split("\n");
-          if (csvArray.length > 0) {
-            columnNames = csvArray[0].split(",");
-          }
-        }
-
-        // Update datasets with column names
-        const updatedDatasets = [...project.datasets];
-        updatedDatasets[index] = {
-          ...updatedDatasets[index],
-          file: file,
-          extension: fileExtension,
-          columnNames: columnNames,
-          columnActions: Array(columnNames.length).fill(null), // Initialize actions for each column
-        };
-        setProject({ ...project, datasets: updatedDatasets });
-      };
-
-      // Read file as text
-      reader.readAsText(file);
-    } else {
-      alert("Please upload a JSON or CSV file.");
-    }
-  };
-
-  const handleColumnActionChange = (e, datasetIndex, columnIndex) => {
-    const { value } = e.target;
-    const updatedDatasets = [...project.datasets];
-    updatedDatasets[datasetIndex].columnActions[columnIndex] = value;
-    setProject({ ...project, datasets: updatedDatasets });
-  };
-
-  const handleAddDataset = () => {
-    setProject({
-      ...project,
-      datasets: [
-        ...project.datasets,
-        { name: "", description: "", file: null },
-      ],
-    });
-  };
-
   const handleSubmit = () => {
     // Send project data to backend
     console.log(project);
+  };
+
+  const navigateToDatasetCreation = () => {
+    // Navigate to dataset creation page with project ID as a parameter
+    navigate(`/create-dataset/${project.id}`);
   };
 
   return (
@@ -256,91 +197,9 @@ const NewProjectForm = () => {
           </div>
         </div>
 
-        {project.datasets.map((dataset, index) => (
-          <div
-            key={index}
-            className="border border-gray-400 p-4 my-4 rounded-md"
-          >
-            <h2 className="text-lg font-bold mb-2">Dataset {index + 1}</h2>
-            {/* Name input */}
-            <div className="mb-2">
-              <label className="block mb-1">
-                Name:
-                <input
-                  type="text"
-                  name="name"
-                  value={dataset.name}
-                  onChange={(e) => handleDatasetChange(e, index)}
-                  className="border border-gray-400 rounded-md p-2 w-full"
-                  placeholder="Enter dataset name"
-                />
-              </label>
-            </div>
-            {/* File upload */}
-            <div className="mb-2">
-              <label className="block mb-1">
-                File:
-                <input
-                  type="file"
-                  accept=".json, .csv"
-                  onChange={(e) => handleFileUpload(e, index)}
-                  className="border border-gray-400 rounded-md p-2 w-full"
-                />
-              </label>
-            </div>
-            {/* Display file extension */}
-            {dataset.file && (
-              <p className="mb-2">
-                File Extension:{" "}
-                {dataset.file.name.split(".").pop().toLowerCase()}
-              </p>
-            )}
-            {/* Display column names and actions */}
-            {dataset.columnNames && (
-              <div className="mb-4">
-                <h3 className="font-semibold">Column Actions:</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
-                  {dataset.columnNames.map((columnName, columnIndex) => (
-                    <div key={columnIndex} className="flex flex-col">
-                      <label className="mb-1">{columnName}</label>
-                      <div className="flex items-center">
-                        <select
-                          value={dataset.columnActions[columnIndex] || ""}
-                          onChange={(e) =>
-                            handleColumnActionChange(e, index, columnIndex)
-                          }
-                          className="border border-gray-400 rounded-md p-1 mr-2"
-                        >
-                          <option value="">No Action</option>
-                          <option value="remove">Remove</option>
-                          <option value="encrypt">Encrypt</option>
-                        </select>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Description textarea */}
-            <div>
-              <label className="block mb-1">
-                Description:
-                <textarea
-                  name="description"
-                  value={dataset.description}
-                  onChange={(e) => handleDatasetChange(e, index)}
-                  className="border border-gray-400 rounded-md p-2 w-full"
-                  placeholder="Enter dataset description"
-                  rows="3"
-                ></textarea>
-              </label>
-            </div>
-          </div>
-        ))}
         <button
           type="button"
-          onClick={handleAddDataset}
+          onClick={navigateToDatasetCreation}
           className="bg-blue-500 text-white px-4 py-2 rounded-md my-4 mr-4"
         >
           Add Dataset
@@ -358,3 +217,4 @@ const NewProjectForm = () => {
 };
 
 export default NewProjectForm;
+
