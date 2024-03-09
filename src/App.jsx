@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SignIn from './pages/SignInPage/SignIn'
 import SignUp from './pages/SignUpPage/SignUp'
 import NewProjectForm from './pages/CreateProject/NewProjectForm'
-import NewDatasetForm from './pages/CreateProject/NewDatasetForm'
+import NewDatasetForm from './pages/CreateDataset/NewDatasetForm'
 import Welcome from './pages/Welcome/Welcome'
 
 function App() {
