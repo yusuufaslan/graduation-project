@@ -1,13 +1,5 @@
 import React, { useState } from "react";
 
-// Define a list of tags
-const tagList = [
-  { id: 1, name: "Tag 1" },
-  { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 3" },
-  // Add more tags as needed
-];
-
 const NewProjectForm = () => {
   const [project, setProject] = useState({
     name: "",
@@ -171,7 +163,7 @@ const NewProjectForm = () => {
               onChange={handleCheckboxChange}
               className="mr-2"
             />
-            <span>Is this Public</span>
+            <span>Is Public</span>
           </label>
         </div>
         {project.isPublic && (
