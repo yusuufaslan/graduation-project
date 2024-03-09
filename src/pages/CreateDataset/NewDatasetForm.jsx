@@ -94,7 +94,7 @@ const NewDatasetForm = () => {
       <h1 className="text-2xl font-bold my-4 text-center">
         Create New Dataset for Project {projectId}
       </h1>
-      <form className="max-w-2xl mx-auto border-2 p-5 rounded-md border-gray-400">
+      <form className="max-w-4xl mx-auto border-2 p-5 rounded-md border-gray-400">
         <div className="mb-4">
           <label className="block mb-1">
             Name:

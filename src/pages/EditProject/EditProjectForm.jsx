@@ -1,21 +1,19 @@
-// NewProjectForm.jsx
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-// Define a list of tags
 const tagList = [
   { id: 1, name: "Tag 1" },
   { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 34564566" },
-  // Add more tags as needed
+  { id: 3, name: "Tag 3" },
 ];
 
-const NewProjectForm = () => {
+const EditProjectForm = () => {
   const navigate = useNavigate();
+  const { projectId } = useParams();
 
   const [project, setProject] = useState({
-    id: 123, // Assuming initial project ID
+    id: projectId,
     name: "",
     description: "",
     abstract: "",
@@ -23,8 +21,40 @@ const NewProjectForm = () => {
     emails: [],
     owner: "Yusuf Aslan",
     datasets: [],
-    selectedTags: [], // Add selected tags to the project state
+    selectedTags: [],
   });
+
+  useEffect(() => {
+    // Fetch project data from backend using projectId
+    // For demonstration, setting some dummy data
+    setProject({
+      id: projectId,
+      name: "Sample Project",
+      description: "This is a sample project description",
+      abstract: "Abstract for the sample project",
+      isPublic: true,
+      emails: ["test1@example.com", "test2@example.com"],
+      owner: "Yusuf Aslan",
+      datasets: [
+        {
+          id: 456,
+          projectId: projectId,
+          name: "Example Dataset",
+          description: "Example Dataset Description",
+          file: {},
+          fileType: "csv",
+          columns: [
+            { name: "name", action: "" },
+            { name: "surname", action: "" },
+            { name: "identity", action: "" },
+            { name: "datavalue", action: "" },
+            { name: "isTrue", action: "" },
+          ],
+        },
+      ], // Dummy datasets, you may fetch them from the backend
+      selectedTags: [1, 2], // Sample selected tags
+    });
+  }, [projectId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +70,7 @@ const NewProjectForm = () => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newEmail = e.target.value.trim();
       setProject({ ...project, emails: [...project.emails, newEmail] });
-      e.target.value = ""; // Clear the input field after adding the email
+      e.target.value = "";
     }
   };
 
@@ -51,32 +81,38 @@ const NewProjectForm = () => {
     });
   };
 
-  // Function to handle tag selection
   const handleTagSelection = (tagId) => {
     const selectedTags = [...project.selectedTags];
     if (selectedTags.includes(tagId)) {
-      // Remove tag if already selected
       const updatedTags = selectedTags.filter((id) => id !== tagId);
       setProject({ ...project, selectedTags: updatedTags });
     } else {
-      // Add tag if not selected
       setProject({ ...project, selectedTags: [...selectedTags, tagId] });
     }
   };
 
+  const handleAddDataset = () => {
+    // Navigate to the new dataset creation page with project ID as a parameter
+    navigate(`/create-dataset/${project.id}`);
+  };
+
+  const handleRemoveDataset = (datasetId) => {
+    // Remove dataset from project datasets
+    const updatedDatasets = project.datasets.filter(
+      (dataset) => dataset.id !== datasetId
+    );
+    setProject({ ...project, datasets: updatedDatasets });
+  };
+
   const handleSubmit = () => {
-    // Send project data to backend
-    // Simulating backend call
-    console.log("Creating project:", project);
-    // Assuming project is created successfully and we have received a project ID
-    const projectId = Math.floor(Math.random() * 1000); // Simulated project ID
-    navigate(`/edit-project/${projectId}`); // Navigate to edit project screen
+    // Handle updating project data here (e.g., make a request to update project data on the backend)
+    console.log("Updated Project:", project);
   };
 
   return (
     <div className="container mx-auto overflow-x-hidden">
       <h1 className="text-2xl font-bold my-4 text-center">
-        Create New Project
+        Edit Project {projectId}
       </h1>
       <form className="max-w-4xl mx-auto border-2 p-5 rounded-md border-gray-400">
         <div className="mb-4">
@@ -195,16 +231,46 @@ const NewProjectForm = () => {
             ))}
           </div>
         </div>
+
+        {/* Display datasets */}
+        <div className="max-w-4xl mx-auto mt-8">
+          <h2 className="text-xl font-semibold mb-4">Datasets:</h2>
+          {project.datasets.map((dataset) => (
+            <div
+              key={dataset.id} // Assigning dataset id as key
+              className="border border-gray-300 p-4 mb-4 rounded-md"
+            >
+              <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
+              <p className="text-gray-600 mb-2">{dataset.description}</p>
+              {/* Add more dataset information as needed */}
+              <button
+                type="button"
+                onClick={() => handleRemoveDataset(dataset.id)}
+                className="text-red-600 font-bold focus:outline-none"
+              >
+                Remove Dataset
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddDataset}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md my-4"
+          >
+            Add Dataset
+          </button>
+        </div>
+
         <button
           type="button"
           onClick={handleSubmit}
           className="bg-green-500 text-white px-4 py-2 rounded-md my-4"
         >
-          Create Project
+          Update Project
         </button>
       </form>
     </div>
   );
 };
 
-export default NewProjectForm;
+export default EditProjectForm;
