@@ -10,6 +10,7 @@ const NewDatasetForm = () => {
     name: "",
     description: "",
     file: null,
+    fileType: "", // Include fileType to store the file extension name
     columns: [], // Adding columns array to store column information
   });
 
@@ -17,7 +18,7 @@ const NewDatasetForm = () => {
     const { name, value } = e.target;
     setDataset({ ...dataset, [name]: value.trim() }); // Trim the value before setting
   };
-  
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     const fileExtension = file.name.split(".").pop().toLowerCase();
@@ -43,10 +44,11 @@ const NewDatasetForm = () => {
           }
         }
 
-        // Update dataset with column names
+        // Update dataset with column names and fileType
         setDataset({
           ...dataset,
           file,
+          fileType: fileExtension, // Store the file extension
           columns: columnNames.map((columnName) => ({
             name: columnName,
             action: "", // Initialize action for each column
@@ -71,6 +73,20 @@ const NewDatasetForm = () => {
   const handleSubmit = () => {
     // Handle dataset submission here
     console.log("Dataset submitted:", dataset);
+    // Make a request with dataset including fileType
+    // Example fetch request:
+    /*
+    fetch('/api/submitDataset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataset),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+    */
   };
 
   return (
@@ -115,25 +131,32 @@ const NewDatasetForm = () => {
               className="border border-gray-400 rounded-md p-2 w-full"
             />
           </label>
+          {dataset.file && <p>Uploaded File Type: {dataset.fileType}</p>}
         </div>
         {/* Display columns and select column actions */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
-          {dataset.columns.map((column, columnIndex) => (
-            <div key={columnIndex} className="mb-4 text-center">
-              <label className="block mb-1">{column.name}</label>
-              <select
-                value={column.action || ""}
-                onChange={(e) => handleColumnActionChange(e, columnIndex)}
-                className="border border-gray-400 rounded-md p-1 w-full"
-              >
-                <option value="">No Action</option>
-                <option value="remove">Remove</option>
-                <option value="encrypt">Encrypt</option>
-                {/* Add more actions as needed */}
-              </select>
-            </div>
-          ))}
+        <div>
+          {dataset.columns.length > 0 && (
+            <h2 className="text-lg font-semibold mb-2">Column Actions:</h2>
+          )}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
+            {dataset.columns.map((column, columnIndex) => (
+              <div key={columnIndex} className="mb-4">
+                <label className="block mb-1 ml-2">{column.name}</label>
+                <select
+                  value={column.action || ""}
+                  onChange={(e) => handleColumnActionChange(e, columnIndex)}
+                  className="border border-gray-400 rounded-md p-1 w-full"
+                >
+                  <option value="">No Action</option>
+                  <option value="remove">Remove</option>
+                  <option value="encrypt">Encrypt</option>
+                  {/* Add more actions as needed */}
+                </select>
+              </div>
+            ))}
+          </div>
         </div>
+
         <button
           type="button"
           onClick={handleSubmit}
