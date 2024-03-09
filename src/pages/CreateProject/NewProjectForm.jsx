@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 
+// Define a list of tags
+const tagList = [
+  { id: 1, name: "Tag 1" },
+  { id: 2, name: "Tag 2" },
+  { id: 3, name: "Tag 3" },
+  // Add more tags as needed
+];
+
 const NewProjectForm = () => {
   const [project, setProject] = useState({
     name: "",
     description: "",
     abstract: "",
     isPublic: false,
-    tags: [],
+    emails: [],
     owner: "Yusuf Aslan",
     datasets: [],
   });
@@ -21,18 +29,18 @@ const NewProjectForm = () => {
     setProject({ ...project, [name]: checked });
   };
 
-  const handleTagChange = (e) => {
+  const handleEmailsChange = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
-      const newTag = e.target.value.trim();
-      setProject({ ...project, tags: [...project.tags, newTag] });
-      e.target.value = ""; // Clear the input field after adding the tag
+      const newEmail = e.target.value.trim();
+      setProject({ ...project, emails: [...project.emails, newEmail] });
+      e.target.value = ""; // Clear the input field after adding the email
     }
   };
 
-  const handleRemoveTag = (tagToRemove) => {
+  const handleRemoveEmail = (emailToRemove) => {
     setProject({
       ...project,
-      tags: project.tags.filter((tag) => tag !== tagToRemove),
+      emails: project.emails.filter((email) => email !== emailToRemove),
     });
   };
 
@@ -163,38 +171,40 @@ const NewProjectForm = () => {
               onChange={handleCheckboxChange}
               className="mr-2"
             />
-            <span>Is thisPublic</span>
+            <span>Is this Public</span>
           </label>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1">
-            Tags:
-            <input
-              type="text"
-              name="tags"
-              onKeyDown={handleTagChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
-              placeholder="Enter tags and press Enter"
-            />
-          </label>
-          <div className="flex flex-wrap mt-2">
-            {project.tags.map((tag, index) => (
-              <div
-                key={index}
-                className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center"
-              >
-                <span className="mr-1">{tag}</span>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTag(tag)}
-                  className="text-red-600 font-bold focus:outline-none"
+        {project.isPublic && (
+          <div className="mb-4">
+            <label className="block mb-1">
+              User Emails:
+              <input
+                type="text"
+                name="emails"
+                onKeyDown={handleEmailsChange}
+                className="border border-gray-400 rounded-md p-2 w-full"
+                placeholder="Provide user email and press enter"
+              />
+            </label>
+            <div className="flex flex-wrap mt-2">
+              {project.emails.map((email, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center"
                 >
-                  X
-                </button>
-              </div>
-            ))}
+                  <span className="mr-1">{email}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEmail(email)}
+                    className="text-red-600 font-bold focus:outline-none"
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         {project.datasets.map((dataset, index) => (
           <div
             key={index}
