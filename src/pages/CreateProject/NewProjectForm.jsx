@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { AiOutlineCloseCircle } from "react-icons/ai";
+
 // Define a list of tags
 const tagList = [
   { id: 1, name: "Tag 1" },
@@ -13,7 +15,7 @@ const NewProjectForm = () => {
     name: "",
     description: "",
     abstract: "",
-    isPublic: false,
+    isPublic: true,
     emails: [],
     owner: "Yusuf Aslan",
     datasets: [],
@@ -188,7 +190,7 @@ const NewProjectForm = () => {
             <span>Is Public</span>
           </label>
         </div>
-        {project.isPublic && (
+        {!project.isPublic && (
           <div className="mb-4">
             <label className="block mb-1">
               User Emails:
@@ -212,7 +214,7 @@ const NewProjectForm = () => {
                     onClick={() => handleRemoveEmail(email)}
                     className="text-red-600 font-bold focus:outline-none"
                   >
-                    X
+                    <AiOutlineCloseCircle className="ml-1" />
                   </button>
                 </div>
               ))}
