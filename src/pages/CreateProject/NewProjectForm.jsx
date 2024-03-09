@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 
+// Define a list of tags
+const tagList = [
+  { id: 1, name: "Tag 1" },
+  { id: 2, name: "Tag 2" },
+  { id: 3, name: "Tag 3" },
+  // Add more tags as needed
+];
+
 const NewProjectForm = () => {
   const [project, setProject] = useState({
     name: "",
@@ -9,6 +17,7 @@ const NewProjectForm = () => {
     emails: [],
     owner: "Yusuf Aslan",
     datasets: [],
+    selectedTags: [], // Add selected tags to the project state
   });
 
   const handleChange = (e) => {
@@ -34,6 +43,18 @@ const NewProjectForm = () => {
       ...project,
       emails: project.emails.filter((email) => email !== emailToRemove),
     });
+  };
+
+  const handleTagSelection = (tagId) => {
+    const selectedTags = [...project.selectedTags];
+    if (selectedTags.includes(tagId)) {
+      // Remove tag if already selected
+      const updatedTags = selectedTags.filter((id) => id !== tagId);
+      setProject({ ...project, selectedTags: updatedTags });
+    } else {
+      // Add tag if not selected
+      setProject({ ...project, selectedTags: [...selectedTags, tagId] });
+    }
   };
 
   const handleDatasetChange = (e, index) => {
@@ -197,6 +218,26 @@ const NewProjectForm = () => {
             </div>
           </div>
         )}
+
+        {/* Display list of tags */}
+        <div className="mb-4">
+          <label className="block mb-1">Tags:</label>
+          <div className="flex flex-wrap">
+            {tagList.map((tag) => (
+              <div
+                key={tag.id}
+                className={`bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer ${
+                  project.selectedTags.includes(tag.id) &&
+                  "bg-blue-500 text-white"
+                }`}
+                onClick={() => handleTagSelection(tag.id)}
+              >
+                <span className="mr-1">{tag.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {project.datasets.map((dataset, index) => (
           <div
             key={index}
