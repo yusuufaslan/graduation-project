@@ -1,21 +1,18 @@
-// NewProjectForm.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-// Define a list of tags
 const tagList = [
   { id: 1, name: "Tag 1" },
   { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 34564566" },
-  // Add more tags as needed
+  { id: 3, name: "Tag 3" },
 ];
 
 const NewProjectForm = () => {
   const navigate = useNavigate();
 
   const [project, setProject] = useState({
-    id: 123, // Assuming initial project ID
+    id: 123,
     name: "",
     description: "",
     abstract: "",
@@ -23,7 +20,7 @@ const NewProjectForm = () => {
     emails: [],
     owner: "Yusuf Aslan",
     datasets: [],
-    selectedTags: [], // Add selected tags to the project state
+    selectedTags: [],
   });
 
   const handleChange = (e) => {
@@ -40,7 +37,7 @@ const NewProjectForm = () => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newEmail = e.target.value.trim();
       setProject({ ...project, emails: [...project.emails, newEmail] });
-      e.target.value = ""; // Clear the input field after adding the email
+      e.target.value = "";
     }
   };
 
@@ -51,35 +48,29 @@ const NewProjectForm = () => {
     });
   };
 
-  // Function to handle tag selection
   const handleTagSelection = (tagId) => {
     const selectedTags = [...project.selectedTags];
     if (selectedTags.includes(tagId)) {
-      // Remove tag if already selected
       const updatedTags = selectedTags.filter((id) => id !== tagId);
       setProject({ ...project, selectedTags: updatedTags });
     } else {
-      // Add tag if not selected
       setProject({ ...project, selectedTags: [...selectedTags, tagId] });
     }
   };
 
   const handleSubmit = () => {
-    // Send project data to backend
-    // Simulating backend call
     console.log("Creating project:", project);
-    // Assuming project is created successfully and we have received a project ID
-    const projectId = Math.floor(Math.random() * 1000); // Simulated project ID
-    navigate(`/project/edit/${projectId}`); // Navigate to edit project screen
+    const projectId = Math.floor(Math.random() * 1000);
+    navigate(`/project/edit/${projectId}`);
   };
 
   return (
-    <div className="container mx-auto overflow-x-hidden">
-      <h1 className="text-2xl font-bold my-4 text-center">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-semibold mb-6 text-center">
         Create New Project
       </h1>
-      <form className="max-w-4xl mx-auto border-2 p-5 rounded-md border-gray-400">
-        <div className="mb-4">
+      <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Name:
             <input
@@ -87,38 +78,38 @@ const NewProjectForm = () => {
               name="name"
               value={project.name}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project name"
             />
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Description:
             <textarea
               name="description"
               value={project.description}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project description"
               rows="4"
             ></textarea>
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Abstract:
             <textarea
               name="abstract"
               value={project.abstract}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project abstract"
               rows="4"
             ></textarea>
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -131,14 +122,14 @@ const NewProjectForm = () => {
           </label>
         </div>
         {!project.isPublic && (
-          <div className="mb-4">
+          <div className="mb-4 font-bold">
             <label className="block mb-1">
               User Emails:
               <input
                 type="text"
                 name="emails"
                 onKeyDown={handleEmailsChange}
-                className="border border-gray-400 rounded-md p-2 w-full"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
                 placeholder="Provide user email and press enter"
               />
             </label>
@@ -146,7 +137,7 @@ const NewProjectForm = () => {
               {project.emails.map((email, index) => (
                 <div
                   key={index}
-                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center"
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
                 >
                   <span className="mr-1">{email}</span>
                   <button
@@ -162,14 +153,13 @@ const NewProjectForm = () => {
           </div>
         )}
 
-        {/* Display list of tags */}
-        <div className="mb-4">
-          <label className="block mb-1">Tags:</label>
+        <div className="mb-4 font-bold ">
+          <label className="block mb-2">Tags:</label>
           <div className="flex flex-wrap">
             {tagList.map((tag) => (
               <div
                 key={tag.id}
-                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 ${
+                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-normal ${
                   project.selectedTags.includes(tag.id)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
@@ -195,6 +185,7 @@ const NewProjectForm = () => {
             ))}
           </div>
         </div>
+
         <button
           type="button"
           onClick={handleSubmit}

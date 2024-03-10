@@ -1,4 +1,3 @@
-// NewDatasetForm.jsx
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -92,11 +91,11 @@ const NewDatasetForm = () => {
   };
 
   return (
-    <div className="container mx-auto overflow-x-hidden">
-      <h1 className="text-2xl font-bold my-4 text-center">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-semibold mb-6 text-center">
         Create New Dataset for Project {projectId}
       </h1>
-      <form className="max-w-4xl mx-auto border-2 p-5 rounded-md border-gray-400">
+      <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
         <div className="mb-4">
           <label className="block mb-1">
             Name:
