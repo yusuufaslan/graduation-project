@@ -96,7 +96,8 @@ const NewDatasetForm = () => {
         Create New Dataset for Project {projectId}
       </h1>
       <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
-        <div className="mb-4">
+        <p className="text-2xl font-bold mb-4">Dataset Information</p>
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Name:
             <input
@@ -104,49 +105,49 @@ const NewDatasetForm = () => {
               name="name"
               value={dataset.name}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter dataset name"
             />
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Description:
             <textarea
               name="description"
               value={dataset.description}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter dataset description"
               rows="4"
             ></textarea>
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             File:
             <input
               type="file"
               accept=".json, .csv"
               onChange={handleFileUpload}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
             />
           </label>
-          {dataset.file && <p>Uploaded File Type: {dataset.fileType}</p>}
+          {dataset.file && <p className="font-bold mt-3">Uploaded File Type: <span className="font-normal">{dataset.fileType}</span></p>}
         </div>
         {/* Display columns and select column actions */}
         <div>
           {dataset.columns.length > 0 && (
-            <h2 className="text-lg font-semibold mb-2">Column Actions:</h2>
+            <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
           )}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
             {dataset.columns.map((column, columnIndex) => (
               <div key={columnIndex} className="mb-4">
-                <label className="block mb-1 ml-2">{column.name}</label>
+                <label className="block mb-1 ml-1 font-normal">{column.name}</label>
                 <select
                   value={column.action || ""}
                   onChange={(e) => handleColumnActionChange(e, columnIndex)}
-                  className="border border-gray-400 rounded-md p-1 w-full"
+                  className="border border-gray-400 rounded-md p-1 w-full font-normal"
                 >
                   <option value="">No Action</option>
                   <option value="remove">Remove</option>

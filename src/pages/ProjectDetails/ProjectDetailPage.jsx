@@ -51,28 +51,28 @@ const ProjectDetailPage = () => {
       </h1>
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2">
         <div className="px-6 py-4">
-          <p className="text-lg font-semibold mb-4">Project Information</p>
+          <p className="text-2xl font-bold mb-4">Project Information</p>
           <div className="mb-4">
             <p className="text-gray-700">
-              <span className="font-semibold">Name:</span> {project.name}
+              <span className="font-bold">Name:</span> <span>{project.name}</span>
             </p>
           </div>
           <div className="mb-4">
-            <span className="font-semibold">Description:</span>{" "}
-            <p className="text-gray-700">{project.description}</p>
+            <span className="text-gray-700 font-bold">Description:</span>{" "}
+            <p className="text-gray-700 font-normal">{project.description}</p>
           </div>
           <div className="mb-4">
-            <span className="font-semibold">Abstract:</span>{" "}
-            <p className="text-gray-700">{project.abstract}</p>
+            <span className="text-gray-700 font-bold">Abstract:</span>{" "}
+            <p className="text-gray-700 font-normal">{project.abstract}</p>
           </div>
           <div className="mb-4">
             <p className="text-gray-700">
-              <span className="font-semibold">Owner:</span> {project.owner}
+              <span className="font-bold">Owner:</span> <span className="font-normal">{project.owner}</span>
             </p>
           </div>
           <div className="mb-4">
             <p className="text-gray-700">
-              <span className="font-semibold">Tags:</span>{" "}
+              <span className="font-bold">Tags:</span>{" "}
               <span className="flex flex-wrap mt-2">
                 {project.selectedTags.map((tagId) => (
                   <span
@@ -87,7 +87,7 @@ const ProjectDetailPage = () => {
           </div>
           <div className="mb-4">
             <p className="text-gray-700">
-              <span className="font-semibold">User Emails:</span>{" "}
+              <span className="font-bold">User Emails:</span>{" "}
               <span className="flex flex-wrap mt-2">
                 {project.emails.map((email, index) => (
                   <span
@@ -102,7 +102,7 @@ const ProjectDetailPage = () => {
           </div>
         </div>
         <div className="px-6 py-4 border-t border-gray-200">
-          <p className="text-lg font-semibold mb-4">Datasets</p>
+          <p className="text-2xl font-bold mb-4">Datasets</p>
           {project.datasets.map((dataset) => (
             <div
               key={dataset.id}

@@ -70,6 +70,7 @@ const NewProjectForm = () => {
         Create New Project
       </h1>
       <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
+        <p className="text-2xl font-bold mb-4">Project Information</p>
         <div className="mb-4 font-bold">
           <label className="block mb-1">
             Name:

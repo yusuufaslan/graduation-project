@@ -93,7 +93,7 @@ const EditProjectForm = () => {
 
   const handleAddDataset = () => {
     // Navigate to the new dataset creation page with project ID as a parameter
-    navigate(`/create-dataset/${project.id}`);
+    navigate(`/dataset/create/${project.id}`);
   };
 
   const handleRemoveDataset = (datasetId) => {
@@ -115,7 +115,8 @@ const EditProjectForm = () => {
         Edit Project {projectId}
       </h1>
       <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
-        <div className="mb-4">
+        <p className="text-2xl font-bold mb-4">Project Information</p>
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Name:
             <input
@@ -123,38 +124,38 @@ const EditProjectForm = () => {
               name="name"
               value={project.name}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project name"
             />
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Description:
             <textarea
               name="description"
               value={project.description}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project description"
               rows="4"
             ></textarea>
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">
             Abstract:
             <textarea
               name="abstract"
               value={project.abstract}
               onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full"
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               placeholder="Enter project abstract"
               rows="4"
             ></textarea>
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -167,14 +168,14 @@ const EditProjectForm = () => {
           </label>
         </div>
         {!project.isPublic && (
-          <div className="mb-4">
+          <div className="mb-4 font-bold">
             <label className="block mb-1">
               User Emails:
               <input
                 type="text"
                 name="emails"
                 onKeyDown={handleEmailsChange}
-                className="border border-gray-400 rounded-md p-2 w-full"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
                 placeholder="Provide user email and press enter"
               />
             </label>
@@ -182,7 +183,7 @@ const EditProjectForm = () => {
               {project.emails.map((email, index) => (
                 <div
                   key={index}
-                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center"
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-semibold mt-1"
                 >
                   <span className="mr-1">{email}</span>
                   <button
@@ -199,13 +200,13 @@ const EditProjectForm = () => {
         )}
 
         {/* Display list of tags */}
-        <div className="mb-4">
+        <div className="mb-4 font-bold">
           <label className="block mb-1">Tags:</label>
           <div className="flex flex-wrap">
             {tagList.map((tag) => (
               <div
                 key={tag.id}
-                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 ${
+                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
                   project.selectedTags.includes(tag.id)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
@@ -234,7 +235,7 @@ const EditProjectForm = () => {
 
         {/* Display datasets */}
         <div className="max-w-4xl mx-auto mt-8">
-          <h2 className="text-xl font-semibold mb-4">Datasets:</h2>
+          <h2 className="text-2xl font-bold mb-4">Datasets</h2>
           {project.datasets.map((dataset) => (
             <div
               key={dataset.id} // Assigning dataset id as key
