@@ -15,7 +15,7 @@ export default function Navbar() {
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
     { name: 'Home', href: '/welcome', current: true },
-    { name: 'Create Project', href: '/create-project', current: false },
+    { name: 'Create Project', href: '/project/create', current: false },
     // { name: 'Services', href: '/services', current: false },
     // { name: 'Contact', href: '/contact', current: false },
   ]);
