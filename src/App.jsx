@@ -6,6 +6,8 @@ import SignUp from './pages/SignUpPage/SignUp'
 import NewProjectForm from './pages/CreateProject/NewProjectForm'
 import NewDatasetForm from './pages/CreateDataset/NewDatasetForm'
 import EditProjectForm from './pages/EditProject/EditProjectForm'
+import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage'
+
 import Welcome from './pages/Welcome/Welcome'
 
 
@@ -18,6 +20,7 @@ function App() {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/project/create' element={<NewProjectForm />} />
           <Route path="/project/edit/:projectId" element={<EditProjectForm />} />
+          <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
           <Route path="/create-dataset/:projectId" element={<NewDatasetForm />} />
           <Route path='/welcome' element={<Welcome />} />
         </Routes>
