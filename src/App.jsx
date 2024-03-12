@@ -9,6 +9,7 @@ import EditProjectForm from './pages/EditProject/EditProjectForm'
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage'
 
 import Welcome from './pages/Welcome/Welcome'
+import ProposalsPage from './pages/ProposalsPage/ProposalsPage'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/project/edit/:projectId" element={<EditProjectForm />} />
           <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
           <Route path="/dataset/create/:projectId" element={<NewDatasetForm />} />
+          <Route path="/proposals/:type" element={<ProposalsPage />} />
           <Route path='/welcome' element={<Welcome />} />
         </Routes>
       </Router>
