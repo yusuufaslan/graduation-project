@@ -49,7 +49,7 @@ function FileUploadComponent() {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>
       <p>{uploadStatus}</p>

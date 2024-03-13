@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProposalDetails from "./ProposalDetails";
+import Navbar from "../../components/header/Navbar";
+import Footer from "../../components/footer/Footer";
 
 const ProposalsPage = () => {
   const { type } = useParams(); // type will be either "sent" or "received"
-  const [pageType, setPageType] = useState(type)
+  const [pageType, setPageType] = useState(type);
   const navigate = useNavigate();
   const [proposals, setProposals] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
@@ -150,8 +152,10 @@ const ProposalsPage = () => {
       },
     ];
 
-    setProposals(pageType === "sent" ? dummyProposalsSent : dummyProposalsReceived);
-}, [type]);
+    setProposals(
+      pageType === "sent" ? dummyProposalsSent : dummyProposalsReceived
+    );
+  }, [type]);
 
   const handleProposalClick = (proposal) => {
     setSelectedProposal(proposal);
@@ -159,112 +163,117 @@ const ProposalsPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      {/* Section for toggling between sent and received proposals */}
-      <div className="w-full flex justify-center items-center my-4">
-        <button
-          className={`mx-2 px-4 py-2 text-m rounded-md ${
-            type === "sent"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          }`}
-          onClick={() => {
-            navigate("/proposals/sent")
-            setSelectedProposal(null)
-            setPageType("sent")
-          }}
-        >
-          Proposals Sent
-        </button>
-        <button
-          className={`mx-2 px-4 py-2 text-m rounded-md ${
-            type === "received"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          }`}
-          onClick={() => {
-            navigate("/proposals/received")
-            setSelectedProposal(null)
-            setPageType("received")
-          }}
-        >
-          Proposals Received
-        </button>
-      </div>
+    <>
+      <Navbar />
+      <div className="w-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 mt-5 h-screen mb-20">
+        {/* Section for toggling between sent and received proposals */}
+        <div className="w-full flex justify-center items-center my-4">
+          <button
+            className={`mx-2 px-4 py-2 text-m rounded-md ${
+              type === "sent"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+            onClick={() => {
+              navigate("/proposals/sent");
+              setSelectedProposal(null);
+              setPageType("sent");
+            }}
+          >
+            Proposals Sent
+          </button>
+          <button
+            className={`mx-2 px-4 py-2 text-m rounded-md ${
+              type === "received"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+            onClick={() => {
+              navigate("/proposals/received");
+              setSelectedProposal(null);
+              setPageType("received");
+            }}
+          >
+            Proposals Received
+          </button>
+        </div>
 
-      {/* Main content */}
-      <div className="flex h-screen">
-        {/* Left section */}
-        <div className="w-1/3 border-r border-gray-200 overflow-y-auto">
-          <h2 className="text-lg font-bold py-4 px-6 bg-gray-100 border-b border-gray-200">
-            {type === "sent" ? "Proposals Sent" : "Proposals Received"}
-          </h2>
-          <div className="divide-y divide-gray-200">
-            {proposals.map((proposal) => (
-              <div
-                key={proposal.id}
-                onClick={() => handleProposalClick(proposal)}
-                className="p-4 hover:bg-gray-50 cursor-pointer"
-              >
-                <p className="text-lg font-bold text-gray-600">
-                  Applicant User: {proposal.applicantId}
-                </p>
-                <p className="text-m font-medium">{proposal.projectName}</p>
-                <p className="text-sm text-gray-600">
-                  {proposal.proposalText.substring(0, 40)}...
-                </p>
+        {/* Main content */}
+        <div className="flex h-screen">
+          {/* Left section */}
+          <div className="w-1/3 border-r border-gray-200 overflow-y-auto border-2 rounded-lg">
+            <h2 className="text-lg font-bold py-4 px-6 bg-gray-100 border-b border-gray-200">
+              {type === "sent" ? "Proposals Sent" : "Proposals Received"}
+            </h2>
+            <div className="divide-y divide-gray-200">
+              {proposals.map((proposal) => (
+                <div
+                  key={proposal.id}
+                  onClick={() => handleProposalClick(proposal)}
+                  className="p-4 hover:bg-gray-50 cursor-pointer"
+                >
+                  <p className="text-lg font-bold text-gray-600">
+                    Applicant User: {proposal.applicantId}
+                  </p>
+                  <p className="text-m font-medium">{proposal.projectName}</p>
+                  <p className="text-sm text-gray-600">
+                    {proposal.proposalText.substring(0, 40)}...
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right section */}
+          <div className="w-2/3 pl-5">
+            {selectedProposal ? (
+              <div>
+                <ProposalDetails proposal={selectedProposal} />
+                {type === "received" &&
+                  selectedProposal.status === "Waiting" && (
+                    <div className="mt-4">
+                      <textarea
+                        className="w-full h-40 p-2 mb-2 border rounded-lg"
+                        placeholder="Enter acceptance/rejection explanation..."
+                        onChange={(e) => {
+                          setResponseText(e.target.value);
+                        }}
+                      />
+                      <div className="space-x-5">
+                        <button
+                          className="bg-green-500 text-white px-4 py-2 rounded-md w-40"
+                          onClick={handleAccept}
+                          disabled={
+                            selectedProposal.status === "Rejected" ||
+                            selectedProposal.status === "Accepted"
+                          }
+                        >
+                          Accept
+                        </button>
+                        <button
+                          className="bg-red-500 text-white px-4 py-2 rounded-md w-40"
+                          onClick={handleReject}
+                          disabled={
+                            selectedProposal.status === "Rejected" ||
+                            selectedProposal.status === "Accepted"
+                          }
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    </div>
+                  )}
               </div>
-            ))}
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-600">
+                Select a proposal to view details
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Right section */}
-        <div className="w-2/3 px-5">
-          {selectedProposal ? (
-            <div>
-              <ProposalDetails proposal={selectedProposal} />
-              {type === "received" && selectedProposal.status === "Waiting" && (
-                <div className="mt-4">
-                  <textarea
-                    className="w-full h-40 p-2 mb-2 border rounded-lg"
-                    placeholder="Enter acceptance/rejection explanation..."
-                    onChange={(e) => {
-                      setResponseText(e.target.value);
-                    }}
-                  />
-                  <div className="space-x-5">
-                    <button
-                      className="bg-green-500 text-white px-4 py-2 rounded-md w-40"
-                      onClick={handleAccept}
-                      disabled={
-                        selectedProposal.status === "Rejected" ||
-                        selectedProposal.status === "Accepted"
-                      }
-                    >
-                      Accept
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-md w-40"
-                      onClick={handleReject}
-                      disabled={
-                        selectedProposal.status === "Rejected" ||
-                        selectedProposal.status === "Accepted"
-                      }
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full text-gray-600">
-              Select a proposal to view details
-            </div>
-          )}
-        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

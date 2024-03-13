@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { BsPersonCircle } from "react-icons/bs";
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link, useLocation } from 'react-router-dom'; // Import Link from react-router-dom
 
 import ViteLogo from "../../../public/vite.svg"
 
@@ -12,13 +12,28 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const location = useLocation() // to get pathname
+
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
-    { name: 'Home', href: '/welcome', current: true },
+    { name: 'Home', href: '/welcome', current: false},
     { name: 'Create Project', href: '/project/create', current: false },
+    { name: 'Proposals', href: '/proposals/sent', current: false },
     // { name: 'Services', href: '/services', current: false },
     // { name: 'Contact', href: '/contact', current: false },
   ]);
+
+  useEffect(() => {
+    const updatedNavigation = navigation.map(item => {
+      // Check if the href matches the current location's pathname
+      if (item.href === location.pathname) {
+        return { ...item, current: true };
+      } else {
+        return { ...item, current: false };
+      }
+    });
+    setNavigation(updatedNavigation);
+  }, [location.pathname]);
 
   // Function to handle click on a navigation item
   const handleNavItemClick = (clickedItem) => {
@@ -35,7 +50,7 @@ export default function Navbar() {
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -70,8 +85,8 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                         onClick={() => handleNavItemClick(item)}
                       >
-                        {/* {item.name + " " + item.current} */}
-                        {item.name}
+                        {item.name + " " + item.current}
+                        {/* {item.name} */}
 
                       </Link>
                     ))}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import Footer from "../../components/footer/Footer";
+import Navbar from "../../components/header/Navbar";
 
 const tagList = [
   { id: 1, name: "Tag 1" },
@@ -110,167 +112,171 @@ const EditProjectForm = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-semibold mb-6 text-center">
-        Edit Project {projectId}
-      </h1>
-      <form className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
-        <p className="text-2xl font-bold mb-4">Project Information</p>
-        <div className="mb-4 font-bold">
-          <label className="block mb-1">
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={project.name}
-              onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-              placeholder="Enter project name"
-            />
-          </label>
-        </div>
-        <div className="mb-4 font-bold">
-          <label className="block mb-1">
-            Description:
-            <textarea
-              name="description"
-              value={project.description}
-              onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-              placeholder="Enter project description"
-              rows="4"
-            ></textarea>
-          </label>
-        </div>
-        <div className="mb-4 font-bold">
-          <label className="block mb-1">
-            Abstract:
-            <textarea
-              name="abstract"
-              value={project.abstract}
-              onChange={handleChange}
-              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-              placeholder="Enter project abstract"
-              rows="4"
-            ></textarea>
-          </label>
-        </div>
-        <div className="mb-4 font-bold">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              name="isPublic"
-              checked={project.isPublic}
-              onChange={handleCheckboxChange}
-              className="mr-2"
-            />
-            <span>Is Public</span>
-          </label>
-        </div>
-        {!project.isPublic && (
+    <>
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 h-screen mb-40">
+        <h1 className="text-3xl font-semibold mb-6 text-center">
+          Edit Project {projectId}
+        </h1>
+        <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
+          <p className="text-2xl font-bold mb-4">Project Information</p>
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              User Emails:
+              Name:
               <input
                 type="text"
-                name="emails"
-                onKeyDown={handleEmailsChange}
+                name="name"
+                value={project.name}
+                onChange={handleChange}
                 className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Provide user email and press enter"
+                placeholder="Enter project name"
               />
             </label>
-            <div className="flex flex-wrap mt-2">
-              {project.emails.map((email, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-semibold mt-1"
-                >
-                  <span className="mr-1">{email}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveEmail(email)}
-                    className="text-red-600 font-bold focus:outline-none"
+          </div>
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">
+              Description:
+              <textarea
+                name="description"
+                value={project.description}
+                onChange={handleChange}
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                placeholder="Enter project description"
+                rows="4"
+              ></textarea>
+            </label>
+          </div>
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">
+              Abstract:
+              <textarea
+                name="abstract"
+                value={project.abstract}
+                onChange={handleChange}
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                placeholder="Enter project abstract"
+                rows="4"
+              ></textarea>
+            </label>
+          </div>
+          <div className="mb-4 font-bold">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="isPublic"
+                checked={project.isPublic}
+                onChange={handleCheckboxChange}
+                className="mr-2"
+              />
+              <span>Is Public</span>
+            </label>
+          </div>
+          {!project.isPublic && (
+            <div className="mb-4 font-bold">
+              <label className="block mb-1">
+                User Emails:
+                <input
+                  type="text"
+                  name="emails"
+                  onKeyDown={handleEmailsChange}
+                  className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                  placeholder="Provide user email and press enter"
+                />
+              </label>
+              <div className="flex flex-wrap mt-2">
+                {project.emails.map((email, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-semibold mt-1"
                   >
-                    <AiOutlineCloseCircle className="ml-1" />
-                  </button>
+                    <span className="mr-1">{email}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveEmail(email)}
+                      className="text-red-600 font-bold focus:outline-none"
+                    >
+                      <AiOutlineCloseCircle className="ml-1" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Display list of tags */}
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">Tags:</label>
+            <div className="flex flex-wrap">
+              {tagList.map((tag) => (
+                <div
+                  key={tag.id}
+                  className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
+                    project.selectedTags.includes(tag.id)
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => handleTagSelection(tag.id)}
+                >
+                  <span className="mr-1">{tag.name}</span>
+                  {project.selectedTags.includes(tag.id) && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 4.293a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-7-7a1 1 0 1 1 1.414-1.414L6 13.586l10.293-10.293a1 1 0 0 1 1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-        )}
 
-        {/* Display list of tags */}
-        <div className="mb-4 font-bold">
-          <label className="block mb-1">Tags:</label>
-          <div className="flex flex-wrap">
-            {tagList.map((tag) => (
+          {/* Display datasets */}
+          <div className="max-w-7xl mx-auto mt-8">
+            <h2 className="text-2xl font-bold mb-4">Datasets</h2>
+            {project.datasets.map((dataset) => (
               <div
-                key={tag.id}
-                className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
-                  project.selectedTags.includes(tag.id)
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
-                }`}
-                onClick={() => handleTagSelection(tag.id)}
+                key={dataset.id} // Assigning dataset id as key
+                className="border border-gray-300 p-4 mb-4 rounded-md"
               >
-                <span className="mr-1">{tag.name}</span>
-                {project.selectedTags.includes(tag.id) && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 4.293a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-7-7a1 1 0 1 1 1.414-1.414L6 13.586l10.293-10.293a1 1 0 0 1 1.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
+                <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
+                <p className="text-gray-600 mb-2">{dataset.description}</p>
+                {/* Add more dataset information as needed */}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveDataset(dataset.id)}
+                  className="text-red-600 font-bold focus:outline-none"
+                >
+                  Remove Dataset
+                </button>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Display datasets */}
-        <div className="max-w-4xl mx-auto mt-8">
-          <h2 className="text-2xl font-bold mb-4">Datasets</h2>
-          {project.datasets.map((dataset) => (
-            <div
-              key={dataset.id} // Assigning dataset id as key
-              className="border border-gray-300 p-4 mb-4 rounded-md"
+            <button
+              type="button"
+              onClick={handleAddDataset}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md my-4"
             >
-              <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
-              <p className="text-gray-600 mb-2">{dataset.description}</p>
-              {/* Add more dataset information as needed */}
-              <button
-                type="button"
-                onClick={() => handleRemoveDataset(dataset.id)}
-                className="text-red-600 font-bold focus:outline-none"
-              >
-                Remove Dataset
-              </button>
-            </div>
-          ))}
+              Add Dataset
+            </button>
+          </div>
+
           <button
             type="button"
-            onClick={handleAddDataset}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md my-4"
+            onClick={handleSubmit}
+            className="bg-green-500 text-white px-4 py-2 rounded-md my-4"
           >
-            Add Dataset
+            Update Project
           </button>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 rounded-md my-4"
-        >
-          Update Project
-        </button>
-      </form>
-    </div>
+        </form>
+      </div>
+      <Footer />
+    </>
   );
 };
 
