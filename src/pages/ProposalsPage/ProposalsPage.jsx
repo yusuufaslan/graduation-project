@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import ProposalDetails from "./ProposalDetails";
 
 const ProposalsPage = () => {
-  const { pagetype } = useParams(); // type will be either "sent" or "received"
-  const [type, setType] = useState(pagetype)
+  const { type } = useParams(); // type will be either "sent" or "received"
+  const [pageType, setPageType] = useState(type)
   const navigate = useNavigate();
   const [proposals, setProposals] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
@@ -150,8 +150,8 @@ const ProposalsPage = () => {
       },
     ];
 
-    setProposals(type === "sent" ? dummyProposalsSent : dummyProposalsReceived);
-  }, [type]);
+    setProposals(pageType === "sent" ? dummyProposalsSent : dummyProposalsReceived);
+}, [type]);
 
   const handleProposalClick = (proposal) => {
     setSelectedProposal(proposal);
@@ -159,7 +159,7 @@ const ProposalsPage = () => {
   };
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       {/* Section for toggling between sent and received proposals */}
       <div className="w-full flex justify-center items-center my-4">
         <button
@@ -171,7 +171,7 @@ const ProposalsPage = () => {
           onClick={() => {
             navigate("/proposals/sent")
             setSelectedProposal(null)
-            setType("sent")
+            setPageType("sent")
           }}
         >
           Proposals Sent
@@ -185,7 +185,7 @@ const ProposalsPage = () => {
           onClick={() => {
             navigate("/proposals/received")
             setSelectedProposal(null)
-            setType("received")
+            setPageType("received")
           }}
         >
           Proposals Received
