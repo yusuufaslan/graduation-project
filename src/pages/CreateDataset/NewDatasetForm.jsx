@@ -179,7 +179,7 @@ const NewDatasetForm = () => {
           </button>
         </form>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

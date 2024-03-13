@@ -275,7 +275,7 @@ const EditProjectForm = () => {
           </button>
         </form>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

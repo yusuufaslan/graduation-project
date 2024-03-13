@@ -9,7 +9,7 @@ function Welcome() {
     <div>
         <Navbar />
         <FileUploadComponent />
-        <Footer />
+        {/* <Footer /> */}
     </div>
   )
 }
