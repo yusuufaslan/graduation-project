@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Navbar from "../../components/header/Navbar";
+import Footer from "../../components/footer/Footer";
 
 const ProjectDetailPage = () => {
   const { projectId } = useParams();
@@ -45,11 +47,13 @@ const ProjectDetailPage = () => {
   }
 
   return (
+    <>
+    <Navbar />
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-semibold mb-6 text-center">
         Project Detail - {project.id}
       </h1>
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2">
+      <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 mb-44">
         <div className="px-6 py-4">
           <p className="text-2xl font-bold mb-4">Project Information</p>
           <div className="mb-4">
@@ -115,6 +119,8 @@ const ProjectDetailPage = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
