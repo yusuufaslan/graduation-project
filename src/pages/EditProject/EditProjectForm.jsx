@@ -114,7 +114,7 @@ const EditProjectForm = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-8 h-screen mb-40">
+      <div className="container mx-auto px-4 py-8 h-screen mb-96">
         <h1 className="text-3xl font-semibold mb-6 text-center">
           Edit Project {projectId}
         </h1>
