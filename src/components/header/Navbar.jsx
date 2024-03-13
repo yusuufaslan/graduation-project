@@ -26,7 +26,7 @@ export default function Navbar() {
   useEffect(() => {
     const updatedNavigation = navigation.map(item => {
       // Check if the href matches the current location's pathname
-      if (item.href === location.pathname) {
+      if (item.href === location.pathname || (item.name === "Proposals" && location.pathname === '/proposals/received')) {
         return { ...item, current: true };
       } else {
         return { ...item, current: false };
