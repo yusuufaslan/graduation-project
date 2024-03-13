@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import ProposalDetails from "./ProposalDetails";
 
 const ProposalsPage = () => {
-  const { type } = useParams(); // type will be either "sent" or "received"
+  const { pagetype } = useParams(); // type will be either "sent" or "received"
+  const [type, setType] = useState(pagetype)
   const navigate = useNavigate();
   const [proposals, setProposals] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
@@ -45,17 +46,7 @@ const ProposalsPage = () => {
         sent: true,
       },
       {
-        id: 1,
-        projectName: "Health Research Project A",
-        proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
-        proposalResponseText: "",
-        applicantId: 123,
-        sent: true,
-      },
-      {
-        id: 2,
+        id: 5,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
@@ -65,17 +56,7 @@ const ProposalsPage = () => {
         sent: true,
       },
       {
-        id: 1,
-        projectName: "Health Research Project A",
-        proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
-        proposalResponseText: "",
-        applicantId: 123,
-        sent: true,
-      },
-      {
-        id: 2,
+        id: 6,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
@@ -85,17 +66,7 @@ const ProposalsPage = () => {
         sent: true,
       },
       {
-        id: 1,
-        projectName: "Health Research Project A",
-        proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
-        proposalResponseText: "",
-        applicantId: 123,
-        sent: true,
-      },
-      {
-        id: 2,
+        id: 7,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
@@ -105,17 +76,7 @@ const ProposalsPage = () => {
         sent: true,
       },
       {
-        id: 1,
-        projectName: "Health Research Project A",
-        proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
-        proposalResponseText: "",
-        applicantId: 123,
-        sent: true,
-      },
-      {
-        id: 2,
+        id: 8,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
@@ -125,17 +86,37 @@ const ProposalsPage = () => {
         sent: true,
       },
       {
-        id: 1,
-        projectName: "Health Research Project A",
+        id: 9,
+        projectName: "Health Research Project C",
         proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
-        proposalResponseText: "",
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
         sent: true,
       },
       {
-        id: 2,
+        id: 10,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 11,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 12,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
@@ -178,7 +159,7 @@ const ProposalsPage = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {/* Section for toggling between sent and received proposals */}
       <div className="w-full flex justify-center items-center my-4">
         <button
@@ -190,6 +171,7 @@ const ProposalsPage = () => {
           onClick={() => {
             navigate("/proposals/sent")
             setSelectedProposal(null)
+            setType("sent")
           }}
         >
           Proposals Sent
@@ -203,6 +185,7 @@ const ProposalsPage = () => {
           onClick={() => {
             navigate("/proposals/received")
             setSelectedProposal(null)
+            setType("received")
           }}
         >
           Proposals Received
@@ -236,7 +219,7 @@ const ProposalsPage = () => {
         </div>
 
         {/* Right section */}
-        <div className="w-2/3 px-5 mr-2">
+        <div className="w-2/3 px-5">
           {selectedProposal ? (
             <div>
               <ProposalDetails proposal={selectedProposal} />
