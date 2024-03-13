@@ -200,7 +200,7 @@ const NewProjectForm = () => {
           </button>
         </form>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
