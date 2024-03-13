@@ -39,20 +39,20 @@ const ProposalDetails = ({ proposal }) => {
           <div className="flex justify-between">
             <button
               className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-              onClick={handleAccept}
+              onClick={() => true}
               disabled={
-                selectedProposal.status === "rejected" ||
-                selectedProposal.status === "Accepted"
+                proposal.status === "rejected" ||
+                proposal.status === "Accepted"
               }
             >
               Accept
             </button>
             <button
               className="px-4 py-2 bg-red-500 text-white rounded"
-              onClick={handleReject}
+              onClick={() => true}
               disabled={
-                selectedProposal.status === "rejected" ||
-                selectedProposal.status === "Accepted"
+                proposal.status === "rejected" ||
+                proposal.status === "Accepted"
               }
             >
               Reject

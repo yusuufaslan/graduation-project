@@ -40,8 +40,7 @@ const ProposalsPage = () => {
       {
         id: 2,
         projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        proposalText: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
@@ -158,6 +157,7 @@ const ProposalsPage = () => {
   }, [type]);
 
   const handleProposalClick = (proposal) => {
+    console.log(proposal);
     setSelectedProposal(proposal);
     setResponseText("");
   };
@@ -224,7 +224,6 @@ const ProposalsPage = () => {
             </div>
           </div>
 
-          {/* Right section */}
           <div className="w-2/3 pl-5">
             {selectedProposal ? (
               <div>
