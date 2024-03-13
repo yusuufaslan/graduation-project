@@ -44,6 +44,106 @@ const ProposalsPage = () => {
         applicantId: 123,
         sent: true,
       },
+      {
+        id: 1,
+        projectName: "Health Research Project A",
+        proposalText:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        status: "Waiting",
+        proposalResponseText: "",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 2,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 1,
+        projectName: "Health Research Project A",
+        proposalText:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        status: "Waiting",
+        proposalResponseText: "",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 2,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 1,
+        projectName: "Health Research Project A",
+        proposalText:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        status: "Waiting",
+        proposalResponseText: "",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 2,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 1,
+        projectName: "Health Research Project A",
+        proposalText:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        status: "Waiting",
+        proposalResponseText: "",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 2,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 1,
+        projectName: "Health Research Project A",
+        proposalText:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        status: "Waiting",
+        proposalResponseText: "",
+        applicantId: 123,
+        sent: true,
+      },
+      {
+        id: 2,
+        projectName: "Health Research Project C",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        status: "Accepted",
+        proposalResponseText: "Accepted arbitrarily",
+        applicantId: 123,
+        sent: true,
+      },
     ];
 
     const dummyProposalsReceived = [
@@ -136,7 +236,7 @@ const ProposalsPage = () => {
         </div>
 
         {/* Right section */}
-        <div className="w-2/3 px-5">
+        <div className="w-2/3 px-5 mr-2">
           {selectedProposal ? (
             <div>
               <ProposalDetails proposal={selectedProposal} />
