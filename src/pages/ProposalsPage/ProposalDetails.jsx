@@ -3,6 +3,7 @@ import React from "react";
 const ProposalDetails = ({ proposal }) => {
   return (
     <div className="bg-gray-100 p-4 rounded">
+      <h2 className="text-4xl font-semibold mb-6">Proposal Details</h2>
       <h2 className="text-lg font-semibold mb-2">{proposal.projectName}</h2>
       <p>
         <strong>Applicant User Id:</strong> {proposal.applicantId}
