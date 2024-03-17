@@ -85,8 +85,8 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                         onClick={() => handleNavItemClick(item)}
                       >
-                        {item.name + " " + item.current}
-                        {/* {item.name} */}
+                        {/* {item.name + " " + item.current} */}
+                        {item.name}
 
                       </Link>
                     ))}
