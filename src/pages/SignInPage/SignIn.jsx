@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ViteLogo from "../../../public/vite.svg";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -12,8 +13,8 @@ function SignIn() {
   const [emailError, setEmailError] = useState("");
   const [isEmailTouched, setIsEmailTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLogged, setIsLogged] = useState(false)
 
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
   const navigate = useNavigate(); // useNavigate hook for redirection
 
   const handleEmailChange = (e) => {
@@ -57,16 +58,26 @@ function SignIn() {
         );
         // Login successful
         localStorage.setItem("token", response.data.token); // Store token in local storage
-        navigate("/welcome"); // Redirect to welcome page
-
-        // Trigger a re-render of App component
-        window.location.reload();
+        toast.success("Login successful!"); // Display success toast
+        setIsLogged(true);
       } catch (error) {
         // Login failed
-        setErrorMessage("Invalid email or password"); // Set error message
+        toast.error("Login failed. Please check your credentials."); // Display error toast
       }
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        navigate("/welcome"); // Redirect to welcome page
+        window.location.reload(); // Reload the page
+      }
+    }, 3000); // Adjust the duration as needed
+
+    return () => clearTimeout(timer); // Clear the timer on component unmount
+  }, [isLogged]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

@@ -11,6 +11,9 @@ import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
 import Welcome from './pages/Welcome/Welcome';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -22,6 +25,7 @@ function App() {
   return (
     <div className='w-screen h-screen'>
       <Router>
+        <ToastContainer position="bottom-left"/>
         <Routes>
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
