@@ -1,32 +1,37 @@
-import React, { useEffect } from 'react'
-import { Fragment, useState } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import React, { useEffect } from "react";
+import { Fragment, useState } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { BsPersonCircle } from "react-icons/bs";
-import { Link, useLocation } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 
-import ViteLogo from "../../../public/vite.svg"
+import ViteLogo from "../../../public/vite.svg";
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
-  const location = useLocation() // to get pathname
+  const location = useLocation(); // to get pathname
+  const navigate = useNavigate();
 
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
-    { name: 'Home', href: '/welcome', current: false},
-    { name: 'Create Project', href: '/project/create', current: false },
-    { name: 'Proposals', href: '/proposals/sent', current: false },
+    { name: "Home", href: "/welcome", current: false },
+    { name: "Create Project", href: "/project/create", current: false },
+    { name: "Proposals", href: "/proposals/sent", current: false },
     // { name: 'Services', href: '/services', current: false },
     // { name: 'Contact', href: '/contact', current: false },
   ]);
 
   useEffect(() => {
-    const updatedNavigation = navigation.map(item => {
+    const updatedNavigation = navigation.map((item) => {
       // Check if the href matches the current location's pathname
-      if (item.href === location.pathname || (item.name === "Proposals" && location.pathname === '/proposals/received')) {
+      if (
+        item.href === location.pathname ||
+        (item.name === "Proposals" &&
+          location.pathname === "/proposals/received")
+      ) {
         return { ...item, current: true };
       } else {
         return { ...item, current: false };
@@ -37,15 +42,23 @@ export default function Navbar() {
 
   // Function to handle click on a navigation item
   const handleNavItemClick = (clickedItem) => {
-    console.log(clickedItem)
+    // console.log(clickedItem);
     // Create a copy of the navigation array
-    const updatedNavigation = navigation.map(item => ({
+    const updatedNavigation = navigation.map((item) => ({
       ...item,
-      current: item === clickedItem
+      current: item === clickedItem,
     }));
     // Update the state with the modified navigation array
     setNavigation(updatedNavigation);
   };
+
+  const handleSignOut = () => {
+    // Clear token from localStorage
+    localStorage.removeItem("token");
+    // Redirect to sign-in page
+    navigate("/sign-in");
+  };
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -79,15 +92,16 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href} // Use "to" prop instead of "href"
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                         onClick={() => handleNavItemClick(item)}
                       >
                         {/* {item.name + " " + item.current} */}
                         {item.name}
-
                       </Link>
                     ))}
                   </div>
@@ -114,7 +128,7 @@ export default function Navbar() {
                         src={ViteLogo}
                         alt=""
                       /> */}
-                      <BsPersonCircle className='text-3xl text-white'/>
+                      <BsPersonCircle className="text-3xl text-white" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -131,7 +145,10 @@ export default function Navbar() {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Your Profile
                           </a>
@@ -141,7 +158,10 @@ export default function Navbar() {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Settings
                           </a>
@@ -149,12 +169,15 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                          <button
+                            onClick={handleSignOut} // Call handleSignOut function when clicked
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Sign out
-                          </a>
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>
@@ -171,10 +194,12 @@ export default function Navbar() {
                   key={item.name}
                   to={item.href} // Use "to" prop instead of "href"
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                   onClick={() => handleNavItemClick(item)}
                 >
                   {item.name}
@@ -185,5 +210,5 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

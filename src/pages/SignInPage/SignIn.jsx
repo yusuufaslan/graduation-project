@@ -3,12 +3,18 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ViteLogo from "../../../public/vite.svg";
 
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [isEmailTouched, setIsEmailTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const navigate = useNavigate(); // useNavigate hook for redirection
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
@@ -38,15 +44,27 @@ function SignIn() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!emailError) {
-      // Proceed with authentication if email is valid
-      console.log("Email:", email);
-      console.log("Password:", password);
-    } else {
-      // Handle invalid email scenario
-      console.log("Invalid email:", emailError);
+      try {
+        const response = await axios.post(
+          "http://localhost:3838/api/user/login",
+          {
+            email,
+            password,
+          }
+        );
+        // Login successful
+        localStorage.setItem("token", response.data.token); // Store token in local storage
+        navigate("/welcome"); // Redirect to welcome page
+
+        // Trigger a re-render of App component
+        window.location.reload();
+      } catch (error) {
+        // Login failed
+        setErrorMessage("Invalid email or password"); // Set error message
+      }
     }
   };
 
