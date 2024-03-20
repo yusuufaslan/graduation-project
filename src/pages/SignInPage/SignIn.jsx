@@ -56,16 +56,23 @@ function SignIn() {
             password,
           }
         );
-        // Login successful
-        localStorage.setItem("token", response.data.token); // Store token in local storage
-        toast.success("Login successful!"); // Display success toast
-        setIsLogged(true);
+        // Check if response contains token
+        if (response.data.token) {
+          // Login successful
+          localStorage.setItem("token", response.data.token); // Store token in local storage
+          setIsLogged(true);
+          toast.success("Login successful!"); // Display success toast
+        } else {
+          // Login failed due to invalid credentials
+          toast.error("Invalid credentials. Please try again."); // Display error toast
+        }
       } catch (error) {
-        // Login failed
-        toast.error("Login failed. Please check your credentials."); // Display error toast
+        // Login failed due to network error or server issue
+        toast.error("Invalid credentials. Please try again."); // Display error toast
       }
     }
   };
+  
 
   useEffect(() => {
     const timer = setTimeout(() => {

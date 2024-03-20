@@ -5,6 +5,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { BsPersonCircle } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 
+import { toast } from "react-toastify";
+
 import ViteLogo from "../../../public/vite.svg";
 
 function classNames(...classes) {
@@ -57,6 +59,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     // Redirect to sign-in page
     navigate("/sign-in");
+    toast.success("Logout successful!");
   };
 
   return (
@@ -170,10 +173,10 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={handleSignOut} // Call handleSignOut function when clicked
+                            onClick={handleSignOut}
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             )}
                           >
                             Sign out
