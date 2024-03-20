@@ -78,7 +78,7 @@ function SignIn() {
     const timer = setTimeout(() => {
       const token = localStorage.getItem("token");
       if (token) {
-        navigate("/welcome"); // Redirect to welcome page
+        navigate("/home"); // Redirect to welcome page
         window.location.reload(); // Reload the page
       }
     }, 3000); // Adjust the duration as needed

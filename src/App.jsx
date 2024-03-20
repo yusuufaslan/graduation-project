@@ -8,7 +8,7 @@ import NewProjectForm from './pages/CreateProject/NewProjectForm';
 import NewDatasetForm from './pages/CreateDataset/NewDatasetForm';
 import EditProjectForm from './pages/EditProject/EditProjectForm';
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
-import Welcome from './pages/Welcome/Welcome';
+import Home from './pages/Welcome/Home';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -37,7 +37,7 @@ function App() {
               <Route path="/dataset/create/:projectId" element={<NewDatasetForm />} />
               <Route path="/proposals/:type" element={<ProposalsPage />} />
 
-              <Route path='/welcome' element={<Welcome />} />
+              <Route path='/home' element={<Home />} />
 
             </>
           ) : (

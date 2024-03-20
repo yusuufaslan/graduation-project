@@ -4,14 +4,14 @@ import Footer from '../../components/footer/Footer'
 import Navbar from '../../components/header/Navbar'
 import FileUploadComponent from './FileUploadComponent'
 
-function Welcome() {
+function Home() {
   return (
     <div>
         <Navbar />
-        <FileUploadComponent />
+        {/* <FileUploadComponent /> */}
         {/* <Footer /> */}
     </div>
   )
 }
 
-export default Welcome
+export default Home
