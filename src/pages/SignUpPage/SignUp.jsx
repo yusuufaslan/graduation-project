@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ViteLogo from "../../../public/vite.svg";
+
+import { toast } from "react-toastify";
 
 function SignUp() {
   const roleOptions = [
@@ -34,9 +35,15 @@ function SignUp() {
     institution: "",
     address: "",
   });
+
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordsMatchMessage, setPasswordsMatchMessage] = useState("");
+
+  const roleSelectRef = useRef(null);
+  const institutionSelectRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +73,19 @@ function SignUp() {
     }
   };
 
+  const handleKeyDown = (e, selectRef) => {
+    const key = e.key.toLowerCase();
+    const options = selectRef.current.options;
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
+      if (option.text.toLowerCase().startsWith(key)) {
+        option.selected = true;
+        selectRef.current.scrollTop = option.offsetTop;
+        break;
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -81,6 +101,8 @@ function SignUp() {
     }
 
     console.log("Form Data:", formData);
+    toast.success("Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process.");
+    navigate("/sign-in")
   };
 
   return (
@@ -95,41 +117,31 @@ function SignUp() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="flex gap-x-5">
-              <div className="flex-grow">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Name
                 </label>
                 <input
-                  id="name"
-                  name="name"
                   type="text"
+                  name="name"
                   autoComplete="name"
                   required
-                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  style={{ height: "2rem" }}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.name}
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex-grow">
-                <label
-                  htmlFor="surname"
-                  className="block text-sm font-medium text-gray-700"
-                >
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Surname
                 </label>
                 <input
-                  id="surname"
-                  name="surname"
                   type="text"
+                  name="surname"
                   autoComplete="surname"
                   required
-                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  style={{ height: "2rem" }}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.surname}
                   onChange={handleChange}
                 />
@@ -137,22 +149,17 @@ function SignUp() {
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
-                id="email"
-                name="email"
                 type="email"
+                name="email"
                 autoComplete="email"
                 required
-                className={`mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
+                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
                   invalidEmail ? "border-red-500" : ""
                 }`}
-                style={{ height: "2rem" }}
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -162,43 +169,34 @@ function SignUp() {
                 </p>
               )}
             </div>
+
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <input
-                id="password"
-                name="password"
                 type="password"
+                name="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ height: "2rem" }}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                 value={formData.password}
                 onChange={handleChange}
               />
             </div>
-            {/* Confirm Password */}
+
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
               <input
-                id="confirmPassword"
-                name="confirmPassword"
                 type="password"
+                name="confirmPassword"
                 autoComplete="new-password"
                 required
-                className={`mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
+                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
                   !passwordsMatch ? "border-red-500" : ""
                 }`}
-                style={{ height: "2rem" }}
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
@@ -215,23 +213,20 @@ function SignUp() {
               )}
             </div>
 
-            <div className="flex gap-x-5">
-              <div className="flex-grow">
-                <label
-                  htmlFor="role"
-                  className="block text-sm font-medium text-gray-700"
-                >
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Role
                 </label>
                 <select
-                  id="role"
+                  ref={roleSelectRef}
                   name="role"
                   autoComplete="role"
                   required
-                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  style={{ height: "2rem" }}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.role}
                   onChange={handleChange}
+                  onKeyDown={(e) => handleKeyDown(e, roleSelectRef)}
                 >
                   {roleOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -240,22 +235,20 @@ function SignUp() {
                   ))}
                 </select>
               </div>
-              <div className="flex-grow">
-                <label
-                  htmlFor="institution"
-                  className="block text-sm font-medium text-gray-700"
-                >
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Institution
                 </label>
                 <select
-                  id="institution"
+                  ref={institutionSelectRef}
                   name="institution"
                   autoComplete="institution"
                   required
-                  className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  style={{ height: "2rem" }}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.institution}
                   onChange={handleChange}
+                  onKeyDown={(e) => handleKeyDown(e, institutionSelectRef)}
                 >
                   {institutionOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -265,20 +258,17 @@ function SignUp() {
                 </select>
               </div>
             </div>
+
             <div>
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Address
               </label>
               <textarea
-                id="address"
                 name="address"
                 autoComplete="address"
                 required
-                className="mt-1 pl-3 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                style={{ minHeight: "6rem" }} // Set minHeight as needed
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                style={{ minHeight: "6rem" }}
                 value={formData.address}
                 onChange={handleChange}
               />
