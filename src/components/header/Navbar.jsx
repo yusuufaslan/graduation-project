@@ -58,7 +58,7 @@ export default function Navbar() {
     // Clear token from localStorage
     localStorage.removeItem("token");
     // Redirect to sign-in page
-    navigate("/sign-in");
+    navigate("/welcome");
     toast.success("Logout successful!");
   };
 
