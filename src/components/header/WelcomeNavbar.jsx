@@ -7,7 +7,7 @@ import ViteLogo from "../../../public/vite.svg";
 export default function WelcomeNavbar() {
   return (
     <div className="bg-gray-800 relative z-10"> {/* Add relative and z-10 classes */}
-      <div className="mx-auto max-w-7xl px-14">
+      <div className="mx-auto max-w-7xl">
         <div className="flex h-16 items-center justify-between">
           <div className="flex-shrink-0 items-center">
             <img className="h-8 w-auto" src={ViteLogo} alt="Your Company" />
