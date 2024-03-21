@@ -1,8 +1,7 @@
 import React from "react";
 import ContactForm from "../../components/ContactForm/ContactForm"; // Assuming you have a ContactForm component
 
-
-function HomeContent() {
+function HomeContent({ signedIn }) {
   return (
     <>
       {/* Hero Section */}
@@ -37,12 +36,14 @@ function HomeContent() {
             us and be part of the future of healthcare innovation!
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
-              href="/sign-in"
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Sign In
-            </a>
+            {!signedIn && (
+              <a
+                href="/sign-in"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Sign In
+              </a>
+            )}
             <a
               href="#about"
               className="text-sm font-semibold leading-6 text-gray-900"
@@ -54,7 +55,7 @@ function HomeContent() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="bg-blue-100">
+      <section id="about" className="bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-7xl py-12 sm:py-20 text-left">
             {" "}
@@ -101,7 +102,7 @@ function HomeContent() {
       </section>
 
       {/* Contact Us Section */}
-      <section className="bg-gray-100">
+      <section className="bg-gray-200">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl py-12 sm:py-20 text-left">
             {" "}

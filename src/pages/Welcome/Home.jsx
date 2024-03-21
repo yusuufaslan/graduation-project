@@ -7,7 +7,7 @@ function Home() {
   return (
     <div>
         <Navbar />
-        <HomeContent />
+        <HomeContent signedIn={true}/>
     </div>
   )
 }
