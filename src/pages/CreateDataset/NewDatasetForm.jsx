@@ -162,7 +162,7 @@ const NewDatasetForm = () => {
                   >
                     <option value="">No Action</option>
                     <option value="remove">Remove</option>
-                    <option value="encrypt">Encrypt</option>
+                    <option value="anonymize">Anonymize</option>
                     {/* Add more actions as needed */}
                   </select>
                 </div>
