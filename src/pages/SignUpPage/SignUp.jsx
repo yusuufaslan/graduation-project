@@ -127,7 +127,7 @@ function SignUp() {
                   name="name"
                   autoComplete="name"
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                  className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.name}
                   onChange={handleChange}
                 />
@@ -141,7 +141,7 @@ function SignUp() {
                   name="surname"
                   autoComplete="surname"
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                  className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.surname}
                   onChange={handleChange}
                 />
@@ -157,14 +157,14 @@ function SignUp() {
                 name="email"
                 autoComplete="email"
                 required
-                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
+                className={`mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
                   invalidEmail ? "border-red-500" : ""
                 }`}
                 value={formData.email}
                 onChange={handleChange}
               />
               {invalidEmail && (
-                <p className="mt-2 text-sm text-red-500">
+                <p className="mt-2 pl-3 text-sm text-red-500">
                   Invalid email format
                 </p>
               )}
@@ -179,7 +179,7 @@ function SignUp() {
                 name="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -194,7 +194,7 @@ function SignUp() {
                 name="confirmPassword"
                 autoComplete="new-password"
                 required
-                className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
+                className={`mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
                   !passwordsMatch ? "border-red-500" : ""
                 }`}
                 value={formData.confirmPassword}
@@ -202,7 +202,7 @@ function SignUp() {
               />
               {passwordsMatchMessage && (
                 <p
-                  className={`mt-2 text-sm ${
+                  className={`mt-2 pl-3 text-sm ${
                     passwordsMatch && formData.password
                       ? "text-green-500"
                       : "text-red-500"
@@ -223,7 +223,7 @@ function SignUp() {
                   name="role"
                   autoComplete="role"
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                  className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.role}
                   onChange={handleChange}
                   onKeyDown={(e) => handleKeyDown(e, roleSelectRef)}
@@ -245,7 +245,7 @@ function SignUp() {
                   name="institution"
                   autoComplete="institution"
                   required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                  className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                   value={formData.institution}
                   onChange={handleChange}
                   onKeyDown={(e) => handleKeyDown(e, institutionSelectRef)}
@@ -267,7 +267,7 @@ function SignUp() {
                 name="address"
                 autoComplete="address"
                 required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                className="mt-2 p-2 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                 style={{ minHeight: "6rem" }}
                 value={formData.address}
                 onChange={handleChange}
