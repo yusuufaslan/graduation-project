@@ -12,6 +12,7 @@ import Home from './pages/Welcome/Home';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
 import UserProfile from './pages/UserProfile/UserProfile';
 import EditProfile from './pages/EditProfile/EditProfile'; // Import EditProfile component
+import Welcome from './pages/Welcome/Welcome';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/welcome' element={<Welcome />} />
           {isAuthenticated ? (
             <>
               <Route path='/project/create' element={<NewProjectForm />} />
