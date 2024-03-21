@@ -81,7 +81,7 @@ function SignIn() {
         navigate("/home"); // Redirect to welcome page
         window.location.reload(); // Reload the page
       }
-    }, 3000); // Adjust the duration as needed
+    }, 1500); // Adjust the duration as needed
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
   }, [isLogged]);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Import your components
 import SignIn from './pages/SignInPage/SignIn';
@@ -10,6 +10,8 @@ import EditProjectForm from './pages/EditProject/EditProjectForm';
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
 import Home from './pages/Welcome/Home';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
+import UserProfile from './pages/UserProfile/UserProfile';
+import EditProfile from './pages/EditProfile/EditProfile'; // Import EditProfile component
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,13 +38,15 @@ function App() {
               <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
               <Route path="/dataset/create/:projectId" element={<NewDatasetForm />} />
               <Route path="/proposals/:type" element={<ProposalsPage />} />
-
+              <Route path='/user-profile' element={<UserProfile />} />
+              <Route path='/edit-profile' element={<EditProfile />} /> {/* Add route for EditProfile */}
               <Route path='/home' element={<Home />} />
-
             </>
           ) : (
             <Route path='*' element={<SignIn />} /> // Redirect to sign-in page if not authenticated
           )}
+          {/* Redirect to sign-in page if not authenticated */}
+          {!isAuthenticated && <Route path='*' element={<Navigate to="/sign-in" />} />}
         </Routes>
       </Router>
     </div>
