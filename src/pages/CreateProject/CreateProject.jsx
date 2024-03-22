@@ -4,13 +4,15 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
 import Footer from "../../components/footer/Footer";
 
+import axios from "axios";
+
 const tagList = [
   { id: 1, name: "Tag 1" },
   { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 3" },
+  { id: 3, name: "Sample Tag" },
 ];
 
-const NewProjectForm = () => {
+const CreateProject = () => {
   const navigate = useNavigate();
 
   const [project, setProject] = useState({
@@ -60,10 +62,51 @@ const NewProjectForm = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Creating project:", project);
-    const projectId = Math.floor(Math.random() * 1000);
-    navigate(`/project/edit/${projectId}`);
+  const handleSubmit = async () => {
+    // console.log(localStorage.getItem("token"));
+    // console.log(project.emails);
+    // console.log(["yurekli20@itu.edu.tr"]);
+
+    const selectedTagNames = project.selectedTags.map(tagId => {
+      const tag = tagList.find(tag => tag.id === tagId);
+      return tag ? tag.name : "";
+    });
+
+    try {
+      // Ensure project.emails and project.tags are arrays
+      let emails = Array.isArray(project.emails) ? project.emails : [];
+      let tagsList = Array.isArray(selectedTagNames) ? selectedTagNames : [];
+
+      // console.log("check")
+      // console.log(tagsList, emails);
+
+      let data = JSON.stringify({
+        name: project.name,
+        description: project.description,
+        abstract: project.abstract,
+        isPublic: project.isPublic,
+        userEmails: emails,
+        tags: tagsList,
+      });
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:3838/api/project/create",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+      navigate(`/project/edit/${response.data.projectId}`)
+      // console.log(JSON.stringify(response.data));
+      // console.log(JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -205,4 +248,4 @@ const NewProjectForm = () => {
   );
 };
 
-export default NewProjectForm;
+export default CreateProject;
