@@ -67,8 +67,8 @@ const CreateProject = () => {
     // console.log(project.emails);
     // console.log(["yurekli20@itu.edu.tr"]);
 
-    const selectedTagNames = project.selectedTags.map(tagId => {
-      const tag = tagList.find(tag => tag.id === tagId);
+    const selectedTagNames = project.selectedTags.map((tagId) => {
+      const tag = tagList.find((tag) => tag.id === tagId);
       return tag ? tag.name : "";
     });
 
@@ -101,11 +101,15 @@ const CreateProject = () => {
       };
 
       const response = await axios.request(config);
-      navigate(`/project/edit/${response.data.projectId}`)
+      navigate(`/project/edit/${response.data.projectId}`);
       // console.log(JSON.stringify(response.data));
       // console.log(JSON.stringify(data));
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 400) {
+        console.log(error.response.data.error); 
+      } else {
+        console.log(error); // Log other errors
+      }
     }
   };
 
