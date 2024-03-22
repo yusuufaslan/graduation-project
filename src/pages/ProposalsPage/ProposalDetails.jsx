@@ -34,46 +34,6 @@ const ProposalDetails = ({ proposal }) => {
           </p>
         )}
       </div>
-
-      {/* Render other details of the proposal */}
-      {/* {proposal.status != "waiting" && proposal.sent === false ? (
-        <>
-          <textarea
-            className="w-full h-24 p-2 mb-4 border rounded"
-            placeholder="Enter reason for acceptance/rejection"
-          ></textarea>
-          <div className="flex justify-between">
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-              onClick={() => true}
-              disabled={
-                proposal.status === "rejected" ||
-                proposal.status === "Accepted"
-              }
-            >
-              Accept
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded"
-              onClick={() => true}
-              disabled={
-                proposal.status === "rejected" ||
-                proposal.status === "Accepted"
-              }
-            >
-              Reject
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="mt-4">
-          {proposal.proposalResponseText && (
-            <p>
-              <strong>Response:</strong> {proposal.proposalResponseText}
-            </p>
-          )}
-        </div>
-      )} */}
     </div>
   );
 };

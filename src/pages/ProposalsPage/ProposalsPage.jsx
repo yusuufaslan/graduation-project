@@ -4,6 +4,8 @@ import ProposalDetails from "./ProposalDetails";
 import Navbar from "../../components/header/Navbar";
 import Footer from "../../components/footer/Footer";
 
+import axios from "axios";
+
 const ProposalsPage = () => {
   const { type } = useParams(); // type will be either "sent" or "received"
   const [pageType, setPageType] = useState(type);
@@ -12,16 +14,40 @@ const ProposalsPage = () => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [responseText, setResponseText] = useState("");
 
-  const handleAccept = () => {
-    // Handle accept action for received proposals
-    // Update backend with acceptanceText and set proposal status to Accepted
-    console.log("Accepted");
-  };
-
-  const handleReject = () => {
+  const handleAction = async (status) => {
     // Handle reject action for received proposals
     // Update backend with rejectionText and set proposal status to Rejected
-    console.log("Rejected");
+    try {
+      let data = JSON.stringify({
+        proposalId: selectedProposal.id,
+        verified: status,
+        proposalReviewText: responseText,
+      });
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:3838/api/proposal/evaluate",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+
+      console.log(response.data);
+
+      // Redirect to appropriate page after successful submission
+      navigate(`/proposals/received}`);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        console.log(error.response.data.error);
+      } else {
+        console.log(error); // Log other errors
+      }
+    }
   };
 
   useEffect(() => {
@@ -254,7 +280,7 @@ const ProposalsPage = () => {
                       <div className="space-x-5">
                         <button
                           className="bg-green-500 text-white px-4 py-2 rounded-md w-40"
-                          onClick={handleAccept}
+                          onClick={() => handleAction("accept")}
                           disabled={
                             selectedProposal.status === "Rejected" ||
                             selectedProposal.status === "Accepted"
@@ -264,7 +290,7 @@ const ProposalsPage = () => {
                         </button>
                         <button
                           className="bg-red-500 text-white px-4 py-2 rounded-md w-40"
-                          onClick={handleReject}
+                          onClick={() => handleAction("reject")}
                           disabled={
                             selectedProposal.status === "Rejected" ||
                             selectedProposal.status === "Accepted"
