@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
-import Footer from "../../components/footer/Footer";
 
 import axios from "axios";
 

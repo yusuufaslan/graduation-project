@@ -51,7 +51,7 @@ const ProjectDetailPage = () => {
 
   const handleCreateProposal = () => {
     // Navigate to the proposal page with the projectId
-    navigate(`/proposal/${projectId}`);
+    navigate(`/proposal/create/${projectId}`);
   };
 
   if (!project) {

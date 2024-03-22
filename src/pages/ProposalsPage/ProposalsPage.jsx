@@ -36,7 +36,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Waiting",
         proposalResponseText: "",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 2,
@@ -47,7 +47,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 5,
@@ -58,7 +58,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 6,
@@ -69,7 +69,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 7,
@@ -80,7 +80,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 8,
@@ -91,7 +91,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 9,
@@ -102,7 +102,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 10,
@@ -113,7 +113,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 11,
@@ -124,7 +124,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 12,
@@ -135,7 +135,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
-        applicantId: 123,
+        applicatorId: 123,
       },
     ];
 
@@ -149,7 +149,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Waiting",
         proposalResponseText: "",
-        applicantId: 123,
+        applicatorId: 123,
       },
       {
         id: 4,
@@ -160,7 +160,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Unfortunately, your proposal has been Rejected.",
-        applicantId: 123,
+        applicatorId: 123,
       },
     ];
 
@@ -226,7 +226,7 @@ const ProposalsPage = () => {
                   className="p-4 hover:bg-gray-50 cursor-pointer"
                 >
                   <p className="text-lg font-bold text-gray-600">
-                    Applicant User: {proposal.applicantId}
+                    Applicant User: {proposal.applicatorId}
                   </p>
                   <p className="text-m font-medium">{proposal.projectName}</p>
                   <p className="text-sm text-gray-600">

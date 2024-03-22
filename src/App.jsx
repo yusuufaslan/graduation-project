@@ -10,9 +10,11 @@ import EditProjectForm from './pages/EditProject/EditProjectForm';
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
 import Home from './pages/Welcome/Home';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
+import CreateProposal from './pages/CreateProposal/CreateProposal';
 import UserProfile from './pages/UserProfile/UserProfile';
 import EditProfile from './pages/EditProfile/EditProfile'; // Import EditProfile component
 import Welcome from './pages/Welcome/Welcome';
+
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,6 +42,7 @@ function App() {
               <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
               <Route path="/dataset/create/:projectId" element={<CreateDataset />} />
               <Route path="/proposals/:type" element={<ProposalsPage />} />
+              <Route path="/proposal/create/:projectId" element={<CreateProposal />} />
               <Route path='/user-profile' element={<UserProfile />} />
               <Route path='/edit-profile' element={<EditProfile />} /> {/* Add route for EditProfile */}
               <Route path='/home' element={<Home />} />
