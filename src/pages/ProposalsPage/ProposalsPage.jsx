@@ -32,99 +32,110 @@ const ProposalsPage = () => {
         projectName: "Health Research Project A",
         proposalText:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Waiting",
         proposalResponseText: "",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 2,
         projectName: "Health Research Project C",
-        proposalText: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        proposalText:
+          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 5,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 6,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 7,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 8,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 9,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 10,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 11,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
       {
         id: 12,
         projectName: "Health Research Project C",
         proposalText:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Accepted arbitrarily",
         applicantId: 123,
-        sent: true,
       },
     ];
 
@@ -134,27 +145,29 @@ const ProposalsPage = () => {
         projectName: "Health Research Project B",
         proposalText:
           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Waiting",
         proposalResponseText: "",
         applicantId: 123,
-        sent: false,
       },
       {
         id: 4,
         projectName: "Health Research Project D",
         proposalText:
           "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia...",
+        potentialResearchBenefits:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         status: "Accepted",
         proposalResponseText: "Unfortunately, your proposal has been Rejected.",
         applicantId: 123,
-        sent: false,
       },
     ];
 
     setProposals(
       pageType === "sent" ? dummyProposalsSent : dummyProposalsReceived
     );
-  }, [type]);
+  }, [pageType]);
 
   const handleProposalClick = (proposal) => {
     console.log(proposal);
@@ -170,7 +183,7 @@ const ProposalsPage = () => {
         <div className="w-full flex justify-center items-center my-4">
           <button
             className={`mx-2 px-4 py-2 text-m rounded-md ${
-              type === "sent"
+              pageType === "sent"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700"
             }`}
@@ -184,7 +197,7 @@ const ProposalsPage = () => {
           </button>
           <button
             className={`mx-2 px-4 py-2 text-m rounded-md ${
-              type === "received"
+              pageType === "received"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700"
             }`}
@@ -203,7 +216,7 @@ const ProposalsPage = () => {
           {/* Left section */}
           <div className="w-1/3 border-r border-gray-200 overflow-y-auto border-2 rounded-lg">
             <h2 className="text-lg font-bold py-4 px-6 bg-gray-100 border-b border-gray-200">
-              {type === "sent" ? "Proposals Sent" : "Proposals Received"}
+              {pageType === "sent" ? "Proposals Sent" : "Proposals Received"}
             </h2>
             <div className="divide-y divide-gray-200">
               {proposals.map((proposal) => (
@@ -228,7 +241,7 @@ const ProposalsPage = () => {
             {selectedProposal ? (
               <div>
                 <ProposalDetails proposal={selectedProposal} />
-                {type === "received" &&
+                {pageType === "received" &&
                   selectedProposal.status === "Waiting" && (
                     <div className="mt-4">
                       <textarea

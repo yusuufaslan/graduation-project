@@ -15,6 +15,12 @@ const ProposalDetails = ({ proposal }) => {
           {proposal.proposalText}
       </p>
       <p>
+        <strong>Potential Research Benefits:</strong>
+      </p>
+      <p className="mb-5">
+          {proposal.potentialResearchBenefits}
+      </p>
+      <p>
         <strong>Status:</strong> {proposal.status}
       </p>
       <div>
