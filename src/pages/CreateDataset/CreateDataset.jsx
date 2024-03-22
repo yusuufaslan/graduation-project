@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
 import Footer from "../../components/footer/Footer";
 
-const NewDatasetForm = () => {
+const CreateDataset = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
 
@@ -12,8 +12,9 @@ const NewDatasetForm = () => {
     name: "",
     description: "",
     file: null,
-    fileType: "", // Include fileType to store the file extension name
-    columns: [], // Adding columns array to store column information
+    extension: "", // Include extension to store the file extension name
+    columnNames: [],
+    columnActions: [], // Adding column actions array to store column actions
   });
 
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ const NewDatasetForm = () => {
       reader.onload = (event) => {
         const content = event.target.result;
         let columnNames = [];
+        let columnActions = [];
 
         if (fileExtension === "json") {
           // If JSON, assume array of objects and read keys of the first object
@@ -46,15 +48,16 @@ const NewDatasetForm = () => {
           }
         }
 
-        // Update dataset with column names and fileType
+        // Initialize column actions with empty strings
+        columnActions = new Array(columnNames.length).fill("");
+
+        // Update dataset with column names, actions, and extension
         setDataset({
           ...dataset,
           file,
-          fileType: fileExtension, // Store the file extension
-          columns: columnNames.map((columnName) => ({
-            name: columnName,
-            action: "", // Initialize action for each column
-          })),
+          extension: fileExtension, // Store the file extension
+          columnNames: columnNames,
+          columnActions: columnActions,
         });
       };
 
@@ -67,28 +70,14 @@ const NewDatasetForm = () => {
 
   const handleColumnActionChange = (e, columnIndex) => {
     const { value } = e.target;
-    const updatedColumns = [...dataset.columns];
-    updatedColumns[columnIndex].action = value;
-    setDataset({ ...dataset, columns: updatedColumns });
+    const updatedColumnActions = [...dataset.columnActions];
+    updatedColumnActions[columnIndex] = value;
+    setDataset({ ...dataset, columnActions: updatedColumnActions });
   };
 
   const handleSubmit = () => {
     // Handle dataset submission here
     console.log("Dataset submitted:", dataset);
-    // Make a request with dataset including fileType
-    // Example fetch request:
-    /*
-    fetch('/api/submitDataset', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataset),
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-    */
     navigate(`/project/edit/${dataset.projectId}`);
   };
 
@@ -140,23 +129,23 @@ const NewDatasetForm = () => {
             {dataset.file && (
               <p className="font-bold mt-3">
                 Uploaded File Type:{" "}
-                <span className="font-normal">{dataset.fileType}</span>
+                <span className="font-normal">{dataset.extension}</span>
               </p>
             )}
           </div>
-          {/* Display columns and select column actions */}
+          {/* Display columnNames and select column actions */}
           <div>
-            {dataset.columns.length > 0 && (
+            {dataset.columnNames.length > 0 && (
               <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
             )}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
-              {dataset.columns.map((column, columnIndex) => (
-                <div key={columnIndex} className="mb-4">
+              {dataset.columnNames.map((columnName, columnIndex) => (
+                <div key={columnName} className="mb-4">
                   <label className="block mb-1 ml-1 font-normal">
-                    {column.name}
+                    {columnName}
                   </label>
                   <select
-                    value={column.action || ""}
+                    value={dataset.columnActions[columnIndex] || ""}
                     onChange={(e) => handleColumnActionChange(e, columnIndex)}
                     className="border border-gray-400 rounded-md p-1 w-full font-normal"
                   >
@@ -184,4 +173,4 @@ const NewDatasetForm = () => {
   );
 };
 
-export default NewDatasetForm;
+export default CreateDataset;

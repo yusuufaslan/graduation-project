@@ -63,7 +63,7 @@ const CreateProject = () => {
   };
 
   const handleSubmit = async () => {
-    // console.log(localStorage.getItem("token"));
+    console.log(localStorage.getItem("token"));
     // console.log(project.emails);
     // console.log(["yurekli20@itu.edu.tr"]);
 

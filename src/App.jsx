@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import SignIn from './pages/SignInPage/SignIn';
 import SignUp from './pages/SignUpPage/SignUp';
 import CreateProject from './pages/CreateProject/CreateProject';
-import NewDatasetForm from './pages/CreateDataset/NewDatasetForm';
+import CreateDataset from './pages/CreateDataset/CreateDataset';
 import EditProjectForm from './pages/EditProject/EditProjectForm';
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
 import Home from './pages/Welcome/Home';
@@ -38,7 +38,7 @@ function App() {
               <Route path='/project/create' element={<CreateProject />} />
               <Route path="/project/edit/:projectId" element={<EditProjectForm />} />
               <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
-              <Route path="/dataset/create/:projectId" element={<NewDatasetForm />} />
+              <Route path="/dataset/create/:projectId" element={<CreateDataset />} />
               <Route path="/proposals/:type" element={<ProposalsPage />} />
               <Route path='/user-profile' element={<UserProfile />} />
               <Route path='/edit-profile' element={<EditProfile />} /> {/* Add route for EditProfile */}
