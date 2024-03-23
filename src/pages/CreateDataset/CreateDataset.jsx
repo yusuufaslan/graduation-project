@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
-import Footer from "../../components/footer/Footer";
+
+import axios from "axios";
 
 const CreateDataset = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
+
+  // console.log(localStorage.getItem("token"));
 
   const [dataset, setDataset] = useState({
     projectId: projectId,
@@ -49,7 +52,7 @@ const CreateDataset = () => {
         }
 
         // Initialize column actions with empty strings
-        columnActions = new Array(columnNames.length).fill("");
+        columnActions = new Array(columnNames.length).fill("none");
 
         // Update dataset with column names, actions, and extension
         setDataset({
@@ -76,9 +79,33 @@ const CreateDataset = () => {
   };
 
   const handleSubmit = () => {
-    // Handle dataset submission here
-    console.log("Dataset submitted:", dataset);
-    navigate(`/project/edit/${dataset.projectId}`);
+    const formData = new FormData();
+    formData.append('file', dataset.file);
+    formData.append('name', dataset.name);
+    formData.append('projectId', dataset.projectId);
+    formData.append('columnNames', dataset.columnNames.join(','));
+    formData.append('columnActions', dataset.columnActions.join(','));
+
+    // formData.forEach((value, key) => {
+    //   console.log(key, value);
+    // });
+
+    // console.log(dataset.file);
+
+    axios.post('http://localhost:3838/api/project/add-dataset', formData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then((response) => {
+      console.log("Dataset submitted:", response.data);
+      navigate(`/project/edit/${dataset.projectId}`);
+    })
+    .catch((error) => {
+      console.error("Error submitting dataset:", error);
+      // Handle error
+    });
   };
 
   return (
@@ -145,13 +172,13 @@ const CreateDataset = () => {
                     {columnName}
                   </label>
                   <select
-                    value={dataset.columnActions[columnIndex] || ""}
+                    value={dataset.columnActions[columnIndex] || "none"}
                     onChange={(e) => handleColumnActionChange(e, columnIndex)}
                     className="border border-gray-400 rounded-md p-1 w-full font-normal"
                   >
-                    <option value="">No Action</option>
+                    <option value="none">No Action</option>
                     <option value="remove">Remove</option>
-                    <option value="anonymize">Anonymize</option>
+                    <option value="hash">Anonymize</option>
                     {/* Add more actions as needed */}
                   </select>
                 </div>

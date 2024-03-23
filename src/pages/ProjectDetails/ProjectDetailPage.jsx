@@ -43,7 +43,7 @@ const ProjectDetailPage = () => {
     setProject(dummyProject);
 
     // Check if user's email is in the project's emails array
-    const userEmail = "user@example.com"; // Replace this with actual user email
+    const userEmail = "example@example.com"; // Replace this with actual user email
     if (dummyProject.emails.includes(userEmail)) {
       setHasAccess(true);
     }
