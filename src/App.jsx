@@ -14,6 +14,7 @@ import CreateProposal from './pages/CreateProposal/CreateProposal';
 import UserProfile from './pages/UserProfile/UserProfile';
 import EditProfile from './pages/EditProfile/EditProfile'; // Import EditProfile component
 import Welcome from './pages/Welcome/Welcome';
+import Verification from './pages/Verification/Verification';
 
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -34,6 +35,7 @@ function App() {
         <Routes>
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/verify' element={<Verification />} />
           <Route path='/welcome' element={<Welcome />} />
           {isAuthenticated ? (
             <>

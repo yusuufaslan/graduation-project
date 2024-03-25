@@ -108,13 +108,13 @@ function SignUp() {
       setInvalidEmail(true);
       return;
     }
-  
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordsMatch(false);
       setPasswordsMatchMessage("Passwords do not match");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:3838/api/user/signup", {
         method: "POST",
@@ -131,19 +131,25 @@ function SignUp() {
           address: formData.address,
         }),
       });
-      
+
       if (!response.ok) {
-        throw new Error("Failed to sign up");
+        throw new Error("User already exists. Please verify your account first.");
       }
-  
+
       toast.success(
         "Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process."
       );
-      navigate("/sign-in");
+
+      // Save email to local storage to use in verification
+      localStorage.setItem("verifiedEmail", formData.email);
+
+      // Navigate to verification page after successful signup
+      navigate("/verify");
+
     } catch (error) {
       console.error("Error signing up:", error);
       // Handle error or display a message to the user
-      toast.error("Failed to sign up. Please try again later.");
+      toast.error("User already exists. Please verify your account first.");
     }
   };
 

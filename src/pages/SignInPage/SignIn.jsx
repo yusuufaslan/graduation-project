@@ -64,11 +64,11 @@ function SignIn() {
           toast.success("Login successful!"); // Display success toast
         } else {
           // Login failed due to invalid credentials
-          toast.error("Invalid credentials. Please try again."); // Display error toast
+          toast.error("Invalid credentials or verification is not completed. Please try again."); // Display error toast
         }
       } catch (error) {
         // Login failed due to network error or server issue
-        toast.error("Invalid credentials. Please try again."); // Display error toast
+        toast.error("Invalid credentials or verification is not completed. Please try again."); // Display error toast
       }
     }
   };
