@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProposalDetails from "./ProposalDetails";
 import Navbar from "../../components/header/Navbar";
-import Footer from "../../components/footer/Footer";
 
 import axios from "axios";
 
@@ -14,14 +13,44 @@ const ProposalsPage = () => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [responseText, setResponseText] = useState("");
 
+  useEffect(() => {
+    fetchProposals();
+  }, [pageType]);
+
+  const fetchProposals = async () => {
+    try {
+      const response = await axios.get("http://localhost:3838/api/proposal/list", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const { sentProposals, receivedProposals } = response.data;
+
+      if (pageType === "sent") {
+        setProposals(sentProposals);
+      } else {
+        // Combine all received proposals into a single array
+        const received = receivedProposals.flatMap((project) => project.foundProposals);
+        setProposals(received);
+      }
+    } catch (error) {
+      console.error("Error fetching proposals:", error);
+    }
+  };
+
   const handleAction = async (verified) => {
     // Handle reject action for received proposals
     // Update backend with rejectionText and set proposal status to Rejected
+    console.log(selectedProposal);
+    console.log(selectedProposal.applicantUserIds);
+
     try {
       let data = JSON.stringify({
-        proposalId: selectedProposal.id,
+        proposalId: selectedProposal._id,
         verified: verified,
         proposalReviewText: responseText,
+        applicantUserIds: selectedProposal.applicantUserIds,
       });
 
       let config = {
@@ -37,10 +66,9 @@ const ProposalsPage = () => {
 
       const response = await axios.request(config);
 
-      console.log(response.data);
-
       // Redirect to appropriate page after successful submission
-      navigate(`/proposals/received}`);
+      navigate(`/proposals/received`);
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         console.log(error.response.data.error);
@@ -50,153 +78,8 @@ const ProposalsPage = () => {
     }
   };
 
-  useEffect(() => {
-    // Dummy data for demonstration
-    const dummyProposalsSent = [
-      {
-        id: 1,
-        projectName: "Health Research Project A",
-        proposalText:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "none",
-        proposalResponseText: "",
-        applicatorId: 123,
-      },
-      {
-        id: 2,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 5,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 6,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 7,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 8,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 9,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 10,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 11,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "reject",
-        proposalResponseText: "Rejected arbitrarily",
-        applicatorId: 123,
-      },
-      {
-        id: 12,
-        projectName: "Health Research Project C",
-        proposalText:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "accept",
-        proposalResponseText: "Accepted arbitrarily",
-        applicatorId: 123,
-      },
-    ];
-
-    const dummyProposalsReceived = [
-      {
-        id: 3,
-        projectName: "Health Research Project B",
-        proposalText:
-          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "none",
-        proposalResponseText: "",
-        applicatorId: 123,
-      },
-      {
-        id: 4,
-        projectName: "Health Research Project D",
-        proposalText:
-          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia...",
-        potentialResearchBenefits:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        verified: "reject",
-        proposalResponseText: "Unfortunately, your proposal has been Rejected.",
-        applicatorId: 123,
-      },
-    ];
-
-    setProposals(
-      pageType === "sent" ? dummyProposalsSent : dummyProposalsReceived
-    );
-  }, [pageType]);
-
   const handleProposalClick = (proposal) => {
-    console.log(proposal);
+    // console.log(proposal);
     setSelectedProposal(proposal);
     setResponseText("");
   };
@@ -247,16 +130,16 @@ const ProposalsPage = () => {
             <div className="divide-y divide-gray-200">
               {proposals.map((proposal) => (
                 <div
-                  key={proposal.id}
+                  key={proposal._id}
                   onClick={() => handleProposalClick(proposal)}
                   className="p-4 hover:bg-gray-50 cursor-pointer"
                 >
-                  <p className="text-lg font-bold text-gray-600">
+                  <p className="text-1xl font-bold text-gray-600">
                     Applicant User: {proposal.applicatorId}
                   </p>
-                  <p className="text-m font-medium">{proposal.projectName}</p>
+                  <p className="text-m font-medium">Project Id: {proposal.projectId}</p>
                   <p className="text-sm text-gray-600">
-                    {proposal.proposalText.substring(0, 40)}...
+                    {proposal.proposalText.substring(0, 50)}...
                   </p>
                 </div>
               ))}
@@ -310,7 +193,6 @@ const ProposalsPage = () => {
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };

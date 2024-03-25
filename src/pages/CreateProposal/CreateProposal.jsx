@@ -66,7 +66,7 @@ const CreateProposal = () => {
 
       const response = await axios.request(config);
 
-      console.log(response.data);
+      // console.log(response.data);
 
       // Redirect to appropriate page after successful submission
       navigate(`/project/detail/${projectId}`);

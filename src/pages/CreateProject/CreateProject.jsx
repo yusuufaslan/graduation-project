@@ -108,7 +108,7 @@ const CreateProject = () => {
       };
 
       const response = await axios.request(config);
-      navigate(`/project/edit/${response.data.projectId}`);
+      navigate(`/project/edit/${response.data.projectId._id}`);
       // console.log(JSON.stringify(response.data));
       // console.log(JSON.stringify(data));
     } catch (error) {
