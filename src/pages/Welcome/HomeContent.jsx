@@ -24,7 +24,7 @@ function HomeContent({ signedIn }) {
         {/* Content */}
         <div className="mx-auto max-w-7xl py-32 sm:py-48 lg:py-56">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Empowering Healthcare Collaboration: Connect, Share, Innovate
+            Empowering Healthcare Data Collaboration: Find, Share, Securely.
           </h1>
           <p className="mt-12 text-xl leading-8 text-gray-600">
             Join the movement towards revolutionizing healthcare collaboration!
