@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 import ViteLogo from "../../../public/vite.svg";
 
-
 function Verification() {
   const [verificationCode, setVerificationCode] = useState("");
   const [email, setEmail] = useState("");
@@ -40,6 +39,8 @@ function Verification() {
         }
       );
       if (response.data.message === "User verified successfully") {
+        // Clear verification email from localStorage
+        localStorage.removeItem("verifiedEmail");
         toast.success("User verified successfully");
         navigate("/sign-in");
       } else {
