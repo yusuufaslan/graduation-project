@@ -38,6 +38,11 @@ function SignUp() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Fetch institution data from backend
+    fetchInstitutions();
+  }, []);
+
   const fetchInstitutions = async () => {
     try {
       const response = await fetch("http://localhost:3838/api/institution/get");
@@ -52,11 +57,6 @@ function SignUp() {
       // Handle error or display a message to the user
     }
   };
-
-  useEffect(() => {
-    // Fetch institution data from backend
-    fetchInstitutions();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

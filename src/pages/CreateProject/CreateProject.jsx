@@ -1,19 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
 
 import axios from "axios";
 
-const tagList = [
-  { id: 1, name: "Tag 1" },
-  { id: 2, name: "Tag 2" },
-  { id: 3, name: "Sample Tag" },
-];
-
 const CreateProject = () => {
   const navigate = useNavigate();
-
+  const [tagList, setTagList] = useState([]);
   const [project, setProject] = useState({
     id: 123,
     name: "",
@@ -21,10 +15,24 @@ const CreateProject = () => {
     abstract: "",
     isPublic: true,
     emails: [],
-    owner: "Yusuf Aslan",
     datasets: [],
     selectedTags: [],
   });
+
+  useEffect(() => {
+    fetchTagList();
+  }, []);
+
+  const fetchTagList = async () => {
+    try {
+      const response = await axios.get("http://localhost:3838/api/tag/get");
+      if (response.status === 200) {
+        setTagList(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching tag list:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,7 +75,7 @@ const CreateProject = () => {
     // console.log(["yurekli20@itu.edu.tr"]);
 
     const selectedTagNames = project.selectedTags.map((tagId) => {
-      const tag = tagList.find((tag) => tag.id === tagId);
+      const tag = tagList.find((tag) => tag._id === tagId);
       return tag ? tag.name : "";
     });
 
@@ -105,7 +113,7 @@ const CreateProject = () => {
       // console.log(JSON.stringify(data));
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.log(error.response.data.error); 
+        console.log(error.response.data.error);
       } else {
         console.log(error); // Log other errors
       }
@@ -209,16 +217,16 @@ const CreateProject = () => {
             <div className="flex flex-wrap">
               {tagList.map((tag) => (
                 <div
-                  key={tag.id}
+                  key={tag._id}
                   className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-normal ${
-                    project.selectedTags.includes(tag.id)
+                    project.selectedTags.includes(tag._id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200"
                   }`}
-                  onClick={() => handleTagSelection(tag.id)}
+                  onClick={() => handleTagSelection(tag._id)}
                 >
                   <span className="mr-1">{tag.name}</span>
-                  {project.selectedTags.includes(tag.id) && (
+                  {project.selectedTags.includes(tag._id) && (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-4 w-4"
