@@ -2,13 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ViteLogo from "../../../public/vite.svg";
 
+import axios from "axios";
+
 import { toast } from "react-toastify";
 
 const roleOptions = [
   { value: "", label: "Select" },
   { value: "student", label: "Student" },
   { value: "teacher", label: "Academician" },
-  { value: "teacher", label: "Researcher" },
+  { value: "researcher", label: "Researcher" },
   { value: "engineer", label: "Engineer" },
   { value: "doctor", label: "Doctor" },
   { value: "nurse", label: "Nurse" },
@@ -99,25 +101,50 @@ function SignUp() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setInvalidEmail(true);
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       setPasswordsMatch(false);
       setPasswordsMatchMessage("Passwords do not match");
       return;
     }
-
-    console.log("Form Data:", formData);
-    toast.success(
-      "Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process."
-    );
-    navigate("/sign-in");
+  
+    try {
+      const response = await fetch("http://localhost:3838/api/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          surname: formData.surname,
+          phone: formData.phone, // Make sure you capture the phone number from the form
+          address: formData.address,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
+  
+      toast.success(
+        "Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process."
+      );
+      navigate("/sign-in");
+    } catch (error) {
+      console.error("Error signing up:", error);
+      // Handle error or display a message to the user
+      toast.error("Failed to sign up. Please try again later.");
+    }
   };
 
   return (
