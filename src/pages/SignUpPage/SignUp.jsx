@@ -1,30 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ViteLogo from "../../../public/vite.svg";
 
 import { toast } from "react-toastify";
 
+const roleOptions = [
+  { value: "", label: "Select" },
+  { value: "student", label: "Student" },
+  { value: "teacher", label: "Academician" },
+  { value: "teacher", label: "Researcher" },
+  { value: "engineer", label: "Engineer" },
+  { value: "doctor", label: "Doctor" },
+  { value: "nurse", label: "Nurse" },
+  { value: "pharmacist", label: "Pharmacist" },
+  // Add more options as needed
+];
+
 function SignUp() {
-  const roleOptions = [
-    { value: "", label: "Select" },
-    { value: "student", label: "Student" },
-    { value: "teacher", label: "Teacher" },
-    { value: "engineer", label: "Engineer" },
-    { value: "doctor", label: "Doctor" },
-    { value: "nurse", label: "Nurse" },
-    { value: "pharmacist", label: "Pharmacist" },
-    // Add more options as needed
-  ];
-
-  const institutionOptions = [
-    { value: "", label: "Select" },
-    { value: "University A", label: "University A" },
-    { value: "College B", label: "College B" },
-    { value: "Hospital C", label: "Hospital C" },
-    { value: "Company D", label: "Company D" },
-    // Add more options as needed
-  ];
-
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -39,11 +31,32 @@ function SignUp() {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordsMatchMessage, setPasswordsMatchMessage] = useState("");
+  const [institutionOptions, setInstitutionOptions] = useState([]);
 
   const roleSelectRef = useRef(null);
   const institutionSelectRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const fetchInstitutions = async () => {
+    try {
+      const response = await fetch("http://localhost:3838/api/institution/get");
+      if (response.ok) {
+        const data = await response.json();
+        setInstitutionOptions(data);
+      } else {
+        throw new Error("Failed to fetch institutions");
+      }
+    } catch (error) {
+      console.error("Error fetching institutions:", error);
+      // Handle error or display a message to the user
+    }
+  };
+
+  useEffect(() => {
+    // Fetch institution data from backend
+    fetchInstitutions();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,8 +114,10 @@ function SignUp() {
     }
 
     console.log("Form Data:", formData);
-    toast.success("Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process.");
-    navigate("/sign-in")
+    toast.success(
+      "Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process."
+    );
+    navigate("/sign-in");
   };
 
   return (
@@ -250,9 +265,10 @@ function SignUp() {
                   onChange={handleChange}
                   onKeyDown={(e) => handleKeyDown(e, institutionSelectRef)}
                 >
+                  <option value="">Select</option>
                   {institutionOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+                    <option key={option._id} value={option.name}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
