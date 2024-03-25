@@ -55,7 +55,7 @@ function Verification() {
                 type="text"
                 name="verificationCode"
                 required
-                className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                className="mt-1 pl-3 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 border border-gray-300"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
               />
