@@ -14,13 +14,13 @@ const ProposalsPage = () => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [responseText, setResponseText] = useState("");
 
-  const handleAction = async (status) => {
+  const handleAction = async (verified) => {
     // Handle reject action for received proposals
     // Update backend with rejectionText and set proposal status to Rejected
     try {
       let data = JSON.stringify({
         proposalId: selectedProposal.id,
-        verified: status,
+        verified: verified,
         proposalReviewText: responseText,
       });
 
@@ -60,7 +60,7 @@ const ProposalsPage = () => {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
+        verified: "none",
         proposalResponseText: "",
         applicatorId: 123,
       },
@@ -71,7 +71,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -82,7 +82,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -93,7 +93,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -104,7 +104,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -115,7 +115,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -126,7 +126,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -137,7 +137,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -148,8 +148,8 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
-        proposalResponseText: "Accepted arbitrarily",
+        verified: "reject",
+        proposalResponseText: "Rejected arbitrarily",
         applicatorId: 123,
       },
       {
@@ -159,7 +159,7 @@ const ProposalsPage = () => {
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "accept",
         proposalResponseText: "Accepted arbitrarily",
         applicatorId: 123,
       },
@@ -173,7 +173,7 @@ const ProposalsPage = () => {
           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Waiting",
+        verified: "none",
         proposalResponseText: "",
         applicatorId: 123,
       },
@@ -184,7 +184,7 @@ const ProposalsPage = () => {
           "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia...",
         potentialResearchBenefits:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed...",
-        status: "Accepted",
+        verified: "reject",
         proposalResponseText: "Unfortunately, your proposal has been Rejected.",
         applicatorId: 123,
       },
@@ -204,7 +204,7 @@ const ProposalsPage = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 mt-5 h-screen mb-20">
+      <div className="relative w-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 mt-5 h-screen mb-20">
         {/* Section for toggling between sent and received proposals */}
         <div className="w-full flex justify-center items-center my-4">
           <button
@@ -268,7 +268,7 @@ const ProposalsPage = () => {
               <div>
                 <ProposalDetails proposal={selectedProposal} />
                 {pageType === "received" &&
-                  selectedProposal.status === "Waiting" && (
+                  selectedProposal.verified === "none" && (
                     <div className="mt-4">
                       <textarea
                         className="w-full h-40 p-2 mb-2 border rounded-lg"
@@ -282,8 +282,8 @@ const ProposalsPage = () => {
                           className="bg-green-500 text-white px-4 py-2 rounded-md w-40"
                           onClick={() => handleAction("accept")}
                           disabled={
-                            selectedProposal.status === "Rejected" ||
-                            selectedProposal.status === "Accepted"
+                            selectedProposal.verified === "reject" ||
+                            selectedProposal.verified === "accept"
                           }
                         >
                           Accept
@@ -292,8 +292,8 @@ const ProposalsPage = () => {
                           className="bg-red-500 text-white px-4 py-2 rounded-md w-40"
                           onClick={() => handleAction("reject")}
                           disabled={
-                            selectedProposal.status === "Rejected" ||
-                            selectedProposal.status === "Accepted"
+                            selectedProposal.verified === "reject" ||
+                            selectedProposal.verified === "accept"
                           }
                         >
                           Reject
