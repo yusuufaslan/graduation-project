@@ -1,5 +1,6 @@
-// ContactForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,12 @@ const ContactForm = () => {
     email: "",
     message: ""
   });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Initializing EmailJS with public key
+    emailjs.init("lTPBoadCqWnp3hNLM");
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,22 +23,38 @@ const ContactForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your logic here to handle form submission (e.g., send email)
-    console.log("Form submitted:", formData);
-    // Reset form fields
-    setFormData({
-      name: "",
-      email: "",
-      message: ""
-    });
+    setLoading(true);
+    const serviceId = "service_ow9fquh";
+    const templateId = "template_7xua66n";
+    try {
+      await emailjs.send(serviceId, templateId, {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message
+      });
+      toast.success("Email successfully sent!");
+      // Reset form fields
+      setFormData({
+        name: "",
+        email: "",
+        message: ""
+      });
+    } catch (error) {
+      console.error("Email sending error:", error);
+      toast.error("Failed to send email. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label className="block text-lg mb-2" htmlFor="name">Name:</label>
+        <label className="block text-lg mb-2" htmlFor="name">
+          Name:
+        </label>
         <input
           className="w-full px-4 py-2 border rounded-md"
           type="text"
@@ -43,7 +66,9 @@ const ContactForm = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-lg mb-2" htmlFor="email">Email:</label>
+        <label className="block text-lg mb-2" htmlFor="email">
+          Email:
+        </label>
         <input
           className="w-full px-4 py-2 border rounded-md"
           type="email"
@@ -55,7 +80,9 @@ const ContactForm = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-lg mb-2" htmlFor="message">Message:</label>
+        <label className="block text-lg mb-2" htmlFor="message">
+          Message:
+        </label>
         <textarea
           className="w-full px-4 py-2 border rounded-md"
           id="message"
@@ -69,8 +96,9 @@ const ContactForm = () => {
       <button
         type="submit"
         className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600"
+        disabled={loading}
       >
-        Submit
+        {loading ? "Sending..." : "Submit"}
       </button>
     </form>
   );
