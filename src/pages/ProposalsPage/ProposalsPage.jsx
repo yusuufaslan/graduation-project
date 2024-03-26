@@ -11,7 +11,7 @@ const ProposalsPage = () => {
   const navigate = useNavigate();
   const [proposals, setProposals] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
-  const [responseText, setResponseText] = useState("");
+  const [proposalReviewText, setProposalReviewText] = useState("");
 
   useEffect(() => {
     fetchProposals();
@@ -49,7 +49,7 @@ const ProposalsPage = () => {
       let data = JSON.stringify({
         proposalId: selectedProposal._id,
         verified: verified,
-        proposalReviewText: responseText,
+        proposalReviewText: proposalReviewText,
         applicantUserIds: selectedProposal.applicantUserIds,
       });
 
@@ -81,7 +81,7 @@ const ProposalsPage = () => {
   const handleProposalClick = (proposal) => {
     // console.log(proposal);
     setSelectedProposal(proposal);
-    setResponseText("");
+    setProposalReviewText("");
   };
 
   return (
@@ -157,7 +157,7 @@ const ProposalsPage = () => {
                         className="w-full h-40 p-2 mb-2 border rounded-lg"
                         placeholder="Enter acceptance/rejection explanation..."
                         onChange={(e) => {
-                          setResponseText(e.target.value);
+                          setProposalReviewText(e.target.value);
                         }}
                       />
                       <div className="space-x-5">

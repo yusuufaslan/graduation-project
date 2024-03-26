@@ -59,9 +59,9 @@ const ProposalDetails = ({ proposal }) => {
         <span className={`font-bold ${statusColorClass}`}>{statusText}</span>
       </p>
       <div>
-        {proposal.proposalResponseText ? (
+        {proposal.proposalReviewText ? (
           <p>
-            <strong>Response:</strong> {proposal.proposalResponseText}
+            <strong>Response:</strong> {proposal.proposalReviewText}
           </p>
         ) : (
           <p>
