@@ -1,6 +1,26 @@
 import React from "react";
 
 const ProposalDetails = ({ proposal }) => {
+  let statusColorClass = "";
+  let statusText = "";
+
+  switch (proposal.verified) {
+    case "accept":
+      statusColorClass = "text-green-600";
+      statusText = "Accepted";
+      break;
+    case "reject":
+      statusColorClass = "text-red-600";
+      statusText = "Rejected";
+      break;
+    case "none":
+      statusColorClass = "text-green-600";
+      statusText = "Waiting";
+      break;
+    default:
+      statusText = "Unknown";
+  }
+
   return (
     <div className="bg-gray-100 p-4 rounded">
       <h2 className="text-4xl font-semibold mb-5">Proposal Details</h2>
@@ -35,7 +55,8 @@ const ProposalDetails = ({ proposal }) => {
       </p>
       <p className="mb-5">{proposal.potentialResearchBenefits}</p>
       <p>
-        <strong>Status:</strong> {proposal.verified}
+        <strong>Status:</strong>{" "}
+        <span className={`font-bold ${statusColorClass}`}>{statusText}</span>
       </p>
       <div>
         {proposal.proposalResponseText ? (
@@ -44,7 +65,7 @@ const ProposalDetails = ({ proposal }) => {
           </p>
         ) : (
           <p>
-            <strong>Response:</strong> No response yet.
+            <strong>Response:</strong> No response given.
           </p>
         )}
       </div>

@@ -20,8 +20,9 @@ export default function Navbar() {
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
     { name: "Home", href: "/home", current: false },
-    { name: "Create Project", href: "/project/create", current: false },
+    { name: "Explore", href: "/welcome", current: false },
     { name: "Proposals", href: "/proposals/sent", current: false },
+    { name: "Create Project", href: "/project/create", current: false },
     // { name: 'Services', href: '/services', current: false },
     // { name: 'Contact', href: '/contact', current: false },
   ]);
@@ -154,6 +155,32 @@ export default function Navbar() {
                             )}
                           >
                             Your Profile
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/welcome"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                          >
+                            Shared Projects
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/welcome"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                          >
+                            Ongoing Projects
                           </Link>
                         )}
                       </Menu.Item>
