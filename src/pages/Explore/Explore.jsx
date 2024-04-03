@@ -7,7 +7,9 @@ const dummyProjects = [
     _id: "1",
     name: "Project 1",
     owner: "Owner 1",
-    description: "Description 1",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "2", name: "Tag 2" },
@@ -17,7 +19,9 @@ const dummyProjects = [
     _id: "2",
     name: "Project 2",
     owner: "Owner 2",
-    description: "Description 2",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "3", name: "Tag 3" },
       { _id: "4", name: "Tag 4" },
@@ -27,7 +31,9 @@ const dummyProjects = [
     _id: "3",
     name: "Project 3",
     owner: "Owner 3",
-    description: "Description 3",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "4", name: "Tag 4" },
@@ -37,7 +43,9 @@ const dummyProjects = [
     _id: "4",
     name: "Project 4",
     owner: "Owner 4",
-    description: "Description 4",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "4", name: "Tag 4" },
@@ -47,7 +55,9 @@ const dummyProjects = [
     _id: "5",
     name: "Project 5",
     owner: "Owner 5",
-    description: "Description 5",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "4", name: "Tag 4" },
@@ -57,7 +67,9 @@ const dummyProjects = [
     _id: "6",
     name: "Project 6",
     owner: "Owner 6",
-    description: "Description 5",
+    lastUpdated: "2024-04-01",
+    description:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "4", name: "Tag 4" },
@@ -115,15 +127,17 @@ const Explore = () => {
 
   const projectsPerPage = 5;
   const startIndex = (page - 1) * projectsPerPage;
-  const paginatedProjects = projects.slice(startIndex, startIndex + projectsPerPage);
-
+  const paginatedProjects = projects.slice(
+    startIndex,
+    startIndex + projectsPerPage
+  );
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-10 py-8 max-w-7xl">
         <div className="mb-8 max-w-5xl mx-auto text-center">
           <h1 className="text-3xl font-semibold">Explore Projects</h1>
-          <div className="flex mt-16">
+          <div className="flex mt-8">
             <input
               type="text"
               value={searchQuery}
@@ -167,30 +181,44 @@ const Explore = () => {
               <option value="alphabetical">Alphabetical (Z-A)</option>
             </select>
             <br />
-            
+
             <button
               onClick={handleSetFilter}
               className="bg-blue-500 text-white px-4 py-2 rounded-md mt-8"
             >
               Set Filters
             </button>
-
           </div>
           <div className="w-3/4">
             <div className="mt-1">
               {paginatedProjects.map((project) => (
                 <Link to={`/project/detail/${project._id}`} key={project._id}>
-                  <div className="border border-gray-200 p-4 rounded-md mb-4 hover:border-blue-500 transition duration-300">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {project.name}
+                  <div className="border border-gray-200 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
+                    <h3 className="text-md font-semibold mb-0.5">
+                      {project.name.length > 200
+                        ? project.name.substring(0, 200) + "..."
+                        : project.name}
                     </h3>
-                    <p className="text-gray-600 mb-2">{project.owner}</p>
-                    <p className="text-gray-700 mb-2">{project.description}</p>
+                    <p className="text-sm text-gray-700 mb-0.5">
+                      {project.owner} <span className="text-sm text-gray-500 mb-3">| Last Updated: {project.lastUpdated}</span>
+                    </p>
+                    <p 
+                      className="text-sm text-gray-700 mb-3"
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {project.description}
+                    </p>
                     <div className="flex flex-wrap">
                       {project.tags.map((tag) => (
                         <span
                           key={tag._id}
-                          className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
+                          className="bg-gray-200 rounded-full py-1 px-2 mr-1 mb-1 flex items-center font-normal text-sm"
                         >
                           {tag.name}
                         </span>
