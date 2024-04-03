@@ -33,6 +33,37 @@ const dummyProjects = [
       { _id: "4", name: "Tag 4" },
     ],
   },
+  {
+    _id: "4",
+    name: "Project 4",
+    owner: "Owner 4",
+    description: "Description 4",
+    tags: [
+      { _id: "1", name: "Tag 1" },
+      { _id: "4", name: "Tag 4" },
+    ],
+  },
+  {
+    _id: "5",
+    name: "Project 5",
+    owner: "Owner 5",
+    description: "Description 5",
+    tags: [
+      { _id: "1", name: "Tag 1" },
+      { _id: "4", name: "Tag 4" },
+    ],
+  },
+  {
+    _id: "6",
+    name: "Project 6",
+    owner: "Owner 6",
+    description: "Description 5",
+    tags: [
+      { _id: "1", name: "Tag 1" },
+      { _id: "4", name: "Tag 4" },
+    ],
+  },
+  // Add more dummy projects as needed
 ];
 
 const dummyTags = [
@@ -82,6 +113,10 @@ const Explore = () => {
     console.log("Sort by:", sortBy);
   };
 
+  const projectsPerPage = 5;
+  const startIndex = (page - 1) * projectsPerPage;
+  const paginatedProjects = projects.slice(startIndex, startIndex + projectsPerPage);
+
   return (
     <>
       <Navbar />
@@ -128,10 +163,10 @@ const Explore = () => {
               className="border border-gray-400 rounded-md p-2 mt-2"
             >
               <option value="latest">Latest</option>
-              <option value="alphabetical">Alphabetical</option>
+              <option value="alphabetical">Alphabetical (A-Z)</option>
+              <option value="alphabetical">Alphabetical (Z-A)</option>
             </select>
             <br />
-
             
             <button
               onClick={handleSetFilter}
@@ -142,10 +177,10 @@ const Explore = () => {
 
           </div>
           <div className="w-3/4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {projects.map((project) => (
+            <div className="mt-1">
+              {paginatedProjects.map((project) => (
                 <Link to={`/project/detail/${project._id}`} key={project._id}>
-                  <div className="border border-gray-200 p-4 rounded-md hover:border-blue-500 transition duration-300">
+                  <div className="border border-gray-200 p-4 rounded-md mb-4 hover:border-blue-500 transition duration-300">
                     <h3 className="text-lg font-semibold mb-2">
                       {project.name}
                     </h3>
