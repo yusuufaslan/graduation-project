@@ -92,9 +92,10 @@ const Explore = () => {
   const [sortBy, setSortBy] = useState("latest");
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [noProjectsFound, setNoProjectsFound] = useState(false);
 
   useEffect(() => {
-    // Fetch projects based on selectedTags, sortBy, and page
+    handleSetFilter();
   }, [selectedTags, sortBy, page, searchQuery]);
 
   const handleTagSelection = (tagId) => {
@@ -114,23 +115,26 @@ const Explore = () => {
   };
 
   const handleSearch = () => {
-    // Logic to trigger search based on searchQuery
-    // This can involve API calls or filtering of existing projects array
-    console.log("Searching for:", searchQuery);
+    setPage(1); // Reset page number to 1 when a new search is initiated
+    handleSetFilter();
   };
 
   const handleSetFilter = () => {
-    // Filter projects based on selected tags
-    let filteredProjects = dummyProjects.filter(project => {
-      return selectedTags.every(tagId =>
-        project.tags.some(tag => tag._id === tagId)
+    let filteredProjects = dummyProjects.filter((project) => {
+      return (
+        selectedTags.every((tagId) =>
+          project.tags.some((tag) => tag._id === tagId)
+        ) &&
+        (project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     });
-  
-    // Sort filtered projects based on sortBy criteria
+
     switch (sortBy) {
       case "latest":
-        filteredProjects.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+        filteredProjects.sort(
+          (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated)
+        );
         break;
       case "alphabetical":
         filteredProjects.sort((a, b) => a.name.localeCompare(b.name));
@@ -141,9 +145,9 @@ const Explore = () => {
       default:
         break;
     }
-  
-    // Update state with filtered and sorted projects
+
     setProjects(filteredProjects);
+    setNoProjectsFound(filteredProjects.length === 0);
   };
 
   const projectsPerPage = 5;
@@ -201,12 +205,12 @@ const Explore = () => {
             </select>
             <br />
 
-            <button
+            {/* <button
               onClick={handleSetFilter}
               className="bg-blue-500 text-white px-4 py-2 rounded-md mt-8"
             >
               Set Filters
-            </button>
+            </button> */}
           </div>
           <div className="w-3/4">
             <div className="mt-1">
@@ -250,22 +254,24 @@ const Explore = () => {
                 </Link>
               ))}
             </div>
-            <div className="flex justify-center mt-4">
-              <button
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-                className={`px-4 py-2 rounded-l-md bg-gray-300 ${page === 1 ? "text-gray-400" : "text-gray-800"}`}
-              >
-                Prev
-              </button>
-              <button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={endIndex >= projects.length}
-                className={`px-4 py-2 rounded-r-md bg-gray-300 ${endIndex >= projects.length ? "text-gray-400" : "text-gray-800"}`}
-              >
-                Next
-              </button>
-            </div>
+            {projects.length > 0 && (
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                  className={`px-4 py-2 rounded-l-md bg-gray-300 ${page === 1 ? "text-gray-400" : "text-gray-800"}`}
+                >
+                  Prev
+                </button>
+                <button
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={endIndex >= projects.length}
+                  className={`px-4 py-2 rounded-r-md bg-gray-300 ${endIndex >= projects.length ? "text-gray-400" : "text-gray-800"}`}
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
