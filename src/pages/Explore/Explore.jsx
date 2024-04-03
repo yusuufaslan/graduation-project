@@ -7,7 +7,7 @@ const dummyProjects = [
     _id: "1",
     name: "Project 1",
     owner: "Owner 1",
-    lastUpdated: "2024-04-01",
+    lastUpdated: "2024-03-01",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
@@ -17,7 +17,7 @@ const dummyProjects = [
   },
   {
     _id: "2",
-    name: "Project 2",
+    name: "A Project 2",
     owner: "Owner 2",
     lastUpdated: "2024-04-01",
     description:
@@ -31,7 +31,7 @@ const dummyProjects = [
     _id: "3",
     name: "Project 3",
     owner: "Owner 3",
-    lastUpdated: "2024-04-01",
+    lastUpdated: "2024-04-02",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
@@ -67,7 +67,7 @@ const dummyProjects = [
     _id: "6",
     name: "Project 6",
     owner: "Owner 6",
-    lastUpdated: "2024-04-01",
+    lastUpdated: "2024-04-03",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
@@ -120,9 +120,30 @@ const Explore = () => {
   };
 
   const handleSetFilter = () => {
-    // Logic to apply selected filters
-    console.log("Selected tags:", selectedTags);
-    console.log("Sort by:", sortBy);
+    // Filter projects based on selected tags
+    let filteredProjects = dummyProjects.filter(project => {
+      return selectedTags.every(tagId =>
+        project.tags.some(tag => tag._id === tagId)
+      );
+    });
+  
+    // Sort filtered projects based on sortBy criteria
+    switch (sortBy) {
+      case "latest":
+        filteredProjects.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+        break;
+      case "alphabetical":
+        filteredProjects.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "reverseAlphabetical":
+        filteredProjects.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+  
+    // Update state with filtered and sorted projects
+    setProjects(filteredProjects);
   };
 
   const projectsPerPage = 5;
