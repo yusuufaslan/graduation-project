@@ -12,12 +12,12 @@ import Home from './pages/Welcome/Home';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
 import CreateProposal from './pages/CreateProposal/CreateProposal';
 import UserProfile from './pages/UserProfile/UserProfile';
-import EditProfile from './pages/EditProfile/EditProfile'; // Import EditProfile component
+import EditProfile from './pages/EditProfile/EditProfile';
 import Welcome from './pages/Welcome/Welcome';
 import Verification from './pages/Verification/Verification';
+import Explore from './pages/Explore/Explore'; // Import Explore page
 
-
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -37,6 +37,8 @@ function App() {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/verify' element={<Verification />} />
           <Route path='/welcome' element={<Welcome />} />
+          <Route path='/explore' element={<Explore />} /> {/* Route for Explore page */}
+
           {isAuthenticated ? (
             <>
               <Route path='/project/create' element={<CreateProject />} />

@@ -9,7 +9,6 @@ const CreateProject = () => {
   const navigate = useNavigate();
   const [tagList, setTagList] = useState([]);
   const [project, setProject] = useState({
-    id: 123,
     name: "",
     description: "",
     abstract: "",
