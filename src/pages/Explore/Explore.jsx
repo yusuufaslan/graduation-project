@@ -127,10 +127,8 @@ const Explore = () => {
 
   const projectsPerPage = 5;
   const startIndex = (page - 1) * projectsPerPage;
-  const paginatedProjects = projects.slice(
-    startIndex,
-    startIndex + projectsPerPage
-  );
+  const endIndex = Math.min(startIndex + projectsPerPage, projects.length);
+  const paginatedProjects = projects.slice(startIndex, endIndex);
   return (
     <>
       <Navbar />
@@ -200,9 +198,12 @@ const Explore = () => {
                         : project.name}
                     </h3>
                     <p className="text-sm text-gray-700 mb-0.5">
-                      {project.owner} <span className="text-sm text-gray-500 mb-3">| Last Updated: {project.lastUpdated}</span>
+                      {project.owner}{" "}
+                      <span className="text-sm text-gray-500 mb-3">
+                        | Last Updated: {project.lastUpdated}
+                      </span>
                     </p>
-                    <p 
+                    <p
                       className="text-sm text-gray-700 mb-3"
                       style={{
                         overflow: "hidden",
@@ -232,13 +233,14 @@ const Explore = () => {
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className="bg-gray-300 text-gray-600 px-4 py-2 rounded-l-md"
+                className={`px-4 py-2 rounded-l-md bg-gray-300 ${page === 1 ? "text-gray-400" : "text-gray-800"}`}
               >
                 Prev
               </button>
               <button
                 onClick={() => handlePageChange(page + 1)}
-                className="bg-gray-300 text-gray-600 px-4 py-2 rounded-r-md"
+                disabled={endIndex >= projects.length}
+                className={`px-4 py-2 rounded-r-md bg-gray-300 ${endIndex >= projects.length ? "text-gray-400" : "text-gray-800"}`}
               >
                 Next
               </button>
