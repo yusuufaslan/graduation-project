@@ -37,8 +37,6 @@ function App() {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/verify' element={<Verification />} />
           <Route path='/welcome' element={<Welcome />} />
-          <Route path='/explore' element={<Explore />} /> {/* Route for Explore page */}
-
           {isAuthenticated ? (
             <>
               <Route path='/project/create' element={<CreateProject />} />
@@ -48,8 +46,9 @@ function App() {
               <Route path="/proposals/:type" element={<ProposalsPage />} />
               <Route path="/proposal/create/:projectId" element={<CreateProposal />} />
               <Route path='/user-profile' element={<UserProfile />} />
-              <Route path='/edit-profile' element={<EditProfile />} /> {/* Add route for EditProfile */}
+              <Route path='/edit-profile' element={<EditProfile />} />
               <Route path='/home' element={<Home />} />
+              <Route path='/explore' element={<Explore />} />
             </>
           ) : (
             <Route path='*' element={<SignIn />} /> // Redirect to sign-in page if not authenticated

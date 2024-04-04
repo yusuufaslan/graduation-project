@@ -84,7 +84,6 @@ const dummyTags = [
   { _id: "3", name: "Tag 3" },
   { _id: "4", name: "Tag 4" },
 ];
-
 const Explore = () => {
   const [projects, setProjects] = useState(dummyProjects);
   const [tags, setTags] = useState(dummyTags);
@@ -92,13 +91,15 @@ const Explore = () => {
   const [sortBy, setSortBy] = useState("latest");
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [noProjectsFound, setNoProjectsFound] = useState(false);
+  const [noProjectsFound, setNoProjectsFound] = useState(true);
 
   useEffect(() => {
+    // Load projects when the component mounts
     handleSetFilter();
-  }, [selectedTags, sortBy, page, searchQuery]);
+  }, []); // Empty dependency array means this effect runs only once, equivalent to componentDidMount
 
   const handleTagSelection = (tagId) => {
+    // Update selected tags
     if (selectedTags.includes(tagId)) {
       setSelectedTags(selectedTags.filter((id) => id !== tagId));
     } else {
@@ -107,19 +108,23 @@ const Explore = () => {
   };
 
   const handleSortByChange = (e) => {
+    // Update sort by criteria
     setSortBy(e.target.value);
   };
 
   const handlePageChange = (newPage) => {
+    // Update page number
     setPage(newPage);
   };
 
   const handleSearch = () => {
+    // Trigger search
     setPage(1); // Reset page number to 1 when a new search is initiated
     handleSetFilter();
   };
 
   const handleSetFilter = () => {
+    // Filter projects based on selected tags, search query, and sorting criteria
     let filteredProjects = dummyProjects.filter((project) => {
       return (
         selectedTags.every((tagId) =>
@@ -150,10 +155,20 @@ const Explore = () => {
     setNoProjectsFound(filteredProjects.length === 0);
   };
 
+  const handleClearFilters = () => {
+    // Clear all selected filters
+    setSelectedTags([]);
+    setSortBy("latest");
+    setPage(1);
+    handleSetFilter();
+    window.location.reload();
+  };
+
   const projectsPerPage = 5;
   const startIndex = (page - 1) * projectsPerPage;
   const endIndex = Math.min(startIndex + projectsPerPage, projects.length);
   const paginatedProjects = projects.slice(startIndex, endIndex);
+
   return (
     <>
       <Navbar />
@@ -177,8 +192,19 @@ const Explore = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="w-1/4 pr-4">
-            <h2 className="text-xl font-semibold mb-2">Filter by Tags</h2>
+          <div className="w-full md:w-1/4 pr-4">
+            <h2 className="text-xl font-semibold">Sort by</h2>
+            <select
+              value={sortBy}
+              onChange={handleSortByChange}
+              className="border border-gray-400 rounded-md p-2 mt-2"
+            >
+              <option value="latest">Latest</option>
+              <option value="alphabetical">Alphabetical (A-Z)</option>
+              <option value="reverseAlphabetical">Alphabetical (Z-A)</option>
+            </select>
+
+            <h2 className="text-xl font-semibold mb-2 mt-8">Filter by Tags</h2>
             <div className="flex flex-col ml-2">
               {tags.map((tag) => (
                 <label key={tag._id} className="inline-flex items-center mb-2">
@@ -192,81 +218,96 @@ const Explore = () => {
                 </label>
               ))}
             </div>
-
-            <h2 className="text-xl font-semibold mt-8">Sort by</h2>
-            <select
-              value={sortBy}
-              onChange={handleSortByChange}
-              className="border border-gray-400 rounded-md p-2 mt-2"
-            >
-              <option value="latest">Latest</option>
-              <option value="alphabetical">Alphabetical (A-Z)</option>
-              <option value="alphabetical">Alphabetical (Z-A)</option>
-            </select>
             <br />
 
-            {/* <button
+            <button
               onClick={handleSetFilter}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mt-8"
+              className="bg-blue-500 text-white px-3 py-2 rounded-md text-sm"
             >
               Set Filters
-            </button> */}
+            </button>
+
+            <button
+              onClick={handleClearFilters}
+              className="bg-red-500 text-white px-3 py-2 rounded-md text-sm ml-2"
+            >
+              Clear Filters
+            </button>
           </div>
-          <div className="w-3/4">
+          <div className="w-full md:w-3/4">
             <div className="mt-1">
-              {paginatedProjects.map((project) => (
-                <Link to={`/project/detail/${project._id}`} key={project._id}>
-                  <div className="border border-gray-200 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
-                    <h3 className="text-md font-semibold mb-0.5">
-                      {project.name.length > 200
-                        ? project.name.substring(0, 200) + "..."
-                        : project.name}
-                    </h3>
-                    <p className="text-sm text-gray-700 mb-0.5">
-                      {project.owner}{" "}
-                      <span className="text-sm text-gray-500 mb-3">
-                        | Last Updated: {project.lastUpdated}
-                      </span>
-                    </p>
-                    <p
-                      className="text-sm text-gray-700 mb-3"
-                      style={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                    >
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag._id}
-                          className="bg-gray-200 rounded-full py-1 px-2 mr-1 mb-1 flex items-center font-normal text-sm"
-                        >
-                          {tag.name}
+              {paginatedProjects.length > 0 ? (
+                paginatedProjects.map((project) => (
+                  <Link to={`/project/detail/${project._id}`} key={project._id}>
+                    <div className="border border-gray-200 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
+                      <h3 className="text-md font-semibold mb-0.5">
+                        {project.name.length > 200
+                          ? project.name.substring(0, 200) + "..."
+                          : project.name}
+                      </h3>
+                      <p className="text-sm text-gray-700 mb-0.5">
+                        {project.owner}{" "}
+                        <span className="text-sm text-gray-500 mb-3">
+                          | Last Updated: {project.lastUpdated}
                         </span>
-                      ))}
+                      </p>
+                      <p
+                        className="text-sm text-gray-700 mb-3"
+                        style={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag._id}
+                            className="bg-gray-200 rounded-full py-1 px-2 mr-1 mb-1 flex items-center font-normal text-sm"
+                          >
+                            {tag.name}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))
+              ) : (
+                <div className="text-center text-gray-600">
+                  {noProjectsFound ? (
+                    <p className="mt-40">
+                      No projects found matching the selected filters and search
+                      query.
+                    </p>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </div>
+              )}
             </div>
             {projects.length > 0 && (
               <div className="flex justify-center mt-4">
                 <button
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page === 1}
-                  className={`px-4 py-2 rounded-l-md bg-gray-300 ${page === 1 ? "text-gray-400" : "text-gray-800"}`}
+                  className={`px-4 py-2 rounded-l-md bg-gray-300 ${
+                    page === 1 ? "text-gray-400" : "text-gray-800"
+                  }`}
                 >
                   Prev
                 </button>
                 <button
                   onClick={() => handlePageChange(page + 1)}
                   disabled={endIndex >= projects.length}
-                  className={`px-4 py-2 rounded-r-md bg-gray-300 ${endIndex >= projects.length ? "text-gray-400" : "text-gray-800"}`}
+                  className={`px-4 py-2 rounded-r-md bg-gray-300 ${
+                    endIndex >= projects.length
+                      ? "text-gray-400"
+                      : "text-gray-800"
+                  }`}
                 >
                   Next
                 </button>
