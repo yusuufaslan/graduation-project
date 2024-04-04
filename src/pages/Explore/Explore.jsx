@@ -36,7 +36,6 @@ const dummyProjects = [
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
       { _id: "1", name: "Tag 1" },
-      { _id: "4", name: "Tag 4" },
     ],
   },
   {
@@ -73,6 +72,7 @@ const dummyProjects = [
     tags: [
       { _id: "1", name: "Tag 1" },
       { _id: "4", name: "Tag 4" },
+      { _id: "2", name: "Tag 2" },
     ],
   },
   // Add more dummy projects as needed
