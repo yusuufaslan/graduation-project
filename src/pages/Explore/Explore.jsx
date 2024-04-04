@@ -83,6 +83,7 @@ const dummyTags = [
   { _id: "2", name: "Tag 2" },
   { _id: "3", name: "Tag 3" },
   { _id: "4", name: "Tag 4" },
+  { _id: "5", name: "Tag 5" },
 ];
 const Explore = () => {
   const [projects, setProjects] = useState(dummyProjects);
@@ -125,15 +126,7 @@ const Explore = () => {
 
   const handleSetFilter = () => {
     // Filter projects based on selected tags, search query, and sorting criteria
-    let filteredProjects = dummyProjects.filter((project) => {
-      return (
-        selectedTags.every((tagId) =>
-          project.tags.some((tag) => tag._id === tagId)
-        ) &&
-        (project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    });
+    let filteredProjects = filterProjects(dummyProjects);
 
     switch (sortBy) {
       case "latest":
@@ -153,6 +146,19 @@ const Explore = () => {
 
     setProjects(filteredProjects);
     setNoProjectsFound(filteredProjects.length === 0);
+  };
+
+  const filterProjects = (projectsToFilter) => {
+    return projectsToFilter.filter((project) => {
+      return (
+        (selectedTags.length === 0 ||
+          selectedTags.some((tagId) =>
+            project.tags.some((tag) => tag._id === tagId)
+          )) &&
+        (project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    });
   };
 
   const handleClearFilters = () => {
@@ -205,16 +211,16 @@ const Explore = () => {
             </select>
 
             <h2 className="text-xl font-semibold mb-2 mt-8">Filter by Tags</h2>
-            <div className="flex flex-col ml-2">
+            <div className="flex flex-wrap mt-2 ml-1">
               {tags.map((tag) => (
-                <label key={tag._id} className="inline-flex items-center mb-2">
+                <label key={tag._id} className="inline-flex items-center mb-2 mr-2">
                   <input
                     type="checkbox"
                     checked={selectedTags.includes(tag._id)}
                     onChange={() => handleTagSelection(tag._id)}
                     className="form-checkbox text-blue-500 h-5 w-5"
                   />
-                  <span className="ml-2">{tag.name}</span>
+                  <span className="ml-0.5">{tag.name}</span>
                 </label>
               ))}
             </div>
