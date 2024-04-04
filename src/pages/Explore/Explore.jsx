@@ -117,8 +117,9 @@ const Explore = () => {
     setPage(newPage);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
     // Trigger search
+    e.preventDefault();
     setPage(1); // Reset page number to 1 when a new search is initiated
     handleSetFilter();
   };
@@ -180,21 +181,23 @@ const Explore = () => {
       <div className="container mx-auto px-10 py-8 max-w-7xl">
         <div className="mb-8 max-w-5xl mx-auto text-center">
           <h1 className="text-3xl font-semibold">Explore Projects</h1>
-          <div className="flex mt-8">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="border border-gray-400 rounded-l-md p-2 w-full"
-              placeholder="Search projects..."
-            />
-            <button
-              onClick={handleSearch}
-              className="bg-blue-500 text-white px-4 py-2 rounded-r-md"
-            >
-              Search
-            </button>
-          </div>
+          <form onSubmit={(e) => handleSearch(e)}>
+            <div className="flex mt-8">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="border border-gray-400 rounded-l-md p-2 w-full"
+                placeholder="Search projects..."
+              />
+              <button
+                onClick={(e) => handleSearch(e)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-r-md"
+              >
+                Search
+              </button>
+            </div>
+          </form>
         </div>
         <div className="flex">
           <div className="w-full md:w-1/4 pr-4">
