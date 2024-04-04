@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
+import ProjectList from "../../components/ProjectList/ProjectList";
 
 const dummyProjects = [
   {
@@ -34,9 +35,7 @@ const dummyProjects = [
     lastUpdated: "2024-04-02",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "1", name: "Tag 1" },
-    ],
+    tags: [{ _id: "1", name: "Tag 1" }],
   },
   {
     _id: "4",
@@ -213,7 +212,10 @@ const Explore = () => {
             <h2 className="text-xl font-semibold mb-2 mt-8">Filter by Tags</h2>
             <div className="flex flex-wrap mt-2 ml-1">
               {tags.map((tag) => (
-                <label key={tag._id} className="inline-flex items-center mb-2 mr-2">
+                <label
+                  key={tag._id}
+                  className="inline-flex items-center mb-2 mr-2"
+                >
                   <input
                     type="checkbox"
                     checked={selectedTags.includes(tag._id)}
@@ -243,45 +245,7 @@ const Explore = () => {
           <div className="w-full md:w-3/4">
             <div className="mt-1">
               {paginatedProjects.length > 0 ? (
-                paginatedProjects.map((project) => (
-                  <Link to={`/project/detail/${project._id}`} key={project._id}>
-                    <div className="border border-gray-200 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
-                      <h3 className="text-md font-semibold mb-0.5">
-                        {project.name.length > 200
-                          ? project.name.substring(0, 200) + "..."
-                          : project.name}
-                      </h3>
-                      <p className="text-sm text-gray-700 mb-0.5">
-                        {project.owner}{" "}
-                        <span className="text-sm text-gray-500 mb-3">
-                          | Last Updated: {project.lastUpdated}
-                        </span>
-                      </p>
-                      <p
-                        className="text-sm text-gray-700 mb-3"
-                        style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag._id}
-                            className="bg-gray-200 rounded-full py-1 px-2 mr-1 mb-1 flex items-center font-normal text-sm"
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </Link>
-                ))
+                <ProjectList projects={paginatedProjects} />
               ) : (
                 <div className="text-center text-gray-600">
                   {noProjectsFound ? (
