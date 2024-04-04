@@ -245,7 +245,7 @@ const Explore = () => {
           <div className="w-full md:w-3/4">
             <div className="mt-1">
               {paginatedProjects.length > 0 ? (
-                <ProjectList projects={paginatedProjects} />
+                <ProjectList projects={paginatedProjects} mode="detail" />
               ) : (
                 <div className="text-center text-gray-600">
                   {noProjectsFound ? (

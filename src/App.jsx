@@ -15,7 +15,10 @@ import UserProfile from './pages/UserProfile/UserProfile';
 import EditProfile from './pages/EditProfile/EditProfile';
 import Welcome from './pages/Welcome/Welcome';
 import Verification from './pages/Verification/Verification';
-import Explore from './pages/Explore/Explore'; // Import Explore page
+import Explore from './pages/Explore/Explore';
+import MyProjects from './pages/SharedProjects/MyProjects';
+import WorkingProjects from './pages/WorkingProjects/WorkingProjects';
+
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,6 +52,8 @@ function App() {
               <Route path='/edit-profile' element={<EditProfile />} />
               <Route path='/home' element={<Home />} />
               <Route path='/explore' element={<Explore />} />
+              <Route path='/my-projects' element={<MyProjects />} />
+              <Route path='/working-projects' element={<WorkingProjects />} />
             </>
           ) : (
             <Route path='*' element={<SignIn />} /> // Redirect to sign-in page if not authenticated

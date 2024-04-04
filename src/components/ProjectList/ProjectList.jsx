@@ -2,11 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProjectList = ({ projects }) => {
+const ProjectList = ({ projects, mode }) => {
   return (
     <div>
       {projects.map((project) => (
-        <Link to={`/project/detail/${project._id}`} key={project._id}>
+        <Link to={`/project/${mode}/${project._id}`} key={project._id}>
           <div className="border border-gray-300 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
             <h3 className="text-md font-semibold mb-0.5">
               {project.name.length > 200
