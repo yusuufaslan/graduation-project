@@ -17,7 +17,7 @@ function SignIn() {
 
   const navigate = useNavigate(); // useNavigate hook for redirection
 
-  console.log(localStorage.getItem("token"));
+  // console.log(localStorage.getItem("token"));
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;

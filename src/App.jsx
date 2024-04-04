@@ -17,7 +17,7 @@ import Welcome from './pages/Welcome/Welcome';
 import Verification from './pages/Verification/Verification';
 import Explore from './pages/Explore/Explore';
 import MyProjects from './pages/SharedProjects/MyProjects';
-import WorkingProjects from './pages/WorkingProjects/WorkingProjects';
+import ParticipatedProjects from './pages/ParticipatedProjects/ParticipatedProjects';
 
 
 import { ToastContainer } from 'react-toastify';
@@ -53,7 +53,7 @@ function App() {
               <Route path='/home' element={<Home />} />
               <Route path='/explore' element={<Explore />} />
               <Route path='/my-projects' element={<MyProjects />} />
-              <Route path='/working-projects' element={<WorkingProjects />} />
+              <Route path='/participated-projects' element={<ParticipatedProjects />} />
             </>
           ) : (
             <Route path='*' element={<SignIn />} /> // Redirect to sign-in page if not authenticated

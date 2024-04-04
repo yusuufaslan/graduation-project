@@ -1,29 +1,29 @@
-// WorkingProjects.jsx
+// ParticipatedProjects.jsx
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/header/Navbar";
 import ProjectList from "../../components/ProjectList/ProjectList";
 
-const WorkingProjects = () => {
-  const [workingProjects, setWorkingProjects] = useState([]);
+const ParticipatedProjects = () => {
+  const [participatedProjects, setParticipatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Simulate fetching working projects from an API
-    fetchWorkingProjects()
+    fetchParticipatedProjects()
       .then((projects) => {
-        setWorkingProjects(projects);
+        setParticipatedProjects(projects);
       })
       .catch((error) => console.error("Error fetching working projects:", error))
       .finally(() => setLoading(false));
   }, []);
 
-  const fetchWorkingProjects = () => {
+  const fetchParticipatedProjects = () => {
     // Simulated fetch function, replace with actual fetch logic
     return new Promise((resolve, reject) => {
       // Simulating delay
       setTimeout(() => {
         // Sample working projects, replace with actual data retrieval logic
-        const sampleWorkingProjects = [
+        const sampleParticipatedProjects = [
           // Example working project objects
           {
             _id: "11",
@@ -67,7 +67,7 @@ const WorkingProjects = () => {
             ],
           },
         ];
-        resolve(sampleWorkingProjects);
+        resolve(sampleParticipatedProjects);
       }, 100); // Simulating delay of 0.1 second
     });
   };
@@ -77,12 +77,12 @@ const WorkingProjects = () => {
       <Navbar />
       <div className="container mx-auto px-10 py-8 max-w-7xl">
         <h1 className="text-3xl font-semibold text-center mb-8">
-          My Working Projects
+          My Participated Projects
         </h1>
         {loading ? (
           <p className="text-center">Loading...</p>
-        ) : workingProjects.length > 0 ? (
-          <ProjectList projects={workingProjects} mode="detail"/>
+        ) : participatedProjects.length > 0 ? (
+          <ProjectList projects={participatedProjects} mode="detail"/>
         ) : (
           <p className="text-center text-gray-600 mt-8">
             You are not working on any projects currently.
@@ -93,4 +93,4 @@ const WorkingProjects = () => {
   );
 };
 
-export default WorkingProjects;
+export default ParticipatedProjects;
