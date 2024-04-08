@@ -36,6 +36,21 @@ const ProjectDetailPage = () => {
             { name: "isTrue", action: "" },
           ],
         },
+        {
+          id: 457,
+          projectId: projectId,
+          name: "Example Dataset 2",
+          description: "Example Dataset Description 2",
+          file: {},
+          fileType: "json",
+          columns: [
+            { name: "name", action: "" },
+            { name: "surname", action: "" },
+            { name: "identity", action: "" },
+            { name: "datavalue", action: "" },
+            { name: "isTrue", action: "" },
+          ],
+        },
       ],
       selectedTags: [1, 2],
     };
@@ -43,7 +58,7 @@ const ProjectDetailPage = () => {
     setProject(dummyProject);
 
     // Check if user's email is in the project's emails array
-    const userEmail = "example@example.com"; // Replace this with actual user email
+    const userEmail = "test1@example.com"; // Replace this with actual user email
     if (dummyProject.emails.includes(userEmail)) {
       setHasAccess(true);
     }
@@ -52,6 +67,11 @@ const ProjectDetailPage = () => {
   const handleCreateProposal = () => {
     // Navigate to the proposal page with the projectId
     navigate(`/proposal/create/${projectId}`);
+  };
+
+  const handleDownloadDataset = (datasetId) => {
+    // Placeholder function for handling dataset download
+    console.log("Downloading dataset with ID:", datasetId);
   };
 
   if (!project) {
@@ -128,7 +148,7 @@ const ProjectDetailPage = () => {
                   onClick={handleCreateProposal}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  Create Proposal to get access to download datasets.
+                  Create proposal to get access to download datasets.
                 </button>
               )}
             </div>
@@ -140,8 +160,20 @@ const ProjectDetailPage = () => {
                 key={dataset.id}
                 className="border-b border-gray-200 last:border-0 py-4"
               >
-                <h3 className="text-xl font-semibold mb-2">{dataset.name}</h3>
-                <p className="text-gray-700">{dataset.description}</p>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">{dataset.name}</h3>
+                  <p className="text-gray-700">{dataset.description}</p>
+                </div>
+                <div className="mt-2">
+                  {hasAccess && (
+                    <button
+                      onClick={() => handleDownloadDataset(dataset.id)}
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Download Dataset
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

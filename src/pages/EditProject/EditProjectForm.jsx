@@ -106,6 +106,11 @@ const EditProjectForm = () => {
     setProject({ ...project, datasets: updatedDatasets });
   };
 
+  const handleDownloadDataset = (datasetId) => {
+    // Placeholder function for handling dataset download
+    console.log("Downloading dataset with ID:", datasetId);
+  };
+
   const handleSubmit = () => {
     // Handle updating project data here (e.g., make a request to update project data on the backend)
     console.log("Updated Project:", project);
@@ -236,7 +241,6 @@ const EditProjectForm = () => {
               ))}
             </div>
           </div>
-
           {/* Display datasets */}
           <div className="max-w-7xl mx-auto mt-8">
             <h2 className="text-2xl font-bold mb-4">Datasets</h2>
@@ -245,16 +249,26 @@ const EditProjectForm = () => {
                 key={dataset.id} // Assigning dataset id as key
                 className="border border-gray-300 p-4 mb-4 rounded-md"
               >
-                <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
-                <p className="text-gray-600 mb-2">{dataset.description}</p>
-                {/* Add more dataset information as needed */}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveDataset(dataset.id)}
-                  className="text-red-600 font-bold focus:outline-none"
-                >
-                  Remove Dataset
-                </button>
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
+                  <p className="text-gray-600 mb-2">{dataset.description}</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveDataset(dataset.id)}
+                    className="text-red-600 font-bold focus:outline-none"
+                  >
+                    Remove Dataset
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadDataset(dataset.id)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Download Dataset
+                  </button>
+                </div>
               </div>
             ))}
             <button
