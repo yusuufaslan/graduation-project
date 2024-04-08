@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios"; // Import Axios
 import Navbar from "../../components/header/Navbar";
 
 const ProjectDetailPage = () => {
@@ -7,62 +8,76 @@ const ProjectDetailPage = () => {
   const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
+  const [tagList, setTagList] = useState([]);
+  const [user, setUser] = useState(null);
   const [hasAccess, setHasAccess] = useState(false); // State to track access permission
 
   useEffect(() => {
-    // Fetch project data from backend using projectId
-    // For demonstration, setting some dummy data
-    const dummyProject = {
-      id: projectId,
-      name: "Sample Project",
-      description: "This is a sample project description",
-      abstract: "Abstract for the sample project",
-      isPublic: true,
-      emails: ["test1@example.com", "test2@example.com"],
-      owner: "Yusuf Aslan",
-      datasets: [
-        {
-          id: 456,
-          projectId: projectId,
-          name: "Example Dataset",
-          description: "Example Dataset Description",
-          file: {},
-          fileType: "csv",
-          columns: [
-            { name: "name", action: "" },
-            { name: "surname", action: "" },
-            { name: "identity", action: "" },
-            { name: "datavalue", action: "" },
-            { name: "isTrue", action: "" },
-          ],
-        },
-        {
-          id: 457,
-          projectId: projectId,
-          name: "Example Dataset 2",
-          description: "Example Dataset Description 2",
-          file: {},
-          fileType: "json",
-          columns: [
-            { name: "name", action: "" },
-            { name: "surname", action: "" },
-            { name: "identity", action: "" },
-            { name: "datavalue", action: "" },
-            { name: "isTrue", action: "" },
-          ],
-        },
-      ],
-      selectedTags: [1, 2],
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+  
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // If token does not exist, redirect to sign-in page
+          navigate("/sign-in");
+        } else {
+          const response = await axios.get("http://localhost:3838/api/user/detail", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          const userData = response.data.user;
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
-
-    setProject(dummyProject);
-
-    // Check if user's email is in the project's emails array
-    const userEmail = "test1@example.com"; // Replace this with actual user email
-    if (dummyProject.emails.includes(userEmail)) {
-      setHasAccess(true);
-    }
-  }, [projectId]);
+  
+    const fetchTagList = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/tag/get");
+        if (response.status === 200) {
+          setTagList(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching tag list:", error);
+      }
+    };
+  
+    const fetchProjectDetail = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3838/api/project/detail",
+          { projectId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include authorization token in headers
+            },
+          }
+        );
+  
+        const data = response.data;
+        setProject(data.project);
+        
+        if (data.project.userIds.includes(user._id)) {
+          setHasAccess(true);
+        }
+      } catch (error) {
+        console.error("Error fetching project detail:", error);
+      }
+    };
+  
+    const fetchData = async () => {
+      await Promise.all([fetchUserData(), fetchTagList()]);
+      fetchProjectDetail();
+    };
+  
+    fetchData();
+  }, [projectId, navigate, user]);
 
   const handleCreateProposal = () => {
     // Navigate to the proposal page with the projectId
@@ -83,7 +98,7 @@ const ProjectDetailPage = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Project Detail - {project.id}
+          Project Detail - {project._id}
         </h1>
         <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 mb-44">
           <div className="px-6 py-4">
@@ -104,22 +119,25 @@ const ProjectDetailPage = () => {
             </div>
             <div className="mb-4">
               <p className="text-gray-700">
-                <span className="font-bold">Owner:</span>{" "}
-                <span className="font-normal">{project.owner}</span>
+                <span className="font-bold">Owner Id:</span>{" "}
+                <span className="font-normal">{project.ownerId}</span>
               </p>
             </div>
             <div className="mb-4">
               <p className="text-gray-700">
                 <span className="font-bold">Tags:</span>{" "}
                 <span className="flex flex-wrap mt-2">
-                  {project.selectedTags.map((tagId) => (
-                    <span
-                      key={tagId}
-                      className="bg-blue-200 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-                    >
-                      Tag {tagId}
-                    </span>
-                  ))}
+                  {project.tagIds.map((tagId) => {
+                    const tag = tagList.find(tag => tag._id === tagId);
+                    return (
+                      <span
+                        key={tagId}
+                        className="bg-blue-200 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+                      >
+                        {tag ? tag.name : `Tag ${tagId}`} {/* Display tag name or fallback to tagId */}
+                      </span>
+                    );
+                  })}
                 </span>
               </p>
             </div>
@@ -155,9 +173,9 @@ const ProjectDetailPage = () => {
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
             <h1 className="text-2xl font-bold">Datasets</h1>
-            {project.datasets.map((dataset) => (
+            {project.datasetIds.map((dataset) => (
               <div
-                key={dataset.id}
+                key={dataset._id}
                 className="border-b border-gray-200 last:border-0 py-4"
               >
                 <div>
@@ -167,7 +185,7 @@ const ProjectDetailPage = () => {
                 <div className="mt-2">
                   {hasAccess && (
                     <button
-                      onClick={() => handleDownloadDataset(dataset.id)}
+                      onClick={() => handleDownloadDataset(dataset._id)}
                       className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                     >
                       Download Dataset
