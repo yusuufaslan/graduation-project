@@ -1,64 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
 import ProjectList from "../../components/ProjectList/ProjectList";
 
+import axios from "axios";
+
 const dummyProjects = [
   {
-    _id: "1",
+    _id: "65fdbd46b5689614d4ad2c2c",
     name: "Project 1",
     owner: "Owner 1",
     lastUpdated: "2024-03-01",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
-      { _id: "1", name: "Tag 1" },
-      { _id: "2", name: "Tag 2" },
+      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
+      { _id: "66017b79b0aa91c3c0f56b7b", name: "Tag 2" },
     ],
   },
   {
-    _id: "2",
+    _id: "66017b79b0aa91c3c0f56b7b",
     name: "A Project 2",
     owner: "Owner 2",
     lastUpdated: "2024-04-01",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
-      { _id: "3", name: "Tag 3" },
-      { _id: "4", name: "Tag 4" },
+      { _id: "6613dc2e8b0c99f929fec61a", name: "Tag 3" },
+      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
     ],
   },
   {
-    _id: "3",
+    _id: "6613dc2e8b0c99f929fec61a",
     name: "Project 3",
     owner: "Owner 3",
     lastUpdated: "2024-04-02",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [{ _id: "1", name: "Tag 1" }],
+    tags: [{ _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" }],
   },
   {
-    _id: "4",
+    _id: "6613dc328b0c99f929fec61c",
     name: "Project 4",
     owner: "Owner 4",
     lastUpdated: "2024-04-01",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
-      { _id: "1", name: "Tag 1" },
-      { _id: "4", name: "Tag 4" },
+      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
+      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
     ],
   },
   {
-    _id: "5",
+    _id: "6613dc378b0c99f929fec61e",
     name: "Project 5",
     owner: "Owner 5",
     lastUpdated: "2024-04-01",
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
-      { _id: "1", name: "Tag 1" },
-      { _id: "4", name: "Tag 4" },
+      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
+      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
     ],
   },
   {
@@ -69,24 +71,18 @@ const dummyProjects = [
     description:
       "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
     tags: [
-      { _id: "1", name: "Tag 1" },
-      { _id: "4", name: "Tag 4" },
-      { _id: "2", name: "Tag 2" },
+      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
+      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
+      { _id: "66017b79b0aa91c3c0f56b7b", name: "Tag 2" },
     ],
   },
   // Add more dummy projects as needed
 ];
 
-const dummyTags = [
-  { _id: "1", name: "Tag 1" },
-  { _id: "2", name: "Tag 2" },
-  { _id: "3", name: "Tag 3" },
-  { _id: "4", name: "Tag 4" },
-  { _id: "5", name: "Tag 5" },
-];
+
 const Explore = () => {
   const [projects, setProjects] = useState(dummyProjects);
-  const [tags, setTags] = useState(dummyTags);
+  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState("latest");
   const [page, setPage] = useState(1);
@@ -94,9 +90,20 @@ const Explore = () => {
   const [noProjectsFound, setNoProjectsFound] = useState(true);
 
   useEffect(() => {
-    // Load projects when the component mounts
+    fetchTags(); // Fetch tags when component mounts
     handleSetFilter();
   }, []); // Empty dependency array means this effect runs only once, equivalent to componentDidMount
+
+  const fetchTags = async () => {
+    try {
+      const response = await axios.get("http://localhost:3838/api/tag/get");
+      if (response.status === 200) {
+        setTags(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching tag list:", error);
+    }
+  };
 
   const handleTagSelection = (tagId) => {
     // Update selected tags
@@ -150,6 +157,8 @@ const Explore = () => {
 
   const filterProjects = (projectsToFilter) => {
     return projectsToFilter.filter((project) => {
+      // every and some change affects AND, OR logic for tag filtering.
+      // for AND logic, change code below as selectedTags.every ...
       return (
         (selectedTags.length === 0 ||
           selectedTags.some((tagId) =>
