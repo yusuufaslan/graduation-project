@@ -123,7 +123,7 @@ const ProjectDetailPage = () => {
                 </span>
               </p>
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <p className="text-gray-700">
                 <span className="font-bold">User Emails:</span>{" "}
                 <span className="flex flex-wrap mt-2">
@@ -137,7 +137,7 @@ const ProjectDetailPage = () => {
                   ))}
                 </span>
               </p>
-            </div>
+            </div> */}
             <div className="py-4 border-t border-gray-200">
               {hasAccess ? (
                 <p className="text-green-600 font-bold">
@@ -154,7 +154,7 @@ const ProjectDetailPage = () => {
             </div>
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
-            <p className="text-2xl font-bold mb-4">Datasets</p>
+            <h1 className="text-2xl font-bold">Datasets</h1>
             {project.datasets.map((dataset) => (
               <div
                 key={dataset.id}
