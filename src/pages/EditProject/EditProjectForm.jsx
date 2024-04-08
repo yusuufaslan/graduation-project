@@ -72,13 +72,21 @@ const EditProjectForm = () => {
   };
 
   const handleTagSelection = (tagId) => {
-    if (selectedTags.includes(tagId)) {
-      setSelectedTags(selectedTags.filter(id => id !== tagId));
-    } else {
-      setSelectedTags([...selectedTags, tagId]);
-    }
-
-    console.log(selectedTags);
+    setSelectedTags((prevSelectedTags) => {
+      if (prevSelectedTags.includes(tagId)) {
+        return prevSelectedTags.filter((id) => id !== tagId);
+      } else {
+        return [...prevSelectedTags, tagId];
+      }
+    });
+  
+    // Update project's tagIds in the project state
+    setProject((prevProject) => ({
+      ...prevProject,
+      tagIds: selectedTags.includes(tagId)
+        ? prevProject.tagIds.filter((id) => id !== tagId)
+        : [...prevProject.tagIds, tagId],
+    }));
   };
 
   const handleAddDataset = () => {
@@ -106,6 +114,7 @@ const EditProjectForm = () => {
   };
 
   const handleSubmit = async () => {
+    console.log(project);
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
