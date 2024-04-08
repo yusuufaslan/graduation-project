@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 import { BsPersonCircle } from "react-icons/bs";
-
-
 import Navbar from "../../components/header/Navbar";
 
 function UserProfile() {
@@ -12,24 +12,30 @@ function UserProfile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Fetch user details using the token from localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // If token does not exist, redirect to sign-in page
-      navigate("/sign-in");
-    } else {
-      // Simulated user data - Replace this with actual API call
-      const userData = {
-        name: "John",
-        surname: "Doe",
-        email: "john@example.com",
-        role: "student",
-        institution: "University A",
-        address: "123 Main St, City, Country",
-      };
-      setUser(userData);
+    // fetching user data when page is loading
+    fetchUserData();
+  }, [navigate]);
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        // If token does not exist, redirect to sign-in page
+        navigate("/sign-in");
+      } else {
+        const response = await axios.get("http://localhost:3838/api/user/detail", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userData = response.data.user;
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-  }, [history]);
+  };
 
   const handleEditProfile = () => {
     navigate("/edit-profile");

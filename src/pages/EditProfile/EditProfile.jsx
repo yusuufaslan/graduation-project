@@ -1,14 +1,15 @@
 // EditProfile.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { BsPersonCircle } from "react-icons/bs";
-
 import Navbar from "../../components/header/Navbar";
 
 function EditProfile() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [institutionOptions, setInstitutionOptions] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -19,25 +20,48 @@ function EditProfile() {
   });
 
   useEffect(() => {
-    // Fetch user details using the token from localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // If token does not exist, redirect to sign-in page
-      navigate("/sign-in");
-    } else {
-      // Simulated user data - Replace this with actual API call
-      const userData = {
-        name: "John",
-        surname: "Doe",
-        email: "john@example.com",
-        role: "student",
-        institution: "University A",
-        address: "123 Main St, City, Country",
-      };
-      setUser(userData);
-      setFormData(userData); // Initialize form data with user details
-    }
+    fetchUserData();
+    fetchInstitutions();
   }, [navigate]);
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        // If token does not exist, redirect to sign-in page
+        navigate("/sign-in");
+      } else {
+        const response = await axios.get(
+          "http://localhost:3838/api/user/detail",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userData = response.data.user;
+        setUser(userData);
+        setFormData(userData); // Initialize form data with user details
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const fetchInstitutions = async () => {
+    try {
+      const response = await fetch("http://localhost:3838/api/institution/get");
+      if (response.ok) {
+        const data = await response.json();
+        setInstitutionOptions(data);
+      } else {
+        throw new Error("Failed to fetch institutions");
+      }
+    } catch (error) {
+      console.error("Error fetching institutions:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -135,9 +159,11 @@ function EditProfile() {
                   onChange={handleChange}
                 >
                   <option value="">Select</option>
-                  <option value="University A">University A</option>
-                  <option value="College B">College B</option>
-                  {/* Add more options as needed */}
+                  {institutionOptions.map((institution) => (
+                    <option key={institution.id} value={institution.name}>
+                      {institution.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
