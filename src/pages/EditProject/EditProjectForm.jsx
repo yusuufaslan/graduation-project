@@ -9,6 +9,7 @@ const EditProjectForm = () => {
 
   const [project, setProject] = useState(null);
   const [tagList, setTagList] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -32,13 +33,13 @@ const EditProjectForm = () => {
           );
           const data = response.data;
           setProject(data.project);
-
+  
           // Fetch tag list
           const tagResponse = await axios.get("http://localhost:3838/api/tag/get");
           if (tagResponse.status === 200) {
             setTagList(tagResponse.data);
           }
-
+  
           // Fetch user data
           const userResponse = await axios.get("http://localhost:3838/api/user/detail", {
             headers: {
@@ -47,14 +48,18 @@ const EditProjectForm = () => {
           });
           const userData = userResponse.data.user;
           setUser(userData);
+  
+          // Set selected tags based on project's tagIds
+          setSelectedTags(data.project.tagIds); // Update selectedTags state
         }
       } catch (error) {
         console.error("Error fetching project data:", error);
       }
     };
-
+  
     fetchData();
   }, [projectId, navigate]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,6 +69,16 @@ const EditProjectForm = () => {
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setProject({ ...project, [name]: checked });
+  };
+
+  const handleTagSelection = (tagId) => {
+    if (selectedTags.includes(tagId)) {
+      setSelectedTags(selectedTags.filter(id => id !== tagId));
+    } else {
+      setSelectedTags([...selectedTags, tagId]);
+    }
+
+    console.log(selectedTags);
   };
 
   const handleAddDataset = () => {
@@ -169,6 +184,26 @@ const EditProjectForm = () => {
               <span>Is Public</span>
             </label>
           </div>
+         {/* Tags */}
+         <div className="mb-4">
+            <label className="block font-bold mb-1">Tags:</label>
+            <div className="flex flex-wrap">
+              {tagList.map((tag) => (
+                <div
+                  key={tag._id}
+                  className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
+                    selectedTags.includes(tag._id)
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => handleTagSelection(tag._id)}
+                >
+                  <span className="mr-1">{tag.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Datasets */}
           <div className="max-w-7xl mx-auto mt-8">
             <h2 className="text-2xl font-bold mb-4">Datasets</h2>
@@ -192,7 +227,7 @@ const EditProjectForm = () => {
                   <button
                     type="button"
                     onClick={() => handleDownloadDataset(dataset._id)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    className="text-green-600 font-bold focus:outline-none"
                   >
                     Download Dataset
                   </button>
