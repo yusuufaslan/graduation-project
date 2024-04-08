@@ -49,28 +49,32 @@ const ProjectDetailPage = () => {
   
     const fetchProjectDetail = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:3838/api/project/detail",
-          { projectId },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include authorization token in headers
-            },
+        if (user && user._id) {
+          const response = await axios.post(
+            "http://localhost:3838/api/project/detail",
+            { projectId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include authorization token in headers
+              },
+            }
+          );
+    
+          const data = response.data;
+          setProject(data.project);
+          
+          if (data.project.userIds.includes(user._id)) {
+            setHasAccess(true);
           }
-        );
-  
-        const data = response.data;
-        setProject(data.project);
-        
-        if (data.project.userIds.includes(user._id)) {
-          setHasAccess(true);
+        } else {
+          // console.error("User data not available.");
         }
       } catch (error) {
         console.error("Error fetching project detail:", error);
       }
     };
-  
+    
     const fetchData = async () => {
       await Promise.all([fetchUserData(), fetchTagList()]);
       fetchProjectDetail();
