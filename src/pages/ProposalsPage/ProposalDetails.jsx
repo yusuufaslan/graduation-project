@@ -14,7 +14,7 @@ const ProposalDetails = ({ proposal }) => {
       statusText = "Rejected";
       break;
     case "none":
-      statusColorClass = "text-green-600";
+      statusColorClass = "text-blue-600";
       statusText = "Waiting";
       break;
     default:

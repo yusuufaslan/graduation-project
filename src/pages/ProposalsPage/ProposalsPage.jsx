@@ -12,28 +12,35 @@ const ProposalsPage = () => {
   const [proposals, setProposals] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [proposalReviewText, setProposalReviewText] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProposals();
   }, [pageType]);
 
   const fetchProposals = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3838/api/proposal/list", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:3838/api/proposal/list",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       const { sentProposals, receivedProposals } = response.data;
 
       if (pageType === "sent") {
         setProposals(sentProposals);
       } else {
-        // Combine all received proposals into a single array
-        const received = receivedProposals.flatMap((project) => project.foundProposals);
+        const received = receivedProposals.flatMap(
+          (project) => project.foundProposals
+        );
         setProposals(received);
       }
+      setLoading(false); // Set loading to false after fetching proposals
     } catch (error) {
       console.error("Error fetching proposals:", error);
     }
@@ -127,23 +134,30 @@ const ProposalsPage = () => {
             <h2 className="text-lg font-bold py-4 px-6 bg-gray-100 border-b border-gray-200">
               {pageType === "sent" ? "Proposals Sent" : "Proposals Received"}
             </h2>
-            <div className="divide-y divide-gray-200">
-              {proposals.map((proposal) => (
-                <div
-                  key={proposal._id}
-                  onClick={() => handleProposalClick(proposal)}
-                  className="p-4 hover:bg-gray-50 cursor-pointer"
-                >
-                  <p className="text-1xl font-bold text-gray-600">
-                    Applicant User: {proposal.applicatorId}
-                  </p>
-                  <p className="text-m font-medium">Project Id: {proposal.projectId}</p>
-                  <p className="text-sm text-gray-600">
-                    {proposal.proposalText.substring(0, 50)}...
-                  </p>
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              // Display loading message while proposals are being fetched
+              <div className="text-center py-4">Proposals Loading...</div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {proposals.map((proposal) => (
+                  <div
+                    key={proposal._id}
+                    onClick={() => handleProposalClick(proposal)}
+                    className="p-4 hover:bg-gray-50 cursor-pointer"
+                  >
+                    <p className="text-1xl font-bold text-gray-600">
+                      Applicant User: {proposal.applicatorId}
+                    </p>
+                    <p className="text-m font-medium">
+                      Project Id: {proposal.projectId}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {proposal.proposalText.substring(0, 50)}...
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="w-2/3 pl-5">
