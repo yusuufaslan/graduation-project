@@ -85,6 +85,7 @@ const CreateDataset = () => {
     formData.append('projectId', dataset.projectId);
     formData.append('columnNames', dataset.columnNames.join(','));
     formData.append('columnActions', dataset.columnActions.join(','));
+    formData.append('description', dataset.description);
 
     // formData.forEach((value, key) => {
     //   console.log(key, value);
