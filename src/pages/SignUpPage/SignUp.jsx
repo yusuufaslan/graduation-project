@@ -108,50 +108,58 @@ function SignUp() {
       setInvalidEmail(true);
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       setPasswordsMatch(false);
       setPasswordsMatchMessage("Passwords do not match");
       return;
     }
-
+  
     try {
-      const response = await fetch("http://localhost:3838/api/user/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
+      const institutionId = institutionOptions.find(
+        (option) => option.name === formData.institution
+      )?._id;
+  
+      const response = await axios.post(
+        "http://localhost:3838/api/user/signup",
+        {
           email: formData.email,
           password: formData.password,
           name: formData.name,
           surname: formData.surname,
-          phone: formData.phone, // Make sure you capture the phone number from the form
           address: formData.address,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("User already exists. Please verify your account first.");
-      }
-
+          institutionId: institutionId, // Sending institution ID
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      // if (!response.ok) {
+      //   throw new Error(
+      //     "User already exists. Please verify your account first."
+      //   );
+      // }
+  
       toast.success(
         "Welcome! We've sent you an email with a verification link. Please verify your email to complete the signup process."
       );
-
+  
       // Save email to local storage to use in verification
       localStorage.setItem("verifiedEmail", formData.email);
-
+  
       // Navigate to verification page after successful signup
       navigate("/verify");
-
     } catch (error) {
       console.error("Error signing up:", error);
       // Handle error or display a message to the user
       toast.error("User already exists. Please verify your account first.");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
