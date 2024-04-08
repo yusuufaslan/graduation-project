@@ -1,62 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import Footer from "../../components/footer/Footer";
+import axios from "axios"; // Import Axios
 import Navbar from "../../components/header/Navbar";
-
-const tagList = [
-  { id: 1, name: "Tag 1" },
-  { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 3" },
-];
 
 const EditProjectForm = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
 
-  const [project, setProject] = useState({
-    id: projectId,
-    name: "",
-    description: "",
-    abstract: "",
-    isPublic: true,
-    emails: [],
-    owner: "Yusuf Aslan",
-    datasets: [],
-    selectedTags: [],
-  });
+  const [project, setProject] = useState(null);
+  const [tagList, setTagList] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Fetch project data from backend using projectId
-    // For demonstration, setting some dummy data
-    setProject({
-      id: projectId,
-      name: "Sample Project",
-      description: "This is a sample project description",
-      abstract: "Abstract for the sample project",
-      isPublic: true,
-      emails: ["test1@example.com", "test2@example.com"],
-      owner: "Yusuf Aslan",
-      datasets: [
-        {
-          id: 456,
-          projectId: projectId,
-          name: "Example Dataset",
-          description: "Example Dataset Description",
-          file: {},
-          fileType: "csv",
-          columns: [
-            { name: "name", action: "" },
-            { name: "surname", action: "" },
-            { name: "identity", action: "" },
-            { name: "datavalue", action: "" },
-            { name: "isTrue", action: "" },
-          ],
-        },
-      ], // Dummy datasets, you may fetch them from the backend
-      selectedTags: [1, 2], // Sample selected tags
-    });
-  }, [projectId]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // If token does not exist, redirect to sign-in page
+          navigate("/sign-in");
+        } else {
+          // Fetch project detail
+          const response = await axios.post(
+            "http://localhost:3838/api/project/detail",
+            { projectId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const data = response.data;
+          setProject(data.project);
+
+          // Fetch tag list
+          const tagResponse = await axios.get("http://localhost:3838/api/tag/get");
+          if (tagResponse.status === 200) {
+            setTagList(tagResponse.data);
+          }
+
+          // Fetch user data
+          const userResponse = await axios.get("http://localhost:3838/api/user/detail", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const userData = userResponse.data.user;
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+      }
+    };
+
+    fetchData();
+  }, [projectId, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,42 +66,23 @@ const EditProjectForm = () => {
     setProject({ ...project, [name]: checked });
   };
 
-  const handleEmailsChange = (e) => {
-    if (e.key === "Enter" && e.target.value.trim() !== "") {
-      const newEmail = e.target.value.trim();
-      setProject({ ...project, emails: [...project.emails, newEmail] });
-      e.target.value = "";
-    }
-  };
-
-  const handleRemoveEmail = (emailToRemove) => {
-    setProject({
-      ...project,
-      emails: project.emails.filter((email) => email !== emailToRemove),
-    });
-  };
-
-  const handleTagSelection = (tagId) => {
-    const selectedTags = [...project.selectedTags];
-    if (selectedTags.includes(tagId)) {
-      const updatedTags = selectedTags.filter((id) => id !== tagId);
-      setProject({ ...project, selectedTags: updatedTags });
-    } else {
-      setProject({ ...project, selectedTags: [...selectedTags, tagId] });
-    }
-  };
-
   const handleAddDataset = () => {
     // Navigate to the new dataset creation page with project ID as a parameter
-    navigate(`/dataset/create/${project.id}`);
+    navigate(`/dataset/create/${projectId}`);
   };
 
   const handleRemoveDataset = (datasetId) => {
+    if (!project || !project.datasetIds) {
+      // Project or project datasets are not properly set
+      console.error('Project or project datasets are not properly set.');
+      return;
+    }
+  
     // Remove dataset from project datasets
-    const updatedDatasets = project.datasets.filter(
-      (dataset) => dataset.id !== datasetId
+    const updatedDatasets = project.datasetIds.filter(
+      (dataset) => dataset._id !== datasetId
     );
-    setProject({ ...project, datasets: updatedDatasets });
+    setProject({ ...project, datasetIds: updatedDatasets });
   };
 
   const handleDownloadDataset = (datasetId) => {
@@ -111,60 +90,74 @@ const EditProjectForm = () => {
     console.log("Downloading dataset with ID:", datasetId);
   };
 
-  const handleSubmit = () => {
-    // Handle updating project data here (e.g., make a request to update project data on the backend)
-    console.log("Updated Project:", project);
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        "http://localhost:3838/api/project/update",
+        project,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Project updated successfully:", response.data);
+      // Optionally, you can redirect the user to the project detail page
+      navigate(`/project/detail/${projectId}`);
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
   };
+
+  if (!project) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-8 h-screen mb-96">
+      <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Edit Project {projectId}
+          Edit Project - {project._id}
         </h1>
         <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
-          <p className="text-2xl font-bold mb-4">Project Information</p>
-          <div className="mb-4 font-bold">
-            <label className="block mb-1">
-              Name:
-              <input
-                type="text"
-                name="name"
-                value={project.name}
-                onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Enter project name"
-              />
-            </label>
+          {/* Project Information */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={project.name}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+              placeholder="Enter project name"
+            />
           </div>
-          <div className="mb-4 font-bold">
-            <label className="block mb-1">
-              Description:
-              <textarea
-                name="description"
-                value={project.description}
-                onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Enter project description"
-                rows="4"
-              ></textarea>
-            </label>
+          <div className="mb-4">
+            <label className="block font-bold mb-1">Description:</label>
+            <textarea
+              name="description"
+              value={project.description}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+              placeholder="Enter project description"
+              rows="4"
+            ></textarea>
           </div>
-          <div className="mb-4 font-bold">
-            <label className="block mb-1">
-              Abstract:
-              <textarea
-                name="abstract"
-                value={project.abstract}
-                onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Enter project abstract"
-                rows="4"
-              ></textarea>
-            </label>
+          <div className="mb-4">
+            <label className="block font-bold mb-1">Abstract:</label>
+            <textarea
+              name="abstract"
+              value={project.abstract}
+              onChange={handleChange}
+              className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+              placeholder="Enter project abstract"
+              rows="4"
+            ></textarea>
           </div>
-          <div className="mb-4 font-bold">
+          <div className="mb-4">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -176,77 +169,12 @@ const EditProjectForm = () => {
               <span>Is Public</span>
             </label>
           </div>
-          {!project.isPublic && (
-            <div className="mb-4 font-bold">
-              <label className="block mb-1">
-                User Emails:
-                <input
-                  type="text"
-                  name="emails"
-                  onKeyDown={handleEmailsChange}
-                  className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                  placeholder="Provide user email and press enter"
-                />
-              </label>
-              <div className="flex flex-wrap mt-2">
-                {project.emails.map((email, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-semibold mt-1"
-                  >
-                    <span className="mr-1">{email}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveEmail(email)}
-                      className="text-red-600 font-bold focus:outline-none"
-                    >
-                      <AiOutlineCloseCircle className="ml-1" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Display list of tags */}
-          <div className="mb-4 font-bold">
-            <label className="block mb-1">Tags:</label>
-            <div className="flex flex-wrap">
-              {tagList.map((tag) => (
-                <div
-                  key={tag.id}
-                  className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
-                    project.selectedTags.includes(tag.id)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() => handleTagSelection(tag.id)}
-                >
-                  <span className="mr-1">{tag.name}</span>
-                  {project.selectedTags.includes(tag.id) && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 4.293a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-7-7a1 1 0 1 1 1.414-1.414L6 13.586l10.293-10.293a1 1 0 0 1 1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Display datasets */}
+          {/* Datasets */}
           <div className="max-w-7xl mx-auto mt-8">
             <h2 className="text-2xl font-bold mb-4">Datasets</h2>
-            {project.datasets.map((dataset) => (
+            {project.datasetIds.map((dataset) => (
               <div
-                key={dataset.id} // Assigning dataset id as key
+                key={dataset._id}
                 className="border border-gray-300 p-4 mb-4 rounded-md"
               >
                 <div>
@@ -256,14 +184,14 @@ const EditProjectForm = () => {
                 <div className="flex justify-between items-center">
                   <button
                     type="button"
-                    onClick={() => handleRemoveDataset(dataset.id)}
+                    onClick={() => handleRemoveDataset(dataset._id)}
                     className="text-red-600 font-bold focus:outline-none"
                   >
                     Remove Dataset
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleDownloadDataset(dataset.id)}
+                    onClick={() => handleDownloadDataset(dataset._id)}
                     className="bg-blue-500 text-white px-4 py-2 rounded-md"
                   >
                     Download Dataset
@@ -279,7 +207,7 @@ const EditProjectForm = () => {
               Add Dataset
             </button>
           </div>
-
+          {/* Submit Button */}
           <button
             type="button"
             onClick={handleSubmit}
@@ -289,7 +217,6 @@ const EditProjectForm = () => {
           </button>
         </form>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };
