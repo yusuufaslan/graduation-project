@@ -96,6 +96,11 @@ const ProjectDetailPage = () => {
     console.log("Downloading dataset with ID:", datasetId);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // You can customize this further based on your preference
+  };
+
   if (!project) {
     return <div>Loading...</div>;
   }
@@ -128,7 +133,7 @@ const ProjectDetailPage = () => {
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Last Update Date:</span>{" "}
-              <p className="text-gray-700 font-normal">{project.updated_at}</p>
+              <p className="text-gray-700 font-normal">{formatDate(project.updated_at)}</p>
             </div>
             <div className="mb-4">
               <p className="text-gray-700">

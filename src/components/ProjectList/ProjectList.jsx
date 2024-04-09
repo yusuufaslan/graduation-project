@@ -3,6 +3,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProjectList = ({ projects, mode }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // You can customize this further based on your preference
+  };
+
   return (
     <div>
       {projects.map((project) => (
@@ -16,7 +21,7 @@ const ProjectList = ({ projects, mode }) => {
             <p className="text-sm text-gray-700 mb-0.5">
               {project.ownerId}{" "}
               <span className="text-sm text-gray-500 mb-3">
-                | Last Updated: {project.updated_at}
+                | Last Updated: {formatDate(project.updated_at)}
               </span>
             </p>
             <p
