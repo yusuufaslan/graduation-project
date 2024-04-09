@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import Axios
 import Navbar from "../../components/header/Navbar";
+import Select from "react-select";
 
 const EditProjectForm = () => {
   const navigate = useNavigate();
@@ -33,13 +34,17 @@ const EditProjectForm = () => {
           );
           const data = response.data;
           setProject(data.project);
-  
+
           // Fetch tag list
           const tagResponse = await axios.get("http://localhost:3838/api/tag/get");
           if (tagResponse.status === 200) {
-            setTagList(tagResponse.data);
+            const formattedTags = tagResponse.data.map((tag) => ({
+              value: tag._id,
+              label: tag.name,
+            }));
+            setTagList(formattedTags);
           }
-  
+
           // Fetch user data
           const userResponse = await axios.get("http://localhost:3838/api/user/detail", {
             headers: {
@@ -48,7 +53,7 @@ const EditProjectForm = () => {
           });
           const userData = userResponse.data.user;
           setUser(userData);
-  
+
           // Set selected tags based on project's tagIds
           setSelectedTags(data.project.tagIds); // Update selectedTags state
         }
@@ -56,10 +61,9 @@ const EditProjectForm = () => {
         console.error("Error fetching project data:", error);
       }
     };
-  
+
     fetchData();
   }, [projectId, navigate]);
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,21 +75,14 @@ const EditProjectForm = () => {
     setProject({ ...project, [name]: checked });
   };
 
-  const handleTagSelection = (tagId) => {
-    setSelectedTags((prevSelectedTags) => {
-      if (prevSelectedTags.includes(tagId)) {
-        return prevSelectedTags.filter((id) => id !== tagId);
-      } else {
-        return [...prevSelectedTags, tagId];
-      }
-    });
-  
+  const handleTagSelection = (selectedOptions) => {
+    const selectedTags = selectedOptions.map((option) => option.value);
+    setSelectedTags(selectedTags);
+
     // Update project's tagIds in the project state
     setProject((prevProject) => ({
       ...prevProject,
-      tagIds: selectedTags.includes(tagId)
-        ? prevProject.tagIds.filter((id) => id !== tagId)
-        : [...prevProject.tagIds, tagId],
+      tagIds: selectedTags,
     }));
   };
 
@@ -100,7 +97,7 @@ const EditProjectForm = () => {
       console.error('Project or project datasets are not properly set.');
       return;
     }
-  
+
     // Remove dataset from project datasets
     const updatedDatasets = project.datasetIds.filter(
       (dataset) => dataset._id !== datasetId
@@ -193,24 +190,15 @@ const EditProjectForm = () => {
               <span>Is Public</span>
             </label>
           </div>
-         {/* Tags */}
-         <div className="mb-4">
-            <label className="block font-bold mb-1">Tags:</label>
-            <div className="flex flex-wrap">
-              {tagList.map((tag) => (
-                <div
-                  key={tag._id}
-                  className={`rounded-full py-1 px-3 mr-2 mb-2 flex items-center cursor-pointer border border-gray-400 font-semibold mt-1 ${
-                    selectedTags.includes(tag._id)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() => handleTagSelection(tag._id)}
-                >
-                  <span className="mr-1">{tag.name}</span>
-                </div>
-              ))}
-            </div>
+          {/* Tags */}
+          <div className="mb-4 font-bold">
+            <label className="block mb-2">Tags:</label>
+            <Select
+              isMulti
+              options={tagList}
+              value={tagList.filter(tag => selectedTags.includes(tag.value))}
+              onChange={handleTagSelection}
+            />
           </div>
 
           {/* Datasets */}
