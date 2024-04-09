@@ -39,6 +39,8 @@ const Explore = () => {
   };
 
   const fetchData = async () => {
+    // console.log(`http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}`);
+    // console.log(selectedTags);
     try {
       const response = await axios.get(
         `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}`,
