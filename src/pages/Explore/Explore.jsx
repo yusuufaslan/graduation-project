@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/header/Navbar";
 import ProjectList from "../../components/ProjectList/ProjectList";
 import axios from "axios";
+import Select from "react-select"; // Import react-select
 
 import Pagination from "../../components/Pagination/Pagination";
 
@@ -9,8 +10,8 @@ const Explore = () => {
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [sortBy, setSortBy] = useState("name");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortBy, setSortBy] = useState({ value: "name", label: "Name" });
+  const [sortOrder, setSortOrder] = useState({ value: "desc", label: "Descending" });
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [noProjectsFound, setNoProjectsFound] = useState(true);
@@ -26,7 +27,11 @@ const Explore = () => {
     try {
       const response = await axios.get("http://localhost:3838/api/tag/get");
       if (response.status === 200) {
-        setTags(response.data);
+        const formattedTags = response.data.map((tag) => ({
+          value: tag._id,
+          label: tag.name,
+        }));
+        setTags(formattedTags);
       }
     } catch (error) {
       console.error("Error fetching tag list:", error);
@@ -34,13 +39,9 @@ const Explore = () => {
   };
 
   const fetchData = async () => {
-    // console.log(
-    //   `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`
-    // );
-
     try {
       const response = await axios.get(
-        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`,
+        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,7 +49,6 @@ const Explore = () => {
         }
       );
       if (response.status === 200) {
-        // console.log(response.data);
         setProjects(response.data.projects);
         setNoProjectsFound(response.data.projects.length === 0);
       }
@@ -57,20 +57,16 @@ const Explore = () => {
     }
   };
 
-  const handleTagSelection = (tagId) => {
-    if (selectedTags.includes(tagId)) {
-      setSelectedTags(selectedTags.filter((id) => id !== tagId));
-    } else {
-      setSelectedTags([...selectedTags, tagId]);
-    }
+  const handleTagSelection = (selectedOptions) => {
+    setSelectedTags(selectedOptions);
   };
 
-  const handleSortByChange = (e) => {
-    setSortBy(e.target.value);
+  const handleSortByChange = (selectedOption) => {
+    setSortBy(selectedOption);
   };
 
-  const handleSortOrderChange = (e) => {
-    setSortOrder(e.target.value);
+  const handleSortOrderChange = (selectedOption) => {
+    setSortOrder(selectedOption);
   };
 
   const handlePageChange = (newPage) => {
@@ -85,8 +81,8 @@ const Explore = () => {
 
   const handleClearFilters = (e) => {
     setSelectedTags([]);
-    setSortBy("name");
-    setSortOrder("desc");
+    setSortBy({ value: "name", label: "Name" });
+    setSortOrder({ value: "desc", label: "Descending" });
     setSearchQuery("");
     setPage(1); // Reset page to 1 when clearing filters
     setClearFiltersPressed(clearFiltersPressed + 1);
@@ -119,45 +115,36 @@ const Explore = () => {
         <div className="flex">
           <div className="w-full md:w-1/4 pr-4">
             <h2 className="text-xl font-semibold">Sort by</h2>
-            <select
+            <Select
               value={sortBy}
               onChange={handleSortByChange}
-              className="border border-gray-400 rounded-md p-2 mt-2"
-            >
-              <option value="name">Name</option>
-              <option value="description">Description</option>
-              <option value="ownerId">Owner Id</option>
-              <option value="updated_at">Updated At</option>
-              <option value="created_at">Created At</option>
-            </select>
+              options={[
+                { value: "name", label: "Name" },
+                { value: "description", label: "Description" },
+                { value: "ownerId", label: "Owner Id" },
+                { value: "updated_at", label: "Updated At" },
+                { value: "created_at", label: "Created At" },
+              ]}
+            />
 
             <h2 className="text-xl font-semibold mb-2 mt-4">Sort Order</h2>
-            <select
+            <Select
               value={sortOrder}
               onChange={handleSortOrderChange}
-              className="border border-gray-400 rounded-md p-2"
-            >
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
+              options={[
+                { value: "desc", label: "Descending" },
+                { value: "asc", label: "Ascending" },
+              ]}
+            />
 
             <h2 className="text-xl font-semibold mb-2 mt-8">Filter by Tags</h2>
-            <div className="flex flex-wrap mt-2 ml-1">
-              {tags.map((tag) => (
-                <label
-                  key={tag._id}
-                  className="inline-flex items-center mb-2 mr-2"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedTags.includes(tag._id)}
-                    onChange={() => handleTagSelection(tag._id)}
-                    className="form-checkbox text-blue-500 h-5 w-5"
-                  />
-                  <span className="ml-0.5">{tag.name}</span>
-                </label>
-              ))}
-            </div>
+            {/* Tag selection component */}
+            <Select
+              isMulti
+              options={tags}
+              value={selectedTags}
+              onChange={handleTagSelection}
+            />
             <br />
 
             <button
