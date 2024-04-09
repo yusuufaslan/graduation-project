@@ -28,27 +28,27 @@ const ParticipatedProjects = () => {
           {
             _id: "11",
             name: "Working Project 11",
-            owner: "User 11",
-            lastUpdated: "2024-04-02",
+            ownerId: "User 11",
+            updated_at: "2024-04-02",
             description: "Description of Working Project 1",
-            tags: [{ _id: "11", name: "Tag 11" }],
+            tagIds: [{ _id: "11", name: "Tag 11" }],
           },
           {
             _id: "12",
             name: "Working Project 2",
-            owner: "User 2",
-            lastUpdated: "2024-04-04",
+            ownerId: "User 2",
+            updated_at: "2024-04-04",
             description: "Description of Working Project 2",
-            tags: [{ _id: "2", name: "Tag 2" }],
+            tagIds: [{ _id: "2", name: "Tag 2" }],
           },
           {
             _id: "15",
             name: "Project 15",
-            owner: "Owner 15",
-            lastUpdated: "2024-04-01",
+            ownerId: "ownerId 15",
+            updated_at: "2024-04-01",
             description:
               "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-            tags: [
+            tagIds: [
               { _id: "1", name: "Tag 1" },
               { _id: "4", name: "Tag 4" },
             ],
@@ -56,11 +56,11 @@ const ParticipatedProjects = () => {
           {
             _id: "16",
             name: "Project 16",
-            owner: "Owner 16",
-            lastUpdated: "2024-04-03",
+            ownerId: "ownerId 16",
+            updated_at: "2024-04-03",
             description:
               "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-            tags: [
+            tagIds: [
               { _id: "3", name: "Tag 3" },
               { _id: "4", name: "Tag 4" },
               { _id: "2", name: "Tag 2" },
