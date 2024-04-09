@@ -143,7 +143,7 @@ const EditProjectForm = () => {
         <h1 className="text-3xl font-semibold mb-6 text-center">
           Edit Project - {project._id}
         </h1>
-        <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
+        <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg border-2 p-6">
           {/* Project Information */}
           <div className="mb-4">
             <label className="block font-bold mb-1">Name:</label>
