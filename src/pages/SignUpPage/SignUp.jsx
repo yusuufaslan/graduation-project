@@ -129,6 +129,7 @@ function SignUp() {
           surname: formData.surname,
           address: formData.address,
           institutionId: institutionId, // Sending institution ID
+          role: formData.role,
         },
         {
           headers: {
