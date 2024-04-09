@@ -135,7 +135,7 @@ const Explore = () => {
             <select
               value={sortOrder}
               onChange={handleSortOrderChange}
-              className="border border-gray-400 rounded-md p-2 mt-2"
+              className="border border-gray-400 rounded-md p-2"
             >
               <option value="desc">Descending</option>
               <option value="asc">Ascending</option>

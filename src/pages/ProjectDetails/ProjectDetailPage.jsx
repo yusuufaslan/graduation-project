@@ -14,7 +14,7 @@ const ProjectDetailPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
-  
+
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -22,12 +22,15 @@ const ProjectDetailPage = () => {
           // If token does not exist, redirect to sign-in page
           navigate("/sign-in");
         } else {
-          const response = await axios.get("http://localhost:3838/api/user/detail", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
+          const response = await axios.get(
+            "http://localhost:3838/api/user/detail",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
           const userData = response.data.user;
           setUser(userData);
         }
@@ -35,7 +38,7 @@ const ProjectDetailPage = () => {
         console.error("Error fetching user data:", error);
       }
     };
-  
+
     const fetchTagList = async () => {
       try {
         const response = await axios.get("http://localhost:3838/api/tag/get");
@@ -46,7 +49,7 @@ const ProjectDetailPage = () => {
         console.error("Error fetching tag list:", error);
       }
     };
-  
+
     const fetchProjectDetail = async () => {
       try {
         if (user && user._id) {
@@ -60,10 +63,10 @@ const ProjectDetailPage = () => {
               },
             }
           );
-    
+
           const data = response.data;
           setProject(data.project);
-          
+
           if (data.project.userIds.includes(user._id)) {
             setHasAccess(true);
           }
@@ -74,12 +77,12 @@ const ProjectDetailPage = () => {
         console.error("Error fetching project detail:", error);
       }
     };
-    
+
     const fetchData = async () => {
       await Promise.all([fetchUserData(), fetchTagList()]);
       fetchProjectDetail();
     };
-  
+
     fetchData();
   }, [projectId, navigate, user]);
 
@@ -108,10 +111,8 @@ const ProjectDetailPage = () => {
           <div className="px-6 py-4">
             <p className="text-2xl font-bold mb-4">Project Information</p>
             <div className="mb-4">
-              <p className="text-gray-700">
-                <span className="font-bold">Name:</span>{" "}
-                <span>{project.name}</span>
-              </p>
+              <span className="text-gray-700 font-bold">Name:</span>{" "}
+              <p className="text-gray-700 font-normal">{project.name}</p>
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Description:</span>{" "}
@@ -122,23 +123,26 @@ const ProjectDetailPage = () => {
               <p className="text-gray-700 font-normal">{project.abstract}</p>
             </div>
             <div className="mb-4">
-              <p className="text-gray-700">
-                <span className="font-bold">Owner Id:</span>{" "}
-                <span className="font-normal">{project.ownerId}</span>
-              </p>
+              <span className="text-gray-700 font-bold">Owner Id:</span>{" "}
+              <p className="text-gray-700 font-normal">{project.ownerId}</p>
+            </div>
+            <div className="mb-4">
+              <span className="text-gray-700 font-bold">Last Update Date:</span>{" "}
+              <p className="text-gray-700 font-normal">{project.updated_at}</p>
             </div>
             <div className="mb-4">
               <p className="text-gray-700">
                 <span className="font-bold">Tags:</span>{" "}
                 <span className="flex flex-wrap mt-2">
                   {project.tagIds.map((tagId) => {
-                    const tag = tagList.find(tag => tag._id === tagId);
+                    const tag = tagList.find((tag) => tag._id === tagId);
                     return (
                       <span
                         key={tagId}
                         className="bg-blue-200 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                       >
-                        {tag ? tag.name : `Tag ${tagId}`} {/* Display tag name or fallback to tagId */}
+                        {tag ? tag.name : `Tag ${tagId}`}{" "}
+                        {/* Display tag name or fallback to tagId */}
                       </span>
                     );
                   })}
@@ -177,27 +181,35 @@ const ProjectDetailPage = () => {
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
             <h1 className="text-2xl font-bold">Datasets</h1>
-            {project.datasetIds.map((dataset) => (
-              <div
-                key={dataset._id}
-                className="border-b border-gray-200 last:border-0 py-4"
-              >
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">{dataset.name}</h3>
-                  <p className="text-gray-700">{dataset.description}</p>
+            {project.datasetIds.length === 0 ? (
+              <p className="text-gray-700 mt-4">
+                No dataset has been added to this project yet.
+              </p>
+            ) : (
+              project.datasetIds.map((dataset) => (
+                <div
+                  key={dataset._id}
+                  className="border-b border-gray-200 last:border-0 py-4"
+                >
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {dataset.name}
+                    </h3>
+                    <p className="text-gray-700">{dataset.description}</p>
+                  </div>
+                  <div className="mt-2">
+                    {hasAccess && (
+                      <button
+                        onClick={() => handleDownloadDataset(dataset._id)}
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Download Dataset
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className="mt-2">
-                  {hasAccess && (
-                    <button
-                      onClick={() => handleDownloadDataset(dataset._id)}
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Download Dataset
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
