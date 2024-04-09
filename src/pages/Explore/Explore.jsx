@@ -116,7 +116,7 @@ const Explore = () => {
         </div>
         <div className="flex">
           <div className="w-full md:w-1/4 pr-4">
-            <h2 className="text-xl font-semibold">Sort by</h2>
+            <h2 className="text-xl font-semibold mb-2">Sort by</h2>
             <Select
               value={sortBy}
               onChange={handleSortByChange}
