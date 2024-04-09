@@ -10,11 +10,27 @@ import Navbar from "../../components/header/Navbar";
 function UserProfile() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [institutionOptions, setInstitutionOptions] = useState([]);
 
   useEffect(() => {
     // fetching user data when page is loading
-    fetchUserData();
+    fetchInstitutions().then(() => fetchUserData()); // Wait for fetchInstitutions to complete before fetching user data
   }, [navigate]);
+
+  const fetchInstitutions = async () => {
+    try {
+      const response = await fetch("http://localhost:3838/api/institution/get");
+      if (response.ok) {
+        const data = await response.json();
+        setInstitutionOptions(data);
+      } else {
+        throw new Error("Failed to fetch institutions");
+      }
+    } catch (error) {
+      console.error("Error fetching institutions:", error);
+      // Handle error or display a message to the user
+    }
+  };
 
   const fetchUserData = async () => {
     try {
@@ -23,11 +39,14 @@ function UserProfile() {
         // If token does not exist, redirect to sign-in page
         navigate("/sign-in");
       } else {
-        const response = await axios.get("http://localhost:3838/api/user/detail", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:3838/api/user/detail",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const userData = response.data.user;
         setUser(userData);
@@ -39,6 +58,15 @@ function UserProfile() {
 
   const handleEditProfile = () => {
     navigate("/edit-profile");
+  };
+
+  const getInstitutionName = (institutionId) => {
+    const institution = institutionOptions.find(inst => inst._id === institutionId);
+    return institution ? institution.name : "Unknown Institution";
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   if (!user) return null;
@@ -79,13 +107,15 @@ function UserProfile() {
                 <label className="block text-sm font-medium text-gray-700">
                   Role
                 </label>
-                <p className="mt-1 text-sm text-gray-900">{user.role}</p>
+                <p className="mt-1 text-sm text-gray-900">{capitalizeFirstLetter(user.role)}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Institution
                 </label>
-                <p className="mt-1 text-sm text-gray-900">{user.institution}</p>
+                <p className="mt-1 text-sm text-gray-900">
+                  {getInstitutionName(user.institutionId)}
+                </p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
