@@ -14,11 +14,13 @@ const Explore = () => {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [noProjectsFound, setNoProjectsFound] = useState(true);
+  const [clearFiltersPressed, setClearFiltersPressed] = useState(0);
 
   useEffect(() => {
+    setProjects([]);
     fetchTags();
     fetchData();
-  }, [page, sortBy, sortOrder, searchQuery, selectedTags]);
+  }, [page, clearFiltersPressed]);
 
   const fetchTags = async () => {
     try {
@@ -32,7 +34,9 @@ const Explore = () => {
   };
 
   const fetchData = async () => {
-    console.log(`http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`);
+    console.log(
+      `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`
+    );
 
     try {
       const response = await axios.get(
@@ -46,7 +50,7 @@ const Explore = () => {
       if (response.status === 200) {
         // console.log(response.data);
         setProjects(response.data.projects);
-        setNoProjectsFound(response.data.length === 0);
+        setNoProjectsFound(response.data.projects.length === 0);
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -79,12 +83,13 @@ const Explore = () => {
     fetchData();
   };
 
-  const handleClearFilters = () => {
+  const handleClearFilters = (e) => {
     setSelectedTags([]);
     setSortBy("name");
     setSortOrder("desc");
-    setPage(1);
     setSearchQuery("");
+    setPage(1); // Reset page to 1 when clearing filters
+    setClearFiltersPressed(clearFiltersPressed + 1);
   };
 
   return (
@@ -125,7 +130,7 @@ const Explore = () => {
               <option value="created_at">Created At</option>
             </select>
 
-            <h2 className="text-xl font-semibold mb-2 mt-8">Sort Order</h2>
+            <h2 className="text-xl font-semibold mb-2 mt-4">Sort Order</h2>
             <select
               value={sortOrder}
               onChange={handleSortOrderChange}
@@ -162,7 +167,7 @@ const Explore = () => {
             </button>
 
             <button
-              onClick={handleClearFilters}
+              onClick={(e) => handleClearFilters(e)}
               className="bg-red-500 text-white px-3 py-2 rounded-md text-sm ml-2"
             >
               Clear Filters
@@ -171,7 +176,7 @@ const Explore = () => {
           <div className="w-full md:w-3/4">
             <div className="mt-1">
               {projects.length > 0 ? (
-                <ProjectList projects={projects} mode="detail"/>
+                <ProjectList projects={projects} mode="detail" />
               ) : (
                 <div className="text-center text-gray-600">
                   {noProjectsFound ? (
@@ -184,12 +189,13 @@ const Explore = () => {
                   )}
                 </div>
               )}
+
+              <Pagination
+                currentPage={page}
+                totalPages={Math.ceil(20 / 5)}
+                onPageChange={handlePageChange}
+              />
             </div>
-            <Pagination
-              currentPage={page}
-              totalPages={Math.ceil(20 / 5)}
-              onPageChange={handlePageChange}
-            />
           </div>
         </div>
       </div>
