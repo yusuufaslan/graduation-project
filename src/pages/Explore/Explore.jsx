@@ -126,6 +126,7 @@ const Explore = () => {
             >
               <option value="name">Name</option>
               <option value="description">Description</option>
+              <option value="ownerId">Owner Id</option>
               <option value="updated_at">Updated At</option>
               <option value="created_at">Created At</option>
             </select>
