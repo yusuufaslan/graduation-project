@@ -13,6 +13,7 @@ const ProposalsPage = () => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [proposalReviewText, setProposalReviewText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false); // State for indicating request processing
 
   useEffect(() => {
     fetchProposals();
@@ -47,11 +48,7 @@ const ProposalsPage = () => {
   };
 
   const handleAction = async (verified) => {
-    // Handle reject action for received proposals
-    // Update backend with rejectionText and set proposal status to Rejected
-    console.log(selectedProposal);
-    console.log(selectedProposal.applicantUserIds);
-
+    setProcessing(true); // Set processing state to true when request starts processing
     try {
       let data = JSON.stringify({
         proposalId: selectedProposal._id,
@@ -82,11 +79,12 @@ const ProposalsPage = () => {
       } else {
         console.log(error); // Log other errors
       }
+    } finally {
+      setProcessing(false); // Set processing state to false when request processing is complete
     }
   };
 
   const handleProposalClick = (proposal) => {
-    // console.log(proposal);
     setSelectedProposal(proposal);
     setProposalReviewText("");
   };
@@ -183,7 +181,7 @@ const ProposalsPage = () => {
                             selectedProposal.verified === "accept"
                           }
                         >
-                          Accept
+                          {processing ? "Processing..." : "Accept"}
                         </button>
                         <button
                           className="bg-red-500 text-white px-4 py-2 rounded-md w-40"
@@ -193,7 +191,7 @@ const ProposalsPage = () => {
                             selectedProposal.verified === "accept"
                           }
                         >
-                          Reject
+                          {processing ? "Processing..." : "Reject"}
                         </button>
                       </div>
                     </div>

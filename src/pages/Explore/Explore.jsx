@@ -34,9 +34,9 @@ const Explore = () => {
   };
 
   const fetchData = async () => {
-    console.log(
-      `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`
-    );
+    // console.log(
+    //   `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`
+    // );
 
     try {
       const response = await axios.get(
