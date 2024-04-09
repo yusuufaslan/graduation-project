@@ -1,98 +1,24 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
 import ProjectList from "../../components/ProjectList/ProjectList";
-
 import axios from "axios";
 
-const dummyProjects = [
-  {
-    _id: "65fdbd46b5689614d4ad2c2c",
-    name: "Project 1",
-    owner: "Owner 1",
-    lastUpdated: "2024-03-01",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
-      { _id: "66017b79b0aa91c3c0f56b7b", name: "Tag 2" },
-    ],
-  },
-  {
-    _id: "66017b79b0aa91c3c0f56b7b",
-    name: "A Project 2",
-    owner: "Owner 2",
-    lastUpdated: "2024-04-01",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "6613dc2e8b0c99f929fec61a", name: "Tag 3" },
-      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
-    ],
-  },
-  {
-    _id: "6613dc2e8b0c99f929fec61a",
-    name: "Project 3",
-    owner: "Owner 3",
-    lastUpdated: "2024-04-02",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [{ _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" }],
-  },
-  {
-    _id: "6613dc328b0c99f929fec61c",
-    name: "Project 4",
-    owner: "Owner 4",
-    lastUpdated: "2024-04-01",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
-      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
-    ],
-  },
-  {
-    _id: "6613dc378b0c99f929fec61e",
-    name: "Project 5",
-    owner: "Owner 5",
-    lastUpdated: "2024-04-01",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
-      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
-    ],
-  },
-  {
-    _id: "6",
-    name: "Project 6",
-    owner: "Owner 6",
-    lastUpdated: "2024-04-03",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque consequuntur ad id iusto asperiores, laudantium nemo odit eligendi nesciunt sequi veritatis explicabo nam veniam, temporibus similique. Nulla, quas dolorem rem et eum voluptate amet at quisquam aperiam delectus quam exercitationem ex. Voluptatum libero beatae eveniet incidunt ea ipsa porro culpa enim, saepe minima. Molestiae, quibusdam fugit. Nesciunt nulla repudiandae doloribus ipsa facere odio architecto impedit sit nam nihil amet eum quis sint ea, quas voluptatibus numquam nisi. Optio, et. Maxime quos nihil hic, facere explicabo tenetur eius optio. Inventore nulla excepturi quod sint ipsa similique tenetur sunt corrupti a ipsum.",
-    tags: [
-      { _id: "65fdbd46b5689614d4ad2c2c", name: "Tag 1" },
-      { _id: "6613dc328b0c99f929fec61c", name: "Tag 4" },
-      { _id: "66017b79b0aa91c3c0f56b7b", name: "Tag 2" },
-    ],
-  },
-  // Add more dummy projects as needed
-];
-
+import Pagination from "../../components/Pagination/Pagination";
 
 const Explore = () => {
-  const [projects, setProjects] = useState(dummyProjects);
+  const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [sortBy, setSortBy] = useState("latest");
+  const [sortBy, setSortBy] = useState("name");
+  const [sortOrder, setSortOrder] = useState("desc");
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [noProjectsFound, setNoProjectsFound] = useState(true);
 
   useEffect(() => {
-    fetchTags(); // Fetch tags when component mounts
-    handleSetFilter();
-  }, []); // Empty dependency array means this effect runs only once, equivalent to componentDidMount
+    fetchTags();
+    fetchData();
+  }, [page, sortBy, sortOrder, searchQuery, selectedTags]);
 
   const fetchTags = async () => {
     try {
@@ -105,8 +31,29 @@ const Explore = () => {
     }
   };
 
+  const fetchData = async () => {
+    console.log(`http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder}&sortBy=${sortBy}&search=${searchQuery}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        // console.log(response.data);
+        setProjects(response.data.projects);
+        setNoProjectsFound(response.data.length === 0);
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
   const handleTagSelection = (tagId) => {
-    // Update selected tags
     if (selectedTags.includes(tagId)) {
       setSelectedTags(selectedTags.filter((id) => id !== tagId));
     } else {
@@ -115,74 +62,30 @@ const Explore = () => {
   };
 
   const handleSortByChange = (e) => {
-    // Update sort by criteria
     setSortBy(e.target.value);
   };
 
+  const handleSortOrderChange = (e) => {
+    setSortOrder(e.target.value);
+  };
+
   const handlePageChange = (newPage) => {
-    // Update page number
     setPage(newPage);
   };
 
   const handleSearch = (e) => {
-    // Trigger search
     e.preventDefault();
-    setPage(1); // Reset page number to 1 when a new search is initiated
-    handleSetFilter();
-  };
-
-  const handleSetFilter = () => {
-    // Filter projects based on selected tags, search query, and sorting criteria
-    let filteredProjects = filterProjects(dummyProjects);
-
-    switch (sortBy) {
-      case "latest":
-        filteredProjects.sort(
-          (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated)
-        );
-        break;
-      case "alphabetical":
-        filteredProjects.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "reverseAlphabetical":
-        filteredProjects.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      default:
-        break;
-    }
-
-    setProjects(filteredProjects);
-    setNoProjectsFound(filteredProjects.length === 0);
-  };
-
-  const filterProjects = (projectsToFilter) => {
-    return projectsToFilter.filter((project) => {
-      // every and some change affects AND, OR logic for tag filtering.
-      // for AND logic, change code below as selectedTags.every ...
-      return (
-        (selectedTags.length === 0 ||
-          selectedTags.some((tagId) =>
-            project.tags.some((tag) => tag._id === tagId)
-          )) &&
-        (project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    });
+    setPage(1);
+    fetchData();
   };
 
   const handleClearFilters = () => {
-    // Clear all selected filters
     setSelectedTags([]);
-    setSortBy("latest");
+    setSortBy("name");
+    setSortOrder("desc");
     setPage(1);
-    handleSetFilter();
-    window.location.reload();
+    setSearchQuery("");
   };
-
-  const projectsPerPage = 5;
-  const startIndex = (page - 1) * projectsPerPage;
-  const endIndex = Math.min(startIndex + projectsPerPage, projects.length);
-  const paginatedProjects = projects.slice(startIndex, endIndex);
 
   return (
     <>
@@ -190,7 +93,7 @@ const Explore = () => {
       <div className="container mx-auto px-10 py-8 max-w-7xl">
         <div className="mb-8 max-w-5xl mx-auto text-center">
           <h1 className="text-3xl font-semibold">Explore Projects</h1>
-          <form onSubmit={(e) => handleSearch(e)}>
+          <form onSubmit={handleSearch}>
             <div className="flex mt-8">
               <input
                 type="text"
@@ -200,7 +103,7 @@ const Explore = () => {
                 placeholder="Search projects..."
               />
               <button
-                onClick={(e) => handleSearch(e)}
+                type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded-r-md"
               >
                 Search
@@ -216,9 +119,20 @@ const Explore = () => {
               onChange={handleSortByChange}
               className="border border-gray-400 rounded-md p-2 mt-2"
             >
-              <option value="latest">Latest</option>
-              <option value="alphabetical">Alphabetical (A-Z)</option>
-              <option value="reverseAlphabetical">Alphabetical (Z-A)</option>
+              <option value="name">Name</option>
+              <option value="description">Description</option>
+              <option value="updated_at">Updated At</option>
+              <option value="created_at">Created At</option>
+            </select>
+
+            <h2 className="text-xl font-semibold mb-2 mt-8">Sort Order</h2>
+            <select
+              value={sortOrder}
+              onChange={handleSortOrderChange}
+              className="border border-gray-400 rounded-md p-2 mt-2"
+            >
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
             </select>
 
             <h2 className="text-xl font-semibold mb-2 mt-8">Filter by Tags</h2>
@@ -241,7 +155,7 @@ const Explore = () => {
             <br />
 
             <button
-              onClick={handleSetFilter}
+              onClick={fetchData}
               className="bg-blue-500 text-white px-3 py-2 rounded-md text-sm"
             >
               Set Filters
@@ -256,8 +170,8 @@ const Explore = () => {
           </div>
           <div className="w-full md:w-3/4">
             <div className="mt-1">
-              {paginatedProjects.length > 0 ? (
-                <ProjectList projects={paginatedProjects} mode="detail" />
+              {projects.length > 0 ? (
+                <ProjectList projects={projects} mode="detail"/>
               ) : (
                 <div className="text-center text-gray-600">
                   {noProjectsFound ? (
@@ -271,30 +185,11 @@ const Explore = () => {
                 </div>
               )}
             </div>
-            {projects.length > 0 && (
-              <div className="flex justify-center mt-4">
-                <button
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                  className={`px-4 py-2 rounded-l-md bg-gray-300 ${
-                    page === 1 ? "text-gray-400" : "text-gray-800"
-                  }`}
-                >
-                  Prev
-                </button>
-                <button
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={endIndex >= projects.length}
-                  className={`px-4 py-2 rounded-r-md bg-gray-300 ${
-                    endIndex >= projects.length
-                      ? "text-gray-400"
-                      : "text-gray-800"
-                  }`}
-                >
-                  Next
-                </button>
-              </div>
-            )}
+            <Pagination
+              currentPage={page}
+              totalPages={Math.ceil(20 / 5)}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>

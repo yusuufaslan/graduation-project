@@ -14,9 +14,9 @@ const ProjectList = ({ projects, mode }) => {
                 : project.name}
             </h3>
             <p className="text-sm text-gray-700 mb-0.5">
-              {project.owner}{" "}
+              {project.ownerId}{" "}
               <span className="text-sm text-gray-500 mb-3">
-                | Last Updated: {project.lastUpdated}
+                | Last Updated: {project.updated_at}
               </span>
             </p>
             <p
@@ -32,7 +32,7 @@ const ProjectList = ({ projects, mode }) => {
               {project.description}
             </p>
             <div className="flex flex-wrap">
-              {project.tags.map((tag) => (
+              {project.tagIds.map((tag) => (
                 <span
                   key={tag._id}
                   className="bg-gray-200 rounded-full py-1 px-2 mr-1 mb-1 flex items-center font-normal text-sm"
