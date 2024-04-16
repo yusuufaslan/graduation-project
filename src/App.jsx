@@ -45,7 +45,7 @@ function App() {
       <Router>
         <ToastContainer position="bottom-left" />
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/sign-in" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           
           <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />

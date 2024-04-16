@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const ProposalDetails = ({ proposal }) => {
+const ProposalDetails = ({ proposal, projectName }) => {
+  // State to store the project name
+
+  // Status variables
   let statusColorClass = "";
   let statusText = "";
 
@@ -24,9 +28,9 @@ const ProposalDetails = ({ proposal }) => {
   return (
     <div className="bg-gray-100 p-4 rounded">
       <h2 className="text-4xl font-semibold mb-5">Proposal Details</h2>
-      <h2 className="text-lg font-semibold mb-5">
-        Project Name: {proposal.projectId}
-      </h2>
+      <p>
+        <strong>Project Name:</strong> {projectName}
+      </p>
       <p>
         <strong>Applicant User Id:</strong> {proposal.applicatorId}
       </p>

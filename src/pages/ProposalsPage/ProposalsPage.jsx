@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProposalDetails from "./ProposalDetails";
 import Navbar from "../../components/header/Navbar";
-
 import axios from "axios";
 
 const ProposalsPage = () => {
@@ -14,6 +13,7 @@ const ProposalsPage = () => {
   const [proposalReviewText, setProposalReviewText] = useState("");
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false); // State for indicating request processing
+  const [projectDetails, setProjectDetails] = useState({}); // State for storing project details
 
   useEffect(() => {
     fetchProposals();
@@ -32,32 +32,62 @@ const ProposalsPage = () => {
       );
 
       const { sentProposals, receivedProposals } = response.data;
+      let proposalsList;
 
       if (pageType === "sent") {
-        setProposals(sentProposals);
+        proposalsList = sentProposals;
       } else {
-        const received = receivedProposals.flatMap(
+        proposalsList = receivedProposals.flatMap(
           (project) => project.foundProposals
         );
-        setProposals(received);
       }
+
+      // Fetch project details for each proposal
+      const fetchAllProjectDetails = proposalsList.map(async (proposal) => {
+        const projectId = proposal.projectId;
+        // Fetch project details if not already in projectDetails state
+        if (!projectDetails[projectId]) {
+          const response = await axios.post(
+            "http://localhost:3838/api/project/detail",
+            { projectId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const data = response.data;
+          // Update projectDetails state with the new project data
+          setProjectDetails((prevDetails) => ({
+            ...prevDetails,
+            [projectId]: data.project,
+          }));
+        }
+      });
+
+      // Wait for all project details to be fetched
+      await Promise.all(fetchAllProjectDetails);
+
+      setProposals(proposalsList);
       setLoading(false); // Set loading to false after fetching proposals
     } catch (error) {
       console.error("Error fetching proposals:", error);
+      setLoading(false); // Ensure loading is set to false in case of an error
     }
   };
 
   const handleAction = async (verified) => {
     setProcessing(true); // Set processing state to true when request starts processing
     try {
-      let data = JSON.stringify({
+      const data = JSON.stringify({
         proposalId: selectedProposal._id,
         verified: verified,
         proposalReviewText: proposalReviewText,
         applicantUserIds: selectedProposal.applicantUserIds,
       });
 
-      let config = {
+      const config = {
         method: "post",
         maxBodyLength: Infinity,
         url: "http://localhost:3838/api/proposal/evaluate",
@@ -137,23 +167,28 @@ const ProposalsPage = () => {
               <div className="text-center py-4">Proposals Loading...</div>
             ) : (
               <div className="divide-y divide-gray-200">
-                {proposals.map((proposal) => (
-                  <div
-                    key={proposal._id}
-                    onClick={() => handleProposalClick(proposal)}
-                    className="p-4 hover:bg-gray-50 cursor-pointer"
-                  >
-                    <p className="text-1xl font-bold text-gray-600">
-                      Applicant User: {proposal.applicatorId}
-                    </p>
-                    <p className="text-m font-medium">
-                      Project Id: {proposal.projectId}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {proposal.proposalText.substring(0, 50)}...
-                    </p>
-                  </div>
-                ))}
+                {proposals.map((proposal) => {
+                  const projectId = proposal.projectId;
+                  const projectName =
+                    projectDetails[projectId]?.name || "Unknown Project";
+                  return (
+                    <div
+                      key={proposal._id}
+                      onClick={() => handleProposalClick(proposal)}
+                      className="p-4 hover:bg-gray-50 cursor-pointer"
+                    >
+                      <p className="text-1xl font-bold text-gray-600">
+                        Applicant User: {proposal.applicatorId}
+                      </p>
+                      <p className="text-m font-medium">
+                        Project Name: {projectName}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {proposal.proposalText.substring(0, 50)}...
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -161,16 +196,14 @@ const ProposalsPage = () => {
           <div className="w-2/3 pl-5">
             {selectedProposal ? (
               <div>
-                <ProposalDetails proposal={selectedProposal} />
+                <ProposalDetails proposal={selectedProposal} projectName={projectDetails[selectedProposal.projectId]?.name}/>
                 {pageType === "received" &&
                   selectedProposal.verified === "none" && (
                     <div className="mt-4">
                       <textarea
                         className="w-full h-40 p-2 mb-2 border rounded-lg"
                         placeholder="Enter acceptance/rejection explanation..."
-                        onChange={(e) => {
-                          setProposalReviewText(e.target.value);
-                        }}
+                        onChange={(e) => setProposalReviewText(e.target.value)}
                       />
                       <div className="space-x-5">
                         <button
