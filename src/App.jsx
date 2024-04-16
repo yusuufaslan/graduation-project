@@ -18,7 +18,7 @@ import Verification from './pages/Verification/Verification';
 import Explore from './pages/Explore/Explore';
 import MyProjects from './pages/SharedProjects/MyProjects';
 import ParticipatedProjects from './pages/ParticipatedProjects/ParticipatedProjects';
-
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,6 +36,7 @@ function App() {
       <Router>
         <ToastContainer position="bottom-left"/>
         <Routes>
+          <Route path="/" element={<Navigate to="/sign-in" replace />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/verify' element={<Verification />} />
