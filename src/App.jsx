@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Import your components
 import SignIn from './pages/SignInPage/SignIn';
@@ -20,55 +22,62 @@ import MyProjects from './pages/SharedProjects/MyProjects';
 import ParticipatedProjects from './pages/ParticipatedProjects/ParticipatedProjects';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 // ProtectedRoute component
-const ProtectedRoute = ({ isAuthenticated, element }) => {
+const ProtectedRoute = ({ isAuthenticated, element, loading }) => {
+  if (loading) {
+    // Show loading spinner or placeholder
+    return <div>Loading...</div>;
+  }
+  
   if (isAuthenticated) {
     return element;
   }
+  
   return <Navigate to="/sign-in" replace />;
 };
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Load token and check authentication on initial load
+  // Check authentication state on initial load
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
+    setLoading(false); // Set loading to false after checking authentication
   }, []);
 
   return (
     <div className='w-screen h-screen'>
       <Router>
         <ToastContainer position="bottom-left" />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          
-          <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
-          <Route path='/sign-up' element={<SignUp />} />
-          <Route path='/verify' element={<Verification />} />
-          <Route path='/welcome' element={<Welcome />} />
-          
-          {/* Protected routes */}
-          <Route path='/project/create' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProject />} />} />
-          <Route path="/project/edit/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProjectForm />} />} />
-          <Route path="/project/detail/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProjectDetailPage />} />} />
-          <Route path="/dataset/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateDataset />} />} />
-          <Route path="/proposals/:type" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProposalsPage />} />} />
-          <Route path="/proposal/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProposal />} />} />
-          <Route path='/user-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<UserProfile />} />} />
-          <Route path='/edit-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProfile />} />} />
-          <Route path='/home' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Home />} />} />
-          <Route path='/explore' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Explore />} />} />
-          <Route path='/my-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<MyProjects />} />} />
-          <Route path='/participated-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ParticipatedProjects />} />} />
-          
-          {/* Not Found Page */}
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
+        { !loading && (
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            
+            <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/verify' element={<Verification />} />
+            <Route path='/welcome' element={<Welcome />} />
+            
+            {/* Protected routes */}
+            <Route path='/project/create' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProject />} loading={loading} />} />
+            <Route path="/project/edit/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProjectForm />} loading={loading} />} />
+            <Route path="/project/detail/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProjectDetailPage />} loading={loading} />} />
+            <Route path="/dataset/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateDataset />} loading={loading} />} />
+            <Route path="/proposals/:type" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProposalsPage />} loading={loading} />} />
+            <Route path="/proposal/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProposal />} loading={loading} />} />
+            <Route path='/user-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<UserProfile />} loading={loading} />} />
+            <Route path='/edit-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProfile />} loading={loading} />} />
+            <Route path='/home' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Home />} loading={loading} />} />
+            <Route path='/explore' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Explore />} loading={loading} />} />
+            <Route path='/my-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<MyProjects />} loading={loading} />} />
+            <Route path='/participated-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ParticipatedProjects />} loading={loading} />} />
+            
+            {/* Not Found Page */}
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        )}
       </Router>
     </div>
   );
