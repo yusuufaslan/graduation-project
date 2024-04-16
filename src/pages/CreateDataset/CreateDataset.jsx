@@ -22,7 +22,7 @@ const CreateDataset = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDataset({ ...dataset, [name]: value.trim() }); // Trim the value before setting
+    setDataset({ ...dataset, [name]: value });
   };
 
   const handleFileUpload = (e) => {
