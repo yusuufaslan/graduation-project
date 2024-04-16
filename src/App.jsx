@@ -23,44 +23,51 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// ProtectedRoute component
+const ProtectedRoute = ({ isAuthenticated, element }) => {
+  if (isAuthenticated) {
+    return element;
+  }
+  return <Navigate to="/sign-in" replace />;
+};
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Load token and check authentication on initial load
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token); // Update isAuthenticated based on token existence
-  }, []); // Empty dependency array ensures this effect runs only once
+    setIsAuthenticated(!!token);
+  }, []);
 
   return (
     <div className='w-screen h-screen'>
       <Router>
-        <ToastContainer position="bottom-left"/>
+        <ToastContainer position="bottom-left" />
         <Routes>
-          <Route path="/" element={<Navigate to="/sign-in" replace />} />
-          <Route path='/sign-in' element={<SignIn />} />
+          <Route path="/" element={isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/sign-in" replace />} />
+          
+          <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/verify' element={<Verification />} />
           <Route path='/welcome' element={<Welcome />} />
-          {isAuthenticated ? (
-            <>
-              <Route path='/project/create' element={<CreateProject />} />
-              <Route path="/project/edit/:projectId" element={<EditProjectForm />} />
-              <Route path="/project/detail/:projectId" element={<ProjectDetailPage />} />
-              <Route path="/dataset/create/:projectId" element={<CreateDataset />} />
-              <Route path="/proposals/:type" element={<ProposalsPage />} />
-              <Route path="/proposal/create/:projectId" element={<CreateProposal />} />
-              <Route path='/user-profile' element={<UserProfile />} />
-              <Route path='/edit-profile' element={<EditProfile />} />
-              <Route path='/home' element={<Home />} />
-              <Route path='/explore' element={<Explore />} />
-              <Route path='/my-projects' element={<MyProjects />} />
-              <Route path='/participated-projects' element={<ParticipatedProjects />} />
-            </>
-          ) : (
-            <Route path='*' element={<SignIn />} /> // Redirect to sign-in page if not authenticated
-          )}
-          {/* Redirect to sign-in page if not authenticated */}
-          {!isAuthenticated && <Route path='*' element={<Navigate to="/sign-in" />} />}
+          
+          {/* Protected routes */}
+          <Route path='/project/create' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProject />} />} />
+          <Route path="/project/edit/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProjectForm />} />} />
+          <Route path="/project/detail/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProjectDetailPage />} />} />
+          <Route path="/dataset/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateDataset />} />} />
+          <Route path="/proposals/:type" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProposalsPage />} />} />
+          <Route path="/proposal/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProposal />} />} />
+          <Route path='/user-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<UserProfile />} />} />
+          <Route path='/edit-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProfile />} />} />
+          <Route path='/home' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Home />} />} />
+          <Route path='/explore' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Explore />} />} />
+          <Route path='/my-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<MyProjects />} />} />
+          <Route path='/participated-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ParticipatedProjects />} />} />
+          
+          {/* Not Found Page */}
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </Router>
     </div>
