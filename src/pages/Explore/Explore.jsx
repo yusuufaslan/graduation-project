@@ -11,7 +11,10 @@ const Explore = () => {
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState({ value: "name", label: "Name" });
-  const [sortOrder, setSortOrder] = useState({ value: "desc", label: "Descending" });
+  const [sortOrder, setSortOrder] = useState({
+    value: "desc",
+    label: "Descending",
+  });
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [noProjectsFound, setNoProjectsFound] = useState(true);
@@ -180,11 +183,13 @@ const Explore = () => {
                 </div>
               )}
 
-              <Pagination
-                currentPage={page}
-                totalPages={Math.ceil(20 / 5)}
-                onPageChange={handlePageChange}
-              />
+              {projects.length > 0 && 
+                <Pagination
+                  currentPage={page}
+                  totalPages={Math.ceil(20 / 5)}
+                  onPageChange={handlePageChange}
+                />
+              }
             </div>
           </div>
         </div>
