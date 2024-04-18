@@ -186,7 +186,7 @@ const Explore = () => {
               {projects.length > 0 && 
                 <Pagination
                   currentPage={page}
-                  totalPages={Math.ceil(20 / 5)}
+                  totalPages={Math.ceil(60 / 5)}
                   onPageChange={handlePageChange}
                 />
               }
