@@ -110,7 +110,8 @@ const ProjectDetailPage = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Project Detail - {project._id}
+          Project Detail 
+          {/* - {project._id} */}
         </h1>
         <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 mb-44">
           <div className="px-6 py-4">

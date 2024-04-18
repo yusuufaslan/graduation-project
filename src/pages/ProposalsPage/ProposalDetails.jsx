@@ -31,26 +31,28 @@ const ProposalDetails = ({ proposal, projectName }) => {
       <p>
         <strong>Project Name:</strong> {projectName}
       </p>
-      <p>
+      <p className="mt-5">
         <strong>Applicant User Id:</strong> {proposal.applicatorId}
       </p>
-      <div className="my-5">
-        <p className="text-gray-700">
-          <span className="font-bold">Other Applicant User Ids:</span>{" "}
-          <span className="flex flex-wrap mt-2">
-            {proposal.applicantUserIds.map((userId, index) => (
-              <span
-                key={index}
-                className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-              >
-                {userId}
-              </span>
-            ))}
-          </span>
-        </p>
-      </div>
+      {proposal.applicantUserIds.length > 0 && (
+        <div className="mt-5">
+          <p className="text-gray-8800">
+            <span className="font-bold">Other Applicant User Ids:</span>{" "}
+            <span className="flex flex-wrap mt-2">
+              {proposal.applicantUserIds.map((userId, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+                >
+                  {userId}
+                </span>
+              ))}
+            </span>
+          </p>
+        </div>
+      )}
 
-      <p>
+      <p className="mt-5">
         <strong>Proposal Text:</strong>
       </p>
       <p className="mb-5">{proposal.proposalText}</p>
