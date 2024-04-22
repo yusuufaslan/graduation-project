@@ -2,7 +2,57 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const ProposalDetails = ({ proposal, projectName }) => {
-  // State to store the project name
+  const [applicantName, setApplicantName] = useState("");
+  const [otherApplicants, setOtherApplicants] = useState([]);
+
+  useEffect(() => {
+    const fetchApplicantName = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `http://localhost:3838/api/user/name-from-id?userId=${proposal.applicatorId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setApplicantName(
+            `${response.data.userNameInfo.name} ${response.data.userNameInfo.surname}`
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching applicant name:", error);
+      }
+    };
+
+    const fetchOtherApplicants = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const otherApplicantsData = await Promise.all(
+          proposal.applicantUserIds.map(async (userId) => {
+            const response = await axios.get(
+              `http://localhost:3838/api/user/name-from-id?userId=${userId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            return response.data.userNameInfo;
+          })
+        );
+        setOtherApplicants(otherApplicantsData);
+      } catch (error) {
+        console.error("Error fetching other applicants:", error);
+      }
+    };
+
+    fetchApplicantName();
+    fetchOtherApplicants();
+  }, [proposal.applicatorId, proposal.applicantUserIds]);
 
   // Status variables
   let statusColorClass = "";
@@ -32,19 +82,19 @@ const ProposalDetails = ({ proposal, projectName }) => {
         <strong>Project Name:</strong> {projectName}
       </p>
       <p className="mt-5">
-        <strong>Applicant User Id:</strong> {proposal.applicatorId}
+        <strong>Applicant:</strong> {applicantName}
       </p>
-      {proposal.applicantUserIds.length > 0 && (
+      {otherApplicants.length > 0 && (
         <div className="mt-5">
           <p className="text-gray-8800">
-            <span className="font-bold">Other Applicant User Ids:</span>{" "}
+            <span className="font-bold">Other Applicants:</span>{" "}
             <span className="flex flex-wrap mt-2">
-              {proposal.applicantUserIds.map((userId, index) => (
+              {otherApplicants.map((applicant, index) => (
                 <span
                   key={index}
                   className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                 >
-                  {userId}
+                  {applicant.name} {applicant.surname}
                 </span>
               ))}
             </span>

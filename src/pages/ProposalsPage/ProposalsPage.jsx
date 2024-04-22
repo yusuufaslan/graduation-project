@@ -14,6 +14,7 @@ const ProposalsPage = () => {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false); // State for indicating request processing
   const [projectDetails, setProjectDetails] = useState({}); // State for storing project details
+  const [applicantNames, setApplicantNames] = useState({}); // State for storing applicant names
 
   useEffect(() => {
     fetchProposals();
@@ -66,8 +67,30 @@ const ProposalsPage = () => {
         }
       });
 
-      // Wait for all project details to be fetched
-      await Promise.all(fetchAllProjectDetails);
+      // Fetch applicant names for each proposal
+      const fetchAllApplicantNames = proposalsList.map(async (proposal) => {
+        const userId = proposal.applicatorId;
+        // Fetch applicant name if not already in applicantNames state
+        if (!applicantNames[userId]) {
+          const response = await axios.get(
+            `http://localhost:3838/api/user/name-from-id?userId=${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const data = response.data;
+          // Update applicantNames state with the new applicant data
+          setApplicantNames((prevNames) => ({
+            ...prevNames,
+            [userId]: `${data.userNameInfo.name} ${data.userNameInfo.surname}`,
+          }));
+        }
+      });
+
+      // Wait for all project details and applicant names to be fetched
+      await Promise.all([...fetchAllProjectDetails, ...fetchAllApplicantNames]);
 
       setProposals(proposalsList);
       setLoading(false); // Set loading to false after fetching proposals
@@ -178,13 +201,13 @@ const ProposalsPage = () => {
                       className="p-4 hover:bg-gray-50 cursor-pointer"
                     >
                       <p className="text-1xl font-bold text-gray-600">
-                        Applicant User: {proposal.applicatorId}
+                        Applicant: {applicantNames[proposal.applicatorId]}
                       </p>
                       <p className="text-m font-medium">
                         Project Name: {projectName}
                       </p>
                       <p className="text-sm text-gray-600">
-                        {proposal.proposalText.substring(0, 50)}...
+                        Proposal Text: {proposal.proposalText.substring(0, 50)}...
                       </p>
                     </div>
                   );
