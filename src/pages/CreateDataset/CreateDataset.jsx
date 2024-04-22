@@ -179,7 +179,7 @@ const CreateDataset = () => {
                   >
                     <option value="none">No Action</option>
                     <option value="remove">Remove</option>
-                    <option value="hash">Anonymize</option>
+                    <option value="anonymize">Anonymize</option>
                     {/* Add more actions as needed */}
                   </select>
                 </div>

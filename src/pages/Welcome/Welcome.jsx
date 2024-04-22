@@ -17,7 +17,7 @@ export default function Welcome() {
 
   return (
     <div>
-        <WelcomeNavbar />
+        <WelcomeNavbar signedIn={false}/>
         <HomeContent signedIn={false}/>
     </div>
   );

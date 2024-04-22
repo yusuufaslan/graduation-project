@@ -45,8 +45,8 @@ function App() {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
     setLoading(false); // Set loading to false after checking authentication
-  }, []);
-
+  },);
+  
   return (
     <div className='w-screen h-screen'>
       <Router>

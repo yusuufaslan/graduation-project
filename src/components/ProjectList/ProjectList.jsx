@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProjectList = ({ projects, mode }) => {
+  console.log(projects);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString(); // You can customize this further based on your preference

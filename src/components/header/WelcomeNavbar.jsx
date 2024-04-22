@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ViteLogo from "../../../public/vite.svg";
 
-export default function WelcomeNavbar() {
+export default function WelcomeNavbar({signedIn}) {
   return (
     <div className="bg-gray-800 relative z-10"> {/* Add relative and z-10 classes */}
       <div className="mx-auto max-w-7xl">
@@ -13,12 +13,14 @@ export default function WelcomeNavbar() {
             <img className="h-8 w-auto" src={ViteLogo} alt="Your Company" />
           </div>
           <div>
-            <Link
-              to="/sign-in"
-              className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out"
-            >
-              Sign In
-            </Link>
+			{!signedIn && (
+				<a
+				href="/sign-in"
+				className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+				>
+				Sign In
+				</a>
+			)}
           </div>
         </div>
       </div>

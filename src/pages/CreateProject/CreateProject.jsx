@@ -87,6 +87,9 @@ const CreateProject = () => {
         tags: selectedTags,
       });
   
+      // console.log(localStorage.getItem("token"));
+      // console.log(data);
+
       let config = {
         method: "post",
         maxBodyLength: Infinity,
