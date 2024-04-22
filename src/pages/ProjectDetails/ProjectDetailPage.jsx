@@ -85,7 +85,7 @@ const ProjectDetailPage = () => {
             setHasAccess(true);
           }
         } else {
-          console.error("User data not available.");
+          // console.error("User data not available.");
         }
       } catch (error) {
         console.error("Error fetching project detail:", error);
@@ -192,7 +192,7 @@ const ProjectDetailPage = () => {
               project.datasetIds.map((dataset) => (
                 <div
                   key={dataset._id}
-                  className="border-b border-gray-200 last:border-0 py-4"
+                  className="border-b border-gray-300 shadow-sm last:border-0 py-4"
                 >
                   <div>
                     <h3 className="text-xl font-semibold mb-2">
@@ -204,7 +204,7 @@ const ProjectDetailPage = () => {
                     {hasAccess && (
                       <button
                         onClick={() => handleDownloadDataset(dataset._id)}
-                        className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded mt-4"
+                        className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded mt-2 mb-4"
                       >
                         Download Dataset
                       </button>
