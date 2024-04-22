@@ -27,7 +27,7 @@ const ParticipatedProjects = () => {
         return response.data.projects;
       }
     } catch (error) {
-      
+
       console.error("Error fetching participated projects:", error);
       throw error;
     }
@@ -38,7 +38,7 @@ const ParticipatedProjects = () => {
       <Navbar />
       <div className="container mx-auto px-10 py-8 max-w-7xl">
         <h1 className="text-3xl font-semibold text-center mb-8">
-          My Participated Projects
+          Participated Projects
         </h1>
         {loading ? (
           <p className="text-center">Loading...</p>
