@@ -4,6 +4,8 @@ import axios from "axios";
 import Navbar from "../../components/header/Navbar";
 import Select from "react-select";
 
+import DatasetPreview from "../../components/DatasetPreview/DatasetPreview";
+
 const EditProjectForm = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
@@ -237,12 +239,17 @@ const EditProjectForm = () => {
                   className="border border-gray-300 shadow-md p-4 mb-10 rounded-md"
                 >
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">
-                      {dataset.name}
+                    <h3 className="text-2xl font-semibold mb-1">
+                      
+                      <span className="text-2xl font-normal"> {dataset.name}</span>
                     </h3>
-                    <p className="text-gray-600 mb-2">{dataset.description}</p>
+                    <h3 className="text-md mb-2">
+                      Description:
+                      <span className="text-md font-normal text-gray-600"> {dataset.description}</span>
+                    </h3>
                   </div>
-                  <div className="flex justify-between items-center mt-4">
+                  <DatasetPreview datasetId={dataset._id} />
+                  <div className="flex justify-between items-center mt-10">
                     <button
                       onClick={() => handleRemoveDataset(dataset._id)}
                       className="text-sm bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
