@@ -8,6 +8,7 @@ const CreateProposal = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
 
+  const [project, setProject] = useState(null);
   const [proposal, setProposal] = useState({
     proposalText: "",
     potentialResearchBenefits: "",
@@ -17,9 +18,29 @@ const CreateProposal = () => {
   });
 
   useEffect(() => {
-    // Fetch project details if needed
-    // Example:
-    // fetchProjectDetails(projectId);
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    const fetchProjectDetail = async () => {
+      try {
+          const response = await axios.post(
+            "http://localhost:3838/api/project/detail",
+            { projectId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include authorization token in headers
+              },
+            }
+          );
+
+          const data = response.data;
+          setProject(data.project);
+      } catch (error) {
+        console.error("Error fetching project detail:", error);
+      }
+    };
+
+    fetchProjectDetail();
   }, [projectId]);
 
   const handleChange = (e) => {
@@ -84,7 +105,7 @@ const CreateProposal = () => {
       <Navbar />
       <div className="h-screen">
         <h1 className="text-3xl font-semibold mb-6 text-center mt-5">
-          {`Create Proposal for Project ${projectId}`}
+          {project && `Create Proposal for: ${project.name}`}
         </h1>
         <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6 mb-40">
           <div className="mb-4 font-bold">

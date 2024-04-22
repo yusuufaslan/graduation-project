@@ -13,14 +13,14 @@ export default function WelcomeNavbar({signedIn}) {
             <img className="h-8 w-auto" src={ViteLogo} alt="Your Company" />
           </div>
           <div>
-			{!signedIn && (
-				<a
-				href="/sign-in"
-				className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-				>
-				Sign In
-				</a>
-			)}
+            {!signedIn && (
+              <a
+              href="/sign-in"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+              Sign In
+              </a>
+            )}
           </div>
         </div>
       </div>
