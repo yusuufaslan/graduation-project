@@ -184,22 +184,26 @@ const ProjectDetailPage = () => {
             </div>
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
-            <h1 className="text-2xl font-bold">Datasets</h1>
+            <h1 className="text-2xl font-bold mb-4">Datasets</h1>
             {project.datasetIds.length === 0 ? (
-              <p className="text-gray-700 mt-4">
+              <p className="text-gray-700">
                 No dataset has been added to this project yet.
               </p>
             ) : (
               project.datasetIds.map((dataset) => (
                 <div
                   key={dataset._id}
-                  className="border-b border-gray-300 shadow-sm last:border-0 py-4"
+                  className="border border-gray-300 shadow-md p-4 mb-10 rounded-md"
                 >
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">
-                      {dataset.name}
+                  <h3 className="text-2xl font-semibold mb-1">
+                      
+                      <span className="text-2xl font-normal"> {dataset.name}</span>
                     </h3>
-                    <p className="text-gray-700">{dataset.description}</p>
+                    <h3 className="text-md mb-2">
+                      Description:
+                      <span className="text-md font-normal text-gray-600"> {dataset.description}</span>
+                    </h3>
                   </div>
                   <DatasetPreview datasetId={dataset._id} />
                   <div className="mt-2">
