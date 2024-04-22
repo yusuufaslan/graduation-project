@@ -27,6 +27,7 @@ const ParticipatedProjects = () => {
         return response.data.projects;
       }
     } catch (error) {
+      
       console.error("Error fetching participated projects:", error);
       throw error;
     }
