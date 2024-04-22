@@ -169,7 +169,7 @@ const ProjectDetailPage = () => {
             </div>
             <div className="py-4 border-t border-gray-200">
               {hasAccess ? (
-                <p className="text-green-600 font-bold">
+                <p className="text-green-600 font-bold mt-3">
                   You have access to download datasets.
                 </p>
               ) : (
@@ -204,7 +204,7 @@ const ProjectDetailPage = () => {
                     {hasAccess && (
                       <button
                         onClick={() => handleDownloadDataset(dataset._id)}
-                        className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+                        className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded mt-4"
                       >
                         Download Dataset
                       </button>
