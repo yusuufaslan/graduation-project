@@ -43,11 +43,10 @@ const Explore = () => {
   };
 
   const fetchData = async () => {
-    // console.log(`http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}`);
-    // console.log(selectedTags);
     try {
+      let tagNames = selectedTags.map((tag) => tag.label).join(",");
       const response = await axios.get(
-        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}`,
+        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}&tags=${tagNames}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -128,9 +127,7 @@ const Explore = () => {
               options={[
                 { value: "name", label: "Name" },
                 { value: "description", label: "Description" },
-                // { value: "ownerId", label: "Owner Id" },
                 { value: "updated_at", label: "Updated At" },
-                // { value: "created_at", label: "Created At" },
               ]}
             />
 
