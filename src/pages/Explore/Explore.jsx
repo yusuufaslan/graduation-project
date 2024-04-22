@@ -7,6 +7,7 @@ import Select from "react-select"; // Import react-select
 import Pagination from "../../components/Pagination/Pagination";
 
 const Explore = () => {
+  const [totalPages, setTotalPages] = useState(0);
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -55,6 +56,7 @@ const Explore = () => {
       );
       if (response.status === 200) {
         setProjects(response.data.projects);
+        setTotalPages(response.data.totalPages);
         setNoProjectsFound(response.data.projects.length === 0);
       }
     } catch (error) {
@@ -186,7 +188,7 @@ const Explore = () => {
               {projects.length > 0 && 
                 <Pagination
                   currentPage={page}
-                  totalPages={Math.ceil(60 / 5)}
+                  totalPages={totalPages}
                   onPageChange={handlePageChange}
                 />
               }
