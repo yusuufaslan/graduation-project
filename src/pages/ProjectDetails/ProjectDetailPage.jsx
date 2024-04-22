@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/header/Navbar";
+import DatasetPreview from "../../components/DatasetPreview/DatasetPreview";
 
 const ProjectDetailPage = () => {
   const { projectId } = useParams();
@@ -200,6 +201,7 @@ const ProjectDetailPage = () => {
                     </h3>
                     <p className="text-gray-700">{dataset.description}</p>
                   </div>
+                  <DatasetPreview datasetId={dataset._id} />
                   <div className="mt-2">
                     {hasAccess && (
                       <button
