@@ -167,7 +167,7 @@ const CreateProposal = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="bg-green-500 text-white px-4 py-2 rounded-md my-4"
+            className="bg-green-700 text-white px-4 py-2 rounded-md my-4"
           >
             Create Proposal
           </button>

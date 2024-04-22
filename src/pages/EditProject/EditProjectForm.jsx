@@ -69,7 +69,6 @@ const EditProjectForm = () => {
               ownerSurname: ownerData.surname,
             }));
           }
-
         }
       } catch (error) {
         console.error("Error fetching project data:", error);
@@ -89,17 +88,18 @@ const EditProjectForm = () => {
 
   const handleRemoveDataset = async (datasetId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(
-        `http://localhost:3838/api/dataset/remove/${projectId}/${datasetId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      // const token = localStorage.getItem("token");
+      // const response = await axios.delete(
+      //   `http://localhost:3838/api/dataset/remove/${projectId}/${datasetId}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      // if (response.status === 200) 
 
-      if (response.status === 200) {
+      if (true) {
         setProject((prevProject) => ({
           ...prevProject,
           datasetIds: prevProject.datasetIds.filter(
@@ -177,35 +177,33 @@ const EditProjectForm = () => {
             </div>
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
-            <h1 className="text-2xl font-bold">Datasets</h1>
+            <h1 className="text-2xl font-bold mb-4">Datasets</h1>
             {project.datasetIds.length === 0 ? (
-              <p className="text-gray-700 mt-4">
+              <p className="text-gray-700">
                 No dataset has been added to this project yet.
               </p>
             ) : (
               project.datasetIds.map((dataset) => (
                 <div
                   key={dataset._id}
-                  className="border-b border-gray-200 last:border-0 py-4 flex justify-between items-center"
+                  className="border border-gray-300 shadow-md p-4 mb-10 rounded-md"
                 >
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">
-                      {dataset.name}
-                    </h3>
-                    <p className="text-gray-700">{dataset.description}</p>
+                    <h3 className="text-lg font-semibold mb-1">{dataset.name}</h3>
+                    <p className="text-gray-600 mb-2">{dataset.description}</p>
                   </div>
-                  <div>
+                  <div className="flex justify-between items-center mt-4">
                     <button
                       onClick={() => handleRemoveDataset(dataset._id)}
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
+                      className="text-sm bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
                     >
-                      Remove
+                      Remove Dataset
                     </button>
                     <button
                       onClick={() => handleDownloadDataset(dataset._id)}
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                      className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
                     >
-                      Download
+                      Download Dataset
                     </button>
                   </div>
                 </div>
@@ -213,7 +211,7 @@ const EditProjectForm = () => {
             )}
             <button
               onClick={handleAddDataset}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             >
               Add Dataset
             </button>
