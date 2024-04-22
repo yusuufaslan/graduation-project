@@ -126,9 +126,9 @@ const Explore = () => {
               options={[
                 { value: "name", label: "Name" },
                 { value: "description", label: "Description" },
-                { value: "ownerId", label: "Owner Id" },
+                // { value: "ownerId", label: "Owner Id" },
                 { value: "updated_at", label: "Updated At" },
-                { value: "created_at", label: "Created At" },
+                // { value: "created_at", label: "Created At" },
               ]}
             />
 

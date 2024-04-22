@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import Navbar from "../../components/header/Navbar";
 
 const ProjectDetailPage = () => {
@@ -10,16 +10,14 @@ const ProjectDetailPage = () => {
   const [project, setProject] = useState(null);
   const [tagList, setTagList] = useState([]);
   const [user, setUser] = useState(null);
-  const [hasAccess, setHasAccess] = useState(false); // State to track access permission
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const token = localStorage.getItem("token");
 
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("token");
         if (!token) {
-          // If token does not exist, redirect to sign-in page
           navigate("/sign-in");
         } else {
           const response = await axios.get(
@@ -59,19 +57,35 @@ const ProjectDetailPage = () => {
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Include authorization token in headers
+                Authorization: `Bearer ${token}`,
               },
             }
           );
 
           const data = response.data;
-          setProject(data.project);
+          const projectData = data.project;
 
-          if (data.project.userIds.includes(user._id)) {
+          const ownerResponse = await axios.get(
+            `http://localhost:3838/api/user/name-from-id?userId=${projectData.ownerId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (ownerResponse.status === 200) {
+            projectData.ownerName = ownerResponse.data.userNameInfo.name;
+            projectData.ownerSurname = ownerResponse.data.userNameInfo.surname;
+          }
+
+          setProject(projectData);
+
+          if (projectData.userIds.includes(user._id)) {
             setHasAccess(true);
           }
         } else {
-          // console.error("User data not available.");
+          console.error("User data not available.");
         }
       } catch (error) {
         console.error("Error fetching project detail:", error);
@@ -87,18 +101,16 @@ const ProjectDetailPage = () => {
   }, [projectId, navigate, user]);
 
   const handleCreateProposal = () => {
-    // Navigate to the proposal page with the projectId
     navigate(`/proposal/create/${projectId}`);
   };
 
   const handleDownloadDataset = (datasetId) => {
-    // Placeholder function for handling dataset download
     console.log("Downloading dataset with ID:", datasetId);
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString(); // You can customize this further based on your preference
+    return date.toLocaleString();
   };
 
   if (!project) {
@@ -110,8 +122,7 @@ const ProjectDetailPage = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Project Detail 
-          {/* - {project._id} */}
+          Project Detail
         </h1>
         <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 mb-44">
           <div className="px-6 py-4">
@@ -129,8 +140,10 @@ const ProjectDetailPage = () => {
               <p className="text-gray-700 font-normal">{project.abstract}</p>
             </div>
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Owner Id:</span>{" "}
-              <p className="text-gray-700 font-normal">{project.ownerId}</p>
+              <span className="text-gray-700 font-bold">Owner:</span>{" "}
+              <p className="text-gray-700 font-normal">
+                {project.ownerName} {project.ownerSurname}
+              </p>
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Last Update Date:</span>{" "}
@@ -147,29 +160,13 @@ const ProjectDetailPage = () => {
                         key={tagId}
                         className="bg-blue-200 text-blue-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                       >
-                        {tag ? tag.name : `Tag ${tagId}`}{" "}
-                        {/* Display tag name or fallback to tagId */}
+                        {tag ? tag.name : `Tag ${tagId}`}
                       </span>
                     );
                   })}
                 </span>
               </p>
             </div>
-            {/* <div className="mb-4">
-              <p className="text-gray-700">
-                <span className="font-bold">User Emails:</span>{" "}
-                <span className="flex flex-wrap mt-2">
-                  {project.emails.map((email, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-                    >
-                      {email}
-                    </span>
-                  ))}
-                </span>
-              </p>
-            </div> */}
             <div className="py-4 border-t border-gray-200">
               {hasAccess ? (
                 <p className="text-green-600 font-bold">
