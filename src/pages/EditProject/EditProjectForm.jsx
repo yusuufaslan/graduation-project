@@ -11,6 +11,8 @@ const EditProjectForm = () => {
   const [project, setProject] = useState(null);
   const [tagList, setTagList] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const [userDetails, setUserDetails] = useState({});
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const EditProjectForm = () => {
           const data = response.data;
           setProject(data.project);
 
-          const tagResponse = await axios.get("http://localhost:3838/api/tag/get");
+          const tagResponse = await axios.get(
+            "http://localhost:3838/api/tag/get"
+          );
           if (tagResponse.status === 200) {
             const formattedTags = tagResponse.data.map((tag) => ({
               value: tag._id,
@@ -42,13 +46,7 @@ const EditProjectForm = () => {
             setTagList(formattedTags);
           }
 
-          const userResponse = await axios.get("http://localhost:3838/api/user/detail", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const userData = userResponse.data.user;
-          setUser(userData);
+          setUserList(data.project.userIds);
 
           setSelectedTags(data.project.tagIds);
 
@@ -69,6 +67,28 @@ const EditProjectForm = () => {
               ownerSurname: ownerData.surname,
             }));
           }
+
+          // Fetching user details
+          const userDetailsPromises = data.project.userIds.map(
+            async (userId) => {
+              const userResponse = await axios.get(
+                `http://localhost:3838/api/user/name-from-id?userId=${userId}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              if (userResponse.status === 200) {
+                const userData = userResponse.data.userNameInfo;
+                setUserDetails((prevUserDetails) => ({
+                  ...prevUserDetails,
+                  [userId]: userData,
+                }));
+              }
+            }
+          );
+          await Promise.all(userDetailsPromises);
         }
       } catch (error) {
         console.error("Error fetching project data:", error);
@@ -97,7 +117,7 @@ const EditProjectForm = () => {
       //     },
       //   }
       // );
-      // if (response.status === 200) 
+      // if (response.status === 200)
 
       if (true) {
         setProject((prevProject) => ({
@@ -151,11 +171,15 @@ const EditProjectForm = () => {
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Is Public:</span>{" "}
-              <p className="text-gray-700 font-normal">{project.isPublic ? "Yes" : "No"}</p>
+              <p className="text-gray-700 font-normal">
+                {project.isPublic ? "Yes" : "No"}
+              </p>
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Last Update Date:</span>{" "}
-              <p className="text-gray-700 font-normal">{formatDate(project.updated_at)}</p>
+              <p className="text-gray-700 font-normal">
+                {formatDate(project.updated_at)}
+              </p>
             </div>
             <div className="mb-4">
               <p className="text-gray-700">
@@ -175,6 +199,30 @@ const EditProjectForm = () => {
                 </span>
               </p>
             </div>
+            <div className="mb-4">
+              <span className="text-gray-700 font-bold">
+                Users that are currently working on the project:
+              </span>{" "}
+              {userList.length === 0 ? (
+                <div>No users are currently working on this project.</div>
+              ) : (
+                <span className="flex flex-wrap mt-2">
+                  {userList.map((userId) => {
+                    const userDetail = userDetails[userId];
+                    return (
+                      <span
+                        key={userId}
+                        className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+                      >
+                        {userDetail
+                          ? `${userDetail.name} ${userDetail.surname}`
+                          : `User ${userId}`}
+                      </span>
+                    );
+                  })}
+                </span>
+              )}
+            </div>
           </div>
           <div className="px-6 py-4 border-t border-gray-200">
             <h1 className="text-2xl font-bold mb-4">Datasets</h1>
@@ -189,7 +237,9 @@ const EditProjectForm = () => {
                   className="border border-gray-300 shadow-md p-4 mb-10 rounded-md"
                 >
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">{dataset.name}</h3>
+                    <h3 className="text-lg font-semibold mb-1">
+                      {dataset.name}
+                    </h3>
                     <p className="text-gray-600 mb-2">{dataset.description}</p>
                   </div>
                   <div className="flex justify-between items-center mt-4">
