@@ -34,54 +34,74 @@ const DatasetPreview = ({ datasetId }) => {
   return (
     <div className="mt-4">
       <h3 className="text-2xl font-semibold mb-2 mt-10">Preview</h3>
-      <div className="mb-16">
+      <div className="overflow-x-auto">
         <h4 className="text-lg font-semibold mb-1 mt-5">Summary</h4>
-        <table className="min-w-full text-sm">
-          <thead>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-2">Column Name</th>
-              <th className="px-4 py-2">Data Count</th>
-              <th className="px-4 py-2">Mean</th>
-              <th className="px-4 py-2">Std</th>
-              <th className="px-4 py-2">Min</th>
-              <th className="px-4 py-2">Median</th>
-              <th className="px-4 py-2">Max</th>
-              <th className="px-4 py-2">Variance</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Column Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Data Count
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Mean
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Std
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Min
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Median
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Max
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Variance
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {previewData.jsonSummary.map((summary) => (
               <tr key={summary.column}>
-                <td className="border px-4 py-2">{summary.column}</td>
-                <td className="border px-4 py-2">{summary.count}</td>
-                <td className="border px-4 py-2">{summary.mean}</td>
-                <td className="border px-4 py-2">{summary.std}</td>
-                <td className="border px-4 py-2">{summary.min}</td>
-                <td className="border px-4 py-2">{summary.median}</td>
-                <td className="border px-4 py-2">{summary.max}</td>
-                <td className="border px-4 py-2">{summary.variance}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.column}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.count}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.mean}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.std}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.min}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.median}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.max}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{summary.variance}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div>
+      <div className="overflow-x-auto mt-8">
         <h4 className="text-lg font-semibold mb-1 mt-5">Content of the file</h4>
-        <table className="min-w-full text-sm">
-          <thead>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
               {previewData.columns.map((column) => (
-                <th key={column} className="px-4 py-2">
+                <th
+                  key={column}
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   {column}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {previewData.headValues.map((row, index) => (
-              <tr key={index}>
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
                 {row.map((value, idx) => (
-                  <td key={idx} className="border px-4 py-2">
+                  <td key={idx} className="px-6 py-4 whitespace-nowrap">
                     {value}
                   </td>
                 ))}
