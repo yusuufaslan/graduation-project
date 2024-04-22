@@ -1,9 +1,42 @@
 // ProjectList.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ProjectList = ({ projects, mode }) => {
-  console.log(projects);
+  const [projectsWithUsers, setProjectsWithUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const projectsWithUsersData = await Promise.all(
+        projects.map(async (project) => {
+          try {
+            const response = await axios.get(
+              `http://localhost:3838/api/user/name-from-id?userId=${project.ownerId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              }
+            );
+            if (response.status === 200) {
+              return {
+                ...project,
+                ownerName: response.data.userNameInfo.name,
+                ownerSurname: response.data.userNameInfo.surname,
+              };
+            }
+          } catch (error) {
+            console.error("Error fetching user:", error);
+            return { ...project, ownerName: "Unknown", ownerSurname: "User" };
+          }
+        })
+      );
+      setProjectsWithUsers(projectsWithUsersData);
+    };
+
+    fetchUsers();
+  }, [projects]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -12,7 +45,7 @@ const ProjectList = ({ projects, mode }) => {
 
   return (
     <div>
-      {projects.map((project) => (
+      {projectsWithUsers.map((project) => (
         <Link to={`/project/${mode}/${project._id}`} key={project._id}>
           <div className="border border-gray-300 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
             <h3 className="text-md font-semibold mb-0.5">
@@ -21,7 +54,7 @@ const ProjectList = ({ projects, mode }) => {
                 : project.name}
             </h3>
             <p className="text-sm text-gray-700 mb-0.5">
-              {project.ownerId}{" "}
+              {project.ownerName} {project.ownerSurname}{" "}
               <span className="text-sm text-gray-500 mb-3">
                 | Last Updated: {formatDate(project.updated_at)}
               </span>
