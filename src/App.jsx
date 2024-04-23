@@ -53,7 +53,7 @@ function App() {
         <ToastContainer position="bottom-left" />
         { !loading && (
           <Routes>
-            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/" element={<Navigate to="/welcome" replace />} />
             
             <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
             <Route path='/sign-up' element={<SignUp />} />

@@ -2,6 +2,10 @@ import React from "react";
 import ContactForm from "../../components/ContactForm/ContactForm"; // Assuming you have a ContactForm component
 
 function HomeContent({ signedIn }) {
+  function getImgUrl(name) {
+    return new URL(`${name}`, import.meta.url).href
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -120,6 +124,8 @@ function HomeContent({ signedIn }) {
           </div>
         </div>
       </section>
+
+      {/* <img src={getImgUrl("../../assets/vesikalik.jpg")} alt="image" /> */}
     </>
   );
 }
