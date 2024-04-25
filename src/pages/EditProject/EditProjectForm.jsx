@@ -104,8 +104,9 @@ const EditProjectForm = () => {
     navigate(`/dataset/create/${projectId}`);
   };
 
-  const handleDownloadDataset = (datasetId) => {
-    console.log("Downloading dataset with ID:", datasetId);
+  const handleDownloadDataset = (datasetUrl) => {
+    console.log("Downloading dataset with URL:", datasetUrl);
+    window.open(datasetUrl, "_blank");
   };
 
   const handleRemoveDataset = async (datasetId) => {
@@ -257,7 +258,7 @@ const EditProjectForm = () => {
                       Remove Dataset
                     </button>
                     <button
-                      onClick={() => handleDownloadDataset(dataset._id)}
+                      onClick={() => handleDownloadDataset("http://localhost:3838/" + dataset.anonym_url)}
                       className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
                     >
                       Download Dataset
