@@ -104,10 +104,25 @@ const EditProjectForm = () => {
     navigate(`/dataset/create/${projectId}`);
   };
 
-  const handleDownloadDataset = (datasetUrl) => {
-    console.log("Downloading dataset with URL:", datasetUrl);
-    window.open(datasetUrl, "_blank");
+  const handleDownloadDataset = async (datasetUrl, datasetName, datasetExtension) => {
+    try {
+      const response = await axios({
+        url: datasetUrl,
+        method: 'GET',
+        responseType: 'blob', // Important
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${datasetName}.${datasetExtension}`);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading dataset:", error);
+    }
   };
+  
 
   const handleRemoveDataset = async (datasetId) => {
     try {
@@ -248,6 +263,10 @@ const EditProjectForm = () => {
                       Description:
                       <span className="text-md font-normal text-gray-600"> {dataset.description}</span>
                     </h3>
+                    <h3 className="text-md mb-2">
+                      File Type:
+                      <span className="text-md font-normal text-gray-600"> .{dataset.extension}</span>
+                    </h3>
                   </div>
                   <DatasetPreview datasetId={dataset._id} />
                   <div className="flex justify-between items-center mt-10">
@@ -258,7 +277,7 @@ const EditProjectForm = () => {
                       Remove Dataset
                     </button>
                     <button
-                      onClick={() => handleDownloadDataset("http://localhost:3838/" + dataset.anonym_url)}
+                      onClick={() => handleDownloadDataset("http://localhost:3838/" + dataset.anonym_url, dataset.name, dataset.extension)}
                       className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
                     >
                       Download Dataset
