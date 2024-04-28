@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/header/Navbar";
 
@@ -8,6 +8,8 @@ const CreateDataset = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
 
+
+  const [project, setProject] = useState(null);
   // console.log(localStorage.getItem("token"));
 
   const [dataset, setDataset] = useState({
@@ -19,6 +21,32 @@ const CreateDataset = () => {
     columnNames: [],
     columnActions: [], // Adding column actions array to store column actions
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    const fetchProjectDetail = async () => {
+      try {
+          const response = await axios.post(
+            "http://localhost:3838/api/project/detail",
+            { projectId },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include authorization token in headers
+              },
+            }
+          );
+
+          const data = response.data;
+          setProject(data.project);
+      } catch (error) {
+        console.error("Error fetching project detail:", error);
+      }
+    };
+
+    fetchProjectDetail();
+  }, [projectId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,7 +142,7 @@ const CreateDataset = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8 h-screen">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Create New Dataset for Project {projectId}
+          {project && `Create New Dataset for: ${project.name}`}
         </h1>
         <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg overflow-hidden border-2 p-6">
           <p className="text-2xl font-bold mb-4">Dataset Information</p>
