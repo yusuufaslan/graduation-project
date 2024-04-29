@@ -151,19 +151,22 @@ const Explore = () => {
             />
             <br />
 
-            <button
-              onClick={fetchData}
-              className="bg-blue-500 text-white px-3 py-2 rounded-md text-sm"
-            >
-              Set Filters
-            </button>
+            <div className="flex flex-wrap gap-x-2 gap-y-2">
+				<button
+				onClick={fetchData}
+				className="bg-blue-500 text-white px-3 py-2 rounded-md text-sm"
+				>
+				Set Filters
+				</button>
 
-            <button
-              onClick={(e) => handleClearFilters(e)}
-              className="bg-red-500 text-white px-3 py-2 rounded-md text-sm ml-2"
-            >
-              Clear Filters
-            </button>
+				<button
+				onClick={(e) => handleClearFilters(e)}
+				className="bg-red-500 text-white px-3 py-2 rounded-md text-sm"
+				>
+				Clear Filters
+				</button>
+            </div>
+            
           </div>
           <div className="w-full md:w-3/4">
             <div className="mt-1">
