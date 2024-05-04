@@ -8,12 +8,7 @@ const ParticipatedProjects = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchParticipatedProjects()
-      .then((projects) => {
-        setParticipatedProjects(projects);
-      })
-      .catch((error) => console.error("Error fetching participated projects:", error))
-      .finally(() => setLoading(false));
+    fetchParticipatedProjects();
   }, []);
 
   const fetchParticipatedProjects = async () => {
@@ -23,13 +18,14 @@ const ParticipatedProjects = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
       if (response.status === 200) {
-        return response.data.projects;
+        setParticipatedProjects(response.data.projects);
+        setLoading(false);
       }
     } catch (error) {
-
-      console.error("Error fetching participated projects:", error);
-      throw error;
+      console.error("Error fetching shared projects:", error);
+      setLoading(false);
     }
   };
 

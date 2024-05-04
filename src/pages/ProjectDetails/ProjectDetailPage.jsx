@@ -16,90 +16,69 @@ const ProjectDetailPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
         if (!token) {
           navigate("/sign-in");
-        } else {
-          const response = await axios.get(
-            "http://localhost:3838/api/user/detail",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          const userData = response.data.user;
-          setUser(userData);
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
 
-    const fetchTagList = async () => {
-      try {
-        const response = await axios.get("http://localhost:3838/api/tag/get");
-        if (response.status === 200) {
-          setTagList(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching tag list:", error);
-      }
-    };
-
-    const fetchProjectDetail = async () => {
-      try {
-        if (user && user._id) {
-          const response = await axios.post(
-            "http://localhost:3838/api/project/detail",
-            { projectId },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          const data = response.data;
-          const projectData = data.project;
-
-          const ownerResponse = await axios.get(
-            `http://localhost:3838/api/user/name-from-id?userId=${projectData.ownerId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          if (ownerResponse.status === 200) {
-            projectData.ownerName = ownerResponse.data.userNameInfo.name;
-            projectData.ownerSurname = ownerResponse.data.userNameInfo.surname;
+        const userResponse = await axios.get(
+          "http://localhost:3838/api/user/detail",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
+        );
 
-          setProject(projectData);
+        const userData = userResponse.data.user;
+        setUser(userData);
 
-          if (projectData.userIds.includes(user._id)) {
-            setHasAccess(true);
+        const tagResponse = await axios.get("http://localhost:3838/api/tag/get");
+        if (tagResponse.status === 200) {
+          setTagList(tagResponse.data);
+        }
+
+        const projectResponse = await axios.post(
+          "http://localhost:3838/api/project/detail",
+          { projectId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        } else {
-          // console.error("User data not available.");
+        );
+
+        const projectData = projectResponse.data.project;
+
+        const ownerResponse = await axios.get(
+          `http://localhost:3838/api/user/name-from-id?userId=${projectData.ownerId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (ownerResponse.status === 200) {
+          projectData.ownerName = ownerResponse.data.userNameInfo.name;
+          projectData.ownerSurname = ownerResponse.data.userNameInfo.surname;
+        }
+
+        setProject(projectData);
+
+        if (userData && userData._id && projectData.userIds.includes(userData._id)) {
+          setHasAccess(true);
         }
       } catch (error) {
-        console.error("Error fetching project detail:", error);
+        console.error("Error fetching data:", error);
       }
-    };
-
-    const fetchData = async () => {
-      await Promise.all([fetchUserData(), fetchTagList()]);
-      fetchProjectDetail();
     };
 
     fetchData();
-  }, [projectId, navigate, user]);
+  }, [projectId, navigate]);
 
   const handleCreateProposal = () => {
     navigate(`/proposal/create/${projectId}`);
