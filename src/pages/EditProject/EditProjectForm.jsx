@@ -126,27 +126,25 @@ const EditProjectForm = () => {
       console.error("Error downloading dataset:", error);
     }
   };
-  
 
   const handleRemoveDataset = async (datasetId) => {
     try {
-      // const token = localStorage.getItem("token");
-      // const response = await axios.delete(
-      //   `http://localhost:3838/api/dataset/remove/${projectId}/${datasetId}`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-      // if (response.status === 200)
-
-      if (true) {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:3838/api/project/remove-dataset",
+        { datasetId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        // If dataset removed successfully, update the project state
         setProject((prevProject) => ({
           ...prevProject,
-          datasetIds: prevProject.datasetIds.filter(
-            (dataset) => dataset._id !== datasetId
-          ),
+          datasetIds: prevProject.datasetIds.filter((dataset) => dataset._id !== datasetId),
         }));
       }
     } catch (error) {
