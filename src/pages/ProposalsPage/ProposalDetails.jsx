@@ -20,7 +20,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
 
         if (response.status === 200) {
           setApplicantName(
-            `${response.data.userNameInfo.name} ${response.data.userNameInfo.surname}`
+            `${response.data.userNameInfo.name} ${response.data.userNameInfo.surname} (${response.data.userNameInfo.email})`
           );
         }
       } catch (error) {
@@ -81,12 +81,18 @@ const ProposalDetails = ({ proposal, projectName }) => {
       <p>
         <strong>Project Name:</strong> {projectName}
       </p>
+      
       <p className="mt-5">
-        <strong>Applicant:</strong> {applicantName}
+        <strong>Applicant:</strong> <span className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 ">{applicantName}</span>
       </p>
+
+      {/* <p className="mt-5">
+        <strong>Applicant:</strong> {applicantName}
+      </p> */}
+    
       {otherApplicants.length > 0 && (
         <div className="mt-5">
-          <p className="text-gray-8800">
+          <p className="text-gray-800">
             <span className="font-bold">Other Applicants:</span>{" "}
             <span className="flex flex-wrap mt-2">
               {otherApplicants.map((applicant, index) => (
@@ -94,7 +100,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
                   key={index}
                   className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                 >
-                  {applicant.name} {applicant.surname}
+                  {applicant.name} {applicant.surname} ({applicant.email})
                 </span>
               ))}
             </span>

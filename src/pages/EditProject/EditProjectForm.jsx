@@ -235,7 +235,7 @@ const EditProjectForm = () => {
                         className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                       >
                         {userDetail
-                          ? `${userDetail.name} ${userDetail.surname}`
+                          ? `${userDetail.name} ${userDetail.surname} (${userDetail.email})`
                           : `User ${userId}`}
                       </span>
                     );
