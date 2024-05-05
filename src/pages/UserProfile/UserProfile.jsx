@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { BsPersonCircle } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
 
 function UserProfile() {
@@ -124,14 +125,15 @@ function UserProfile() {
                 <p className="mt-1 text-sm text-gray-900">{user.address}</p>
               </div>
               {/* Button to edit profile */}
-              {/* <div className="flex justify-end">
+              <div className="flex justify-end">
                 <button
                   onClick={handleEditProfile}
                   className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
+                  <AiOutlineEdit className="text-lg mr-2"/>
                   Edit Profile
                 </button>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
