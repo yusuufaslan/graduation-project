@@ -5,6 +5,7 @@ import Navbar from "../../components/header/Navbar";
 import Select from "react-select";
 
 import DatasetPreview from "../../components/DatasetPreview/DatasetPreview";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 const EditProjectForm = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const EditProjectForm = () => {
   const [userList, setUserList] = useState([]);
   const [userDetails, setUserDetails] = useState({});
   const [user, setUser] = useState(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [datasetIdToRemove, setDatasetIdToRemove] = useState(null);
+  const [datasetNameToRemove, setDatasetNameToRemove] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,22 +109,29 @@ const EditProjectForm = () => {
     navigate(`/dataset/create/${projectId}`);
   };
 
-  const handleDownloadDataset = async (datasetUrl, datasetName, datasetExtension) => {
+  const handleDownloadDataset = async (
+    datasetUrl,
+    datasetName,
+    datasetExtension
+  ) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios({
         url: datasetUrl,
-        method: 'GET',
-        responseType: 'blob', // Important
+        method: "GET",
+        responseType: "blob", // Important
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `${datasetName}.${datasetExtension}`);
+      link.setAttribute(
+        "download",
+        `${datasetName}.${datasetExtension}`
+      );
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -127,12 +139,18 @@ const EditProjectForm = () => {
     }
   };
 
-  const handleRemoveDataset = async (datasetId) => {
+  const handleRemoveDataset = async (datasetId, datasetName) => {
+    setDatasetIdToRemove(datasetId);
+    setDatasetNameToRemove(datasetName);
+    setShowConfirmationModal(true);
+  };
+
+  const confirmRemoveDataset = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:3838/api/project/remove-dataset",
-        { datasetId },
+        { datasetId: datasetIdToRemove },
         {
           headers: {
             "Content-Type": "application/json",
@@ -144,12 +162,20 @@ const EditProjectForm = () => {
         // If dataset removed successfully, update the project state
         setProject((prevProject) => ({
           ...prevProject,
-          datasetIds: prevProject.datasetIds.filter((dataset) => dataset._id !== datasetId),
+          datasetIds: prevProject.datasetIds.filter(
+            (dataset) => dataset._id !== datasetIdToRemove
+          ),
         }));
       }
     } catch (error) {
       console.error("Error removing dataset:", error);
+    } finally {
+      setShowConfirmationModal(false);
     }
+  };
+
+  const cancelRemoveDataset = () => {
+    setShowConfirmationModal(false);
   };
 
   const formatDate = (dateString) => {
@@ -234,10 +260,11 @@ const EditProjectForm = () => {
                         key={userId}
                         className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                       >
-                        {userDetail
-                          ? `${userDetail.name} ${userDetail.surname} (${userDetail.email})`
-                          // : `User ${userId}`}
-                          : "Loading..." }
+                        {userDetail ? (
+                          `${userDetail.name} ${userDetail.surname} (${userDetail.email})`
+                        ) : (
+                          "Loading..."
+                        )}
                       </span>
                     );
                   })}
@@ -259,7 +286,6 @@ const EditProjectForm = () => {
                 >
                   <div>
                     <h3 className="text-2xl font-semibold mb-1">
-                      
                       <span className="text-2xl font-normal"> {dataset.name}</span>
                     </h3>
                     <h3 className="text-md mb-2">
@@ -274,13 +300,20 @@ const EditProjectForm = () => {
                   <DatasetPreview datasetId={dataset._id} />
                   <div className="flex justify-between items-center mt-10">
                     <button
-                      onClick={() => handleRemoveDataset(dataset._id)}
+                      onClick={() => handleRemoveDataset(dataset._id, dataset.name)}
                       className="text-sm bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
                     >
                       Remove Dataset
                     </button>
                     <button
-                      onClick={() => handleDownloadDataset("http://localhost:3838/" + dataset.anonym_url, dataset.name, dataset.extension)}
+                      onClick={() =>
+                        handleDownloadDataset(
+                          "http://localhost:3838/" +
+                            dataset.anonym_url,
+                          dataset.name,
+                          dataset.extension
+                        )
+                      }
                       className="text-sm bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
                     >
                       Download Dataset
@@ -298,8 +331,18 @@ const EditProjectForm = () => {
           </div>
         </div>
       </div>
+
+      {showConfirmationModal && (
+        <ConfirmationModal
+          message="Are you sure you want to remove this dataset?"
+          messageDescription={`Dataset Name: ${datasetNameToRemove}`}
+          onConfirm={confirmRemoveDataset}
+          onCancel={cancelRemoveDataset}
+        />
+      )}
     </>
   );
 };
 
 export default EditProjectForm;
+
