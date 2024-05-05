@@ -106,10 +106,14 @@ const EditProjectForm = () => {
 
   const handleDownloadDataset = async (datasetUrl, datasetName, datasetExtension) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios({
         url: datasetUrl,
         method: 'GET',
         responseType: 'blob', // Important
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
   
       const url = window.URL.createObjectURL(new Blob([response.data]));
