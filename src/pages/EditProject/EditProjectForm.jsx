@@ -236,7 +236,8 @@ const EditProjectForm = () => {
                       >
                         {userDetail
                           ? `${userDetail.name} ${userDetail.surname} (${userDetail.email})`
-                          : `User ${userId}`}
+                          // : `User ${userId}`}
+                          : "Loading..." }
                       </span>
                     );
                   })}
