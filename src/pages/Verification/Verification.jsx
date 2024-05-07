@@ -63,7 +63,7 @@ function Verification() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-md sm:max-w-md flex flex-col items-center justify-center">
-        <img src={ViteLogo} className="h-40 w-40 mb-1" alt="Vite Logo" />
+        <img src={ViteLogo} className="h-40 w-40 mb-5" alt="Vite Logo" />
         <h2 className="text-center text-3xl font-bold text-gray-900">
           Verify Your Email
         </h2>
