@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import ViteLogo from "../../../public/vite.svg";
+import ViteLogo from "../../../public/vite_old.svg";
 
 export default function WelcomeNavbar({signedIn}) {
   return (

@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"; // Import Lin
 
 import { toast } from "react-toastify";
 
-import ViteLogo from "../../../public/vite.svg";
+import ViteLogo from "../../../public/vite_old.svg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
