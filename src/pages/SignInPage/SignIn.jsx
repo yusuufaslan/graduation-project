@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ViteLogo from "../../../public/vite.svg";
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,7 +12,7 @@ function SignIn() {
   const [emailError, setEmailError] = useState("");
   const [isEmailTouched, setIsEmailTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, setIsLogged] = useState(false);
 
   const navigate = useNavigate(); // useNavigate hook for redirection
 
@@ -66,15 +65,18 @@ function SignIn() {
           toast.success("Login successful!"); // Display success toast
         } else {
           // Login failed due to invalid credentials
-          toast.error("Invalid credentials or verification is not completed. Please try again."); // Display error toast
+          toast.error(
+            "Invalid credentials or verification is not completed. Please try again."
+          ); // Display error toast
         }
       } catch (error) {
         // Login failed due to network error or server issue
-        toast.error("Invalid credentials or verification is not completed. Please try again."); // Display error toast
+        toast.error(
+          "Invalid credentials or verification is not completed. Please try again."
+        ); // Display error toast
       }
     }
   };
-  
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -86,7 +88,7 @@ function SignIn() {
     }, 1500); // Adjust the duration as needed
 
     return () => clearTimeout(timer); // Clear the timer on component unmount
-  }, [isLogged]);
+  }, [isLogged, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -152,6 +154,15 @@ function SignIn() {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
+            </div>
+
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot password?
+              </Link>
             </div>
 
             <div>

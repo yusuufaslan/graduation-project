@@ -21,6 +21,7 @@ import Explore from './pages/Explore/Explore';
 import MyProjects from './pages/SharedProjects/MyProjects';
 import ParticipatedProjects from './pages/ParticipatedProjects/ParticipatedProjects';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 
 // ProtectedRoute component
 const ProtectedRoute = ({ isAuthenticated, element, loading }) => {
@@ -57,6 +58,7 @@ function App() {
             
             <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
             <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/verify' element={<Verification />} />
             <Route path='/welcome' element={<Welcome />} />
             
