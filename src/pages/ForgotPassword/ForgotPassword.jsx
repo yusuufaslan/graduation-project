@@ -1,7 +1,7 @@
 // ForgotPassword.jsx
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -14,6 +14,8 @@ function ForgotPassword() {
   const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
