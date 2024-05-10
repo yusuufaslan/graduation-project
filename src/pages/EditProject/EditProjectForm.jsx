@@ -7,6 +7,7 @@ import Select from "react-select";
 import DatasetPreview from "../../components/DatasetPreview/DatasetPreview";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { toast } from "react-toastify";
+import { TiDelete, TiDeleteOutline } from "react-icons/ti";
 
 const EditProjectForm = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const EditProjectForm = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [datasetIdToRemove, setDatasetIdToRemove] = useState(null);
   const [datasetNameToRemove, setDatasetNameToRemove] = useState(null);
-
+  const [showProjectDeleteConfirmationModal, setShowProjectDeleteConfirmationModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -170,7 +171,7 @@ const EditProjectForm = () => {
         }));
       }
     } catch (error) {
-      toast.success("Dataset could not removed.")
+      toast.error("Dataset could not be removed.")
       console.error("Error removing dataset:", error);
     } finally {
       setShowConfirmationModal(false);
@@ -179,6 +180,44 @@ const EditProjectForm = () => {
 
   const cancelRemoveDataset = () => {
     setShowConfirmationModal(false);
+  };
+
+  const handleRemoveProject = () => {
+    setShowProjectDeleteConfirmationModal(true);
+  };
+
+  const confirmRemoveProject = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      // Check if all datasets are removed before removing the project
+      if (project.datasetIds.length > 0) {
+        toast.error("Please remove all datasets before deleting the project.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:3838/api/project/delete",
+        { projectId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success("Project deleted successfully.");
+        navigate("/projects");
+      }
+    } catch (error) {
+      toast.error("Error deleting project.");
+      console.error("Error removing project:", error);
+    } finally {
+      setShowProjectDeleteConfirmationModal(false);
+    }
+  };
+
+  const cancelRemoveProject = () => {
+    setShowProjectDeleteConfirmationModal(false);
   };
 
   const formatDate = (dateString) => {
@@ -325,14 +364,25 @@ const EditProjectForm = () => {
                 </div>
               ))
             )}
-            <button
-              onClick={handleAddDataset}
-              className="text-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-            >
-              + Add New Dataset
-            </button>
+            <div className="flex flex-wrap gap-x-2 gap-y-2">
+              <button
+                onClick={handleAddDataset}
+                className="text-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+              >
+                + Add New Dataset
+              </button>
+              <button
+                onClick={handleRemoveProject}
+                className="text-lg bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center"
+              >
+                <TiDeleteOutline className="text-xl mr-2" />
+                <span>Delete Project</span>
+              </button>
+            </div>
+
           </div>
         </div>
+
       </div>
 
       {showConfirmationModal && (
@@ -343,9 +393,17 @@ const EditProjectForm = () => {
           onCancel={cancelRemoveDataset}
         />
       )}
+
+      {showProjectDeleteConfirmationModal && (
+        <ConfirmationModal
+          message="Are you sure you want to delete this project?"
+          messageDescription={`Project Name: ${project.name}`}
+          onConfirm={confirmRemoveProject}
+          onCancel={cancelRemoveProject}
+        />
+      )}
     </>
   );
 };
 
 export default EditProjectForm;
-
