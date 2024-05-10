@@ -327,6 +327,23 @@ const EditProjectForm = () => {
               )}
             </div>
           </div>
+
+          <div className="flex flex-wrap gap-x-2 gap-y-2 mx-5 mb-5">
+              <button
+                onClick={handleAddDataset}
+                className="text-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+              >
+                + Add New Dataset
+              </button>
+              <button
+                onClick={handleRemoveProject}
+                className="text-lg bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center"
+              >
+                <TiDeleteOutline className="text-xl mr-2" />
+                <span>Delete Project</span>
+              </button>
+            </div>
+
           <div className="px-6 py-4 border-t border-gray-200">
             <h1 className="text-2xl font-bold mb-4">Datasets</h1>
             {project.datasetIds.length === 0 ? (
@@ -377,21 +394,6 @@ const EditProjectForm = () => {
                 </div>
               ))
             )}
-            <div className="flex flex-wrap gap-x-2 gap-y-2">
-              <button
-                onClick={handleAddDataset}
-                className="text-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-              >
-                + Add New Dataset
-              </button>
-              <button
-                onClick={handleRemoveProject}
-                className="text-lg bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center"
-              >
-                <TiDeleteOutline className="text-xl mr-2" />
-                <span>Delete Project</span>
-              </button>
-            </div>
 
           </div>
         </div>
