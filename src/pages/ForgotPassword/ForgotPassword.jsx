@@ -140,6 +140,25 @@ function ForgotPassword() {
 
           {step === 2 && (
             <form className="space-y-6" onSubmit={handleResetPassword}>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    disabled
+                    className="mt-1 pl-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 bg-gray-200"
+                    style={{ height: "2.5rem" }} // Adjust the height here
+                    value={email}
+                    onChange={handleEmailChange}
+                  />
+              </div>
               <div>
                 <label
                   htmlFor="resetCode"
