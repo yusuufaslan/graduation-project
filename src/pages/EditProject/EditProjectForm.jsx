@@ -6,6 +6,7 @@ import Select from "react-select";
 
 import DatasetPreview from "../../components/DatasetPreview/DatasetPreview";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import { toast } from "react-toastify";
 
 const EditProjectForm = () => {
   const navigate = useNavigate();
@@ -159,6 +160,7 @@ const EditProjectForm = () => {
         }
       );
       if (response.status === 200) {
+        toast.success("Dataset removed successfully.")
         // If dataset removed successfully, update the project state
         setProject((prevProject) => ({
           ...prevProject,
@@ -168,6 +170,7 @@ const EditProjectForm = () => {
         }));
       }
     } catch (error) {
+      toast.success("Dataset could not removed.")
       console.error("Error removing dataset:", error);
     } finally {
       setShowConfirmationModal(false);
