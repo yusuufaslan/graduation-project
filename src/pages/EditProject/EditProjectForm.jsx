@@ -189,11 +189,24 @@ const EditProjectForm = () => {
   const confirmRemoveProject = async () => {
     try {
       const token = localStorage.getItem("token");
-      // Check if all datasets are removed before removing the project
-      if (project.datasetIds.length > 0) {
-        toast.error("Please remove all datasets before deleting the project.");
-        return;
-      }
+      
+      // Remove all datasets associated with the project
+      const removeDatasetsPromises = project.datasetIds.map(async (dataset) => {
+        await axios.post(
+          "http://localhost:3838/api/project/remove-dataset",
+          { datasetId: dataset._id },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      });
+      
+      await Promise.all(removeDatasetsPromises);
+  
+      // Now delete the project
       const response = await axios.post(
         "http://localhost:3838/api/project/delete",
         { projectId },
@@ -206,7 +219,7 @@ const EditProjectForm = () => {
       );
       if (response.status === 200) {
         toast.success("Project deleted successfully.");
-        navigate("/projects");
+        navigate("/my-projects");
       }
     } catch (error) {
       toast.error("Error deleting project.");
