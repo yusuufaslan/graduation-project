@@ -93,7 +93,7 @@ function SignIn() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-md sm:max-w-md flex flex-col items-center justify-center">
-        <img src={ViteLogo} className="h-40 w-40 mb-5" alt="Vite Logo" />
+        <img src={ViteLogo} className="h-32 w-32 mb-5" alt="Vite Logo" />
         <h2 className="text-center text-3xl font-bold text-gray-900">
           Sign in to your account
         </h2>
@@ -152,7 +152,7 @@ function SignIn() {
                 style={{ top: "35%" }} // Vertically centering
                 onClick={togglePasswordVisibility}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaEyeSlash className="text-lg" /> : <FaEye className="text-lg"/>}
               </button>
             </div>
 
