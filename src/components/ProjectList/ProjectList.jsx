@@ -49,8 +49,8 @@ const ProjectList = ({ projects, mode }) => {
         <Link to={`/project/${mode}/${project._id}`} key={project._id}>
           <div className="border border-gray-300 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
             <h3 className="text-md font-semibold mb-0.5">
-              {project.name.length > 200
-                ? project.name.substring(0, 200) + "..."
+              {project.name.length > 300
+                ? project.name.substring(0, 300) + "..."
                 : project.name}
             </h3>
             <p className="text-sm text-gray-700 mb-0.5">

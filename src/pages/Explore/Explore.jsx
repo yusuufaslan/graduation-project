@@ -148,6 +148,7 @@ const Explore = () => {
               options={tags}
               value={selectedTags}
               onChange={handleTagSelection}
+              className="text-lg"
             />
             <br />
 
