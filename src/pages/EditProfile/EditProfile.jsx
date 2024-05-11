@@ -1,11 +1,23 @@
 // EditProfile.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/header/Navbar";
 import { toast } from "react-toastify";
 
 import { BsPersonCircle } from "react-icons/bs";
+
+const roleOptions = [
+  { value: "", label: "Select" },
+  { value: "student", label: "Student" },
+  { value: "teacher", label: "Academician" },
+  { value: "researcher", label: "Researcher" },
+  { value: "engineer", label: "Engineer" },
+  { value: "doctor", label: "Doctor" },
+  { value: "nurse", label: "Nurse" },
+  { value: "pharmacist", label: "Pharmacist" },
+  // Add more options as needed
+];
 
 function EditProfile() {
   const navigate = useNavigate();
@@ -18,6 +30,7 @@ function EditProfile() {
     address: "",
   });
   const [institutionOptions, setInstitutionOptions] = useState([]);
+  const roleSelectRef = useRef(null);
 
   useEffect(() => {
     fetchUserData();
@@ -163,19 +176,23 @@ function EditProfile() {
                     Role
                   </label>
                   <select
-                    className="mt-1 px-1 block w-full border-gray-300 rounded-md shadow-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
+                    ref={roleSelectRef}
                     name="role"
+                    autoComplete="role"
+                    required
+                    className="mt-1 px-1 block w-full border-gray-300 rounded-md shadow-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10"
                     value={formData.role}
                     onChange={handleChange}
-                    required
+                    onKeyDown={(e) => handleKeyDown(e, roleSelectRef)}
                   >
-                    <option value="">Select</option>
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
-                    <option value="engineer">Engineer</option>
-                    {/* Add more options as needed */}
+                    {roleOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Institution
