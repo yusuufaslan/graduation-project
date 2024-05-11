@@ -116,6 +116,7 @@ const EditProjectForm = () => {
 
   const handleAddDataset = () => {
     navigate(`/dataset/create/${projectId}`);
+    window.scrollTo(0, 0); // Scroll to the top of the page
   };
 
   const handleDownloadDataset = async (
@@ -372,7 +373,7 @@ const EditProjectForm = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-x-2 gap-y-2 mx-5 mb-5">
+          <div className="flex justify-end flex-wrap gap-x-2 gap-y-2 mx-5 mb-5">
             <button
               onClick={handleEditProject}
               className="text-lg bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded mt-2"
