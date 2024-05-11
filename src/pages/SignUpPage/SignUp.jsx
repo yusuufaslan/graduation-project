@@ -10,7 +10,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const roleOptions = [
   { value: "", label: "Select" },
   { value: "student", label: "Student" },
-  { value: "teacher", label: "Academician" },
+  { value: "academician", label: "Academician" },
   { value: "researcher", label: "Researcher" },
   { value: "engineer", label: "Engineer" },
   { value: "doctor", label: "Doctor" },
