@@ -81,7 +81,7 @@ const CreateDataset = () => {
             address: ["address", "adress", "street", "city", "town", "province", "state", "country"],
             // dob: ["dob", "date_of_birth", "birth_date", "birthdate"],
             // age: ["age"],
-            gender: ["gender", "sex"],
+            // gender: ["gender", "sex"],
             nationality: ["nationality", "citizenship"],
             passport: ["passport", "passport_number", "passport_no"],
             drivingLicense: ["driving_license", "drivinglicence", "driving_license_number", "license_number"]
@@ -94,7 +94,7 @@ const CreateDataset = () => {
             address: ["adres", "adress", "sokak", "cadde", "mahalle", "şehir", "ilçe", "il", "ülke"],
             // dob: ["doğum_tarihi", "dogum_tarihi", "doğum", "dogum"],
             // age: ["yaş"],
-            gender: ["cinsiyet"],
+            // gender: ["cinsiyet"],
             nationality: ["vatandaşlık", "uyruk", "milliyet"],
             passport: ["pasaport", "pasaport_numarası"],
             drivingLicense: ["ehliyet", "ehliyet_numarası", "sürücü_belgesi"]
