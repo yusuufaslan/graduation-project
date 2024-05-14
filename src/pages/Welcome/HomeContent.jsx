@@ -3,7 +3,7 @@ import ContactForm from "../../components/ContactForm/ContactForm"; // Assuming 
 
 function HomeContent({ signedIn }) {
   function getImgUrl(name) {
-    return new URL(`${name}`, import.meta.url).href
+    return new URL("".concat(name), process.env.PUBLIC_URL).href;
   }
 
   return (
