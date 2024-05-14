@@ -70,7 +70,8 @@ function SignUp() {
     }));
 
     if (name === "email") {
-      setInvalidEmail(false);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setInvalidEmail(!emailRegex.test(value));
     }
 
     if (name === "password") {
