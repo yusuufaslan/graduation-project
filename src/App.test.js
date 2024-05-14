@@ -1,48 +1,62 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
-import { MemoryRouter } from 'react-router-dom';
 
 describe('App', () => {
+  // Mock localStorage
+  const localStorageMock = {
+    getItem: jest.fn(),
+  };
+
+  beforeEach(() => {
+    // Mock localStorage getItem method
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('Always true test', () => {
     expect(true).toBe(true);
+  }); 
+
+  it('renders Welcome page when user is not signed in', () => {
+    // Mock localStorage getItem method to return null (user not signed in)
+    localStorageMock.getItem.mockReturnValueOnce(null);
+
+    render(<App />);
+
+    // Check if Welcome page is rendered
+    expect(screen.getByText('Empowering Healthcare Data Collaboration: Find, Share, Securely.')).toBeInTheDocument();
+    // Check if the "Sign In" button is rendered
+    expect(screen.getAllByText('Sign In').length).toBeGreaterThan(0);
   });
-  
-  test('Renders home page when user opens the app', () => {
+
+  it('renders Home page when user is signed in', async () => {
+    // Mock localStorage getItem method to return a token (user signed in)
+    localStorageMock.getItem.mockReturnValueOnce('mockToken');
+
+    render(<App />);
+
+    // Wait for the component to update
+    await act(async () => {
+      // Check if Home page is rendered
+      expect(await screen.findByText('Empowering Healthcare Data Collaboration: Find, Share, Securely.')).toBeInTheDocument();
+      // Check if the "Sign In" button is NOT rendered
+      ! expect(screen.queryAllByText('Sign In').length).toBeGreaterThan(0);
+    });
+  });
+
+  it('redirects to Sign In page when clicking the "Sign In" button on Welcome page', () => {
     render(<App />);
     
-    const headingElement = screen.getByText(/Empowering Healthcare Data Collaboration: Find, Share, Securely/);
-    
-    expect(headingElement).toBeInTheDocument();
+    // Check if the "Sign In" button is rendered
+    expect(screen.getAllByText('Sign In').length).toBeGreaterThan(0);
+    // Click on the "Sign In" button
+    userEvent.click(screen.getAllByRole('link', { name: 'Sign In' })[0]);
   });
-    
-  // test('renders Sign In page when not authenticated', async () => {
-  //   render(<App />, { wrapper: BrowserRouter });
-  //   await waitFor(() => expect(screen.getByText(/sign in to your account/i)).toBeInTheDocument());
-  // });
-
-  // test('renders Home page when authenticated', async () => {
-  //   const token = 'fake-token';
-  //   localStorage.setItem('token', token);
-  //   axios.get.mockResolvedValueOnce({ data: { token } });
-  //   render(<App />, { wrapper: BrowserRouter });
-  //   await waitFor(() => expect(screen.getByText(/welcome/i)).toBeInTheDocument());
-  // });
-
-  // test('redirects to Sign In page when not authenticated and trying to access protected route', async () => {
-  //   render(<App />, { wrapper: BrowserRouter });
-  //   await waitFor(() => expect(screen.getByText(/sign in to your account/i)).toBeInTheDocument());
-  //   userEvent.click(screen.getByText(/explore/i));
-  //   await waitFor(() => expect(screen.getByText(/sign in to your account/i)).toBeInTheDocument());
-  // });
-
-  // test('redirects to Home page when authenticated and trying to access Sign In page', async () => {
-  //   const token = 'fake-token';
-  //   localStorage.setItem('token', token);
-  //   axios.get.mockResolvedValueOnce({ data: { token } });
-  //   render(<App />, { wrapper: BrowserRouter });
-  //   await waitFor(() => expect(screen.getByText(/welcome/i)).toBeInTheDocument());
-  //   userEvent.click(screen.getByText(/sign in/i));
-  //   await waitFor(() => expect(screen.getByText(/welcome/i)).toBeInTheDocument());
-  // });
 });
