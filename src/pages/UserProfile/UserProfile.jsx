@@ -20,10 +20,9 @@ function UserProfile() {
 
   const fetchInstitutions = async () => {
     try {
-      const response = await fetch("http://localhost:3838/api/institution/get");
-      if (response.ok) {
-        const data = await response.json();
-        setInstitutionOptions(data);
+      const response = await axios.get("http://localhost:3838/api/institution/get");
+      if (response.status === 200) {
+        setInstitutionOptions(response.data);
       } else {
         throw new Error("Failed to fetch institutions");
       }
@@ -32,7 +31,7 @@ function UserProfile() {
       // Handle error or display a message to the user
     }
   };
-
+  
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
