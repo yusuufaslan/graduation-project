@@ -232,7 +232,7 @@ const CreateDataset = () => {
                     disabled={autoSelectedColumns.includes(columnName) && (dataset.columnActions[columnIndex] === "none" || dataset.columnActions[columnIndex] === undefined)}
                   >
                     <option value="none" disabled={autoSelectedColumns.includes(columnName)}>No Action</option>
-                    <option value="anonymize">Anonymize</option>
+                    <option value="anonymize">Mask</option>
                     <option value="hash">Hash</option>
                     <option value="remove">Remove</option>
                     <option value="empty">Empty</option>

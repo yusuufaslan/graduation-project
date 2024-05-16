@@ -91,9 +91,11 @@ describe('SignUp component', () => {
   });
 
   test('submits the form with valid data', async () => {
+    // will be completed.
   });
   
 
   test('displays error message if user already exists', async () => {
-  });
+    // will be completed.
+});
 });
