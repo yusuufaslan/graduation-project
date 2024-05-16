@@ -9,9 +9,9 @@ export default function Welcome() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // Redirect user to home page if signed in
+    // Redirect user to about page if signed in
     if (token) {
-      navigate("/home");
+      navigate("/explore");
     }
   }, []);
 

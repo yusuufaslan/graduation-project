@@ -3,7 +3,7 @@ import React from 'react'
 import Navbar from '../../components/header/Navbar'
 import HomeContent from './HomeContent'
 
-function Home() {
+function About() {
   return (
     <div>
         <Navbar />
@@ -12,4 +12,4 @@ function Home() {
   )
 }
 
-export default Home
+export default About
