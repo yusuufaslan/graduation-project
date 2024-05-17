@@ -1,6 +1,8 @@
 import React from "react";
 import ContactForm from "../../components/ContactForm/ContactForm"; // Assuming you have a ContactForm component
 
+import FooterSection from "../../components/footer/FooterSection";
+
 function HomeContent({ signedIn }) {
   function getImgUrl(name) {
     return new URL("".concat(name), process.env.PUBLIC_URL).href;
@@ -132,7 +134,9 @@ function HomeContent({ signedIn }) {
           </div>
         </div>
       </section>
-
+      
+      <FooterSection />
+        
       {/* <img src={getImgUrl("../../assets/vesikalik.jpg")} alt="image" /> */}
     </>
   );
