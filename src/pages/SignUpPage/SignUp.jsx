@@ -1,23 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ViteLogo from "../../../public/vite.svg";
-
 import axios from "axios";
+
+import roleOptions from "../../utils/roleOptions";
 
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-const roleOptions = [
-  { value: "", label: "Select" },
-  { value: "student", label: "Student" },
-  { value: "academician", label: "Academician" },
-  { value: "researcher", label: "Researcher" },
-  { value: "engineer", label: "Engineer" },
-  { value: "doctor", label: "Doctor" },
-  { value: "nurse", label: "Nurse" },
-  { value: "pharmacist", label: "Pharmacist" },
-  // Add more options as needed
-];
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -50,10 +39,9 @@ function SignUp() {
 
   const fetchInstitutions = async () => {
     try {
-      const response = await fetch("http://localhost:3838/api/institution/get");
-      if (response.ok) {
-        const data = await response.json();
-        setInstitutionOptions(data);
+      const response = await axios.get("http://localhost:3838/api/institution/get");
+      if (response.status === 200) {
+        setInstitutionOptions(response.data);
       } else {
         throw new Error("Failed to fetch institutions");
       }
@@ -71,7 +59,8 @@ function SignUp() {
     }));
 
     if (name === "email") {
-      setInvalidEmail(false);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setInvalidEmail(!emailRegex.test(value));
     }
 
     if (name === "password") {
@@ -187,10 +176,11 @@ function SignUp() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="name">
                   Name
                 </label>
                 <input
+                  id="name"
                   type="text"
                   name="name"
                   autoComplete="name"
@@ -201,10 +191,11 @@ function SignUp() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="surname">
                   Surname
                 </label>
                 <input
+                  id="surname"
                   type="text"
                   name="surname"
                   autoComplete="surname"
@@ -217,10 +208,11 @@ function SignUp() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                 Email
               </label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 autoComplete="email"
@@ -239,11 +231,12 @@ function SignUp() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700" htmlFor="password">
                 Password
               </label>
               <div className="relative">
                 <input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   autoComplete="new-password"
@@ -267,11 +260,12 @@ function SignUp() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700" htmlFor="confirmPassword">
                 Confirm Password
               </label>
               <div className="relative">
                 <input
+                  id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   autoComplete="new-password"
@@ -309,10 +303,11 @@ function SignUp() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="role">
                   Role
                 </label>
                 <select
+                  id="role"
                   ref={roleSelectRef}
                   name="role"
                   autoComplete="role"
@@ -331,10 +326,11 @@ function SignUp() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700" htmlFor="institution">
                   Institution
                 </label>
                 <select
+                  id="institution"
                   ref={institutionSelectRef}
                   name="institution"
                   autoComplete="institution"
@@ -355,10 +351,11 @@ function SignUp() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700" htmlFor="address">
                 Address
               </label>
               <textarea
+                id="address"
                 name="address"
                 autoComplete="address"
                 required

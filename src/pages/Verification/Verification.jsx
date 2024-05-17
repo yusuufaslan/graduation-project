@@ -9,15 +9,14 @@ function Verification() {
   const [verificationCode, setVerificationCode] = useState("");
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
-  const [emailDisabled, setEmailDisabled] = useState(false); // Add emailDisabled state
+  const [emailDisabled, setEmailDisabled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch email from local storage and set it if available
     const storedEmail = localStorage.getItem("verifiedEmail");
     if (storedEmail) {
       setEmail(storedEmail);
-      setEmailDisabled(true); // Disable email input if email is fetched from local storage
+      setEmailDisabled(true);
     }
   }, []);
 
@@ -39,7 +38,6 @@ function Verification() {
         }
       );
       if (response.data.message === "User verified successfully") {
-        // Clear verification email from localStorage
         localStorage.removeItem("verifiedEmail");
         toast.success("User verified successfully");
         navigate("/sign-in");
@@ -55,7 +53,6 @@ function Verification() {
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setEmailValid(emailRegex.test(newEmail));
   };
@@ -73,19 +70,18 @@ function Verification() {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form onSubmit={handleVerification}>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 required
-                disabled={emailDisabled} // Use emailDisabled state to control the disabled attribute
+                disabled={emailDisabled}
                 className={`mt-1 pl-3 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-10 ${
-                  emailDisabled ? "bg-gray-200" : "" // Add background color if email is disabled
-                } ${
-                  !emailValid ? "border-red-500" : "" // Add border color if email is not valid
-                }`}
+                  emailDisabled ? "bg-gray-200" : ""
+                } ${!emailValid ? "border-red-500" : ""}`}
                 value={email}
                 onChange={handleEmailChange}
               />
@@ -97,10 +93,11 @@ function Verification() {
             </div>
 
             <div className="mt-5">
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700">
                 Verification Code
               </label>
               <input
+                id="verificationCode"
                 type="text"
                 name="verificationCode"
                 required

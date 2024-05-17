@@ -10,7 +10,7 @@ import CreateProject from './pages/CreateProject/CreateProject';
 import CreateDataset from './pages/CreateDataset/CreateDataset';
 import EditProjectForm from './pages/EditProject/EditProjectForm';
 import ProjectDetailPage from './pages/ProjectDetails/ProjectDetailPage';
-import Home from './pages/Welcome/Home';
+import About from './pages/Welcome/About';
 import ProposalsPage from './pages/ProposalsPage/ProposalsPage';
 import CreateProposal from './pages/CreateProposal/CreateProposal';
 import UserProfile from './pages/UserProfile/UserProfile';
@@ -56,7 +56,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/welcome" replace />} />
             
-            <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/home" replace /> : <SignIn />} />
+            <Route path='/sign-in' element={isAuthenticated ? <Navigate to="/explore" replace /> : <SignIn />} />
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/verify' element={<Verification />} />
@@ -71,7 +71,7 @@ function App() {
             <Route path="/proposal/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProposal />} loading={loading} />} />
             <Route path='/user-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<UserProfile />} loading={loading} />} />
             <Route path='/edit-profile' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProfile />} loading={loading} />} />
-            <Route path='/home' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Home />} loading={loading} />} />
+            <Route path='/about' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<About />} loading={loading} />} />
             <Route path='/explore' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Explore />} loading={loading} />} />
             <Route path='/my-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<MyProjects />} loading={loading} />} />
             <Route path='/participated-projects' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ParticipatedProjects />} loading={loading} />} />
