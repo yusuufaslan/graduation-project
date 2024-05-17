@@ -78,7 +78,7 @@ const CreateDataset = () => {
             name: ["name", "firstname", "lastname", "full_name"],
             phone: ["phone", "mobile", "telephone", "cellphone", "contact", "gsm"],
             email: ["email", "e-mail"],
-            address: ["address", "adress", "street", "city", "town", "province", "state", "country"],
+            address: ["address", "adress", "street", "city", "town"], //"province", "state", "country"
             // dob: ["dob", "date_of_birth", "birth_date", "birthdate"],
             // age: ["age"],
             // gender: ["gender", "sex"],
@@ -91,7 +91,7 @@ const CreateDataset = () => {
             name: ["isim", "ad", "soyad", "ad_soyad", "adsoyad", "tam_isim"],
             phone: ["telefon", "cep", "gsm", "telefon_no", "telefon_numarası", "cep_telefonu", "cep_telefon_numarası"],
             email: ["e-posta", "e_posta", "email"],
-            address: ["adres", "adress", "sokak", "cadde", "mahalle", "şehir", "ilçe", "il", "ülke"],
+            address: ["adres", "adress", "sokak", "cadde", "mahalle", "ilçe"], //, "şehir", "il", "ülke"
             // dob: ["doğum_tarihi", "dogum_tarihi", "doğum", "dogum"],
             // age: ["yaş"],
             // gender: ["cinsiyet"],
