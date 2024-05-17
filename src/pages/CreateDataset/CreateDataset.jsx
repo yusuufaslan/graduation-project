@@ -236,7 +236,6 @@ const CreateDataset = () => {
                     <option value="hash">Hash</option>
                     <option value="remove">Remove</option>
                     <option value="empty">Empty</option>
-                    {/* Add more actions as needed */}
                   </select>
                 </div>
               ))}
