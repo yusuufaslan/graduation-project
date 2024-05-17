@@ -1,23 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ViteLogo from "../../../public/vite.svg";
-
 import axios from "axios";
+
+import roleOptions from "../../utils/roleOptions";
 
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-const roleOptions = [
-  { value: "", label: "Select" },
-  { value: "student", label: "Student" },
-  { value: "academician", label: "Academician" },
-  { value: "researcher", label: "Researcher" },
-  { value: "engineer", label: "Engineer" },
-  { value: "doctor", label: "Doctor" },
-  { value: "nurse", label: "Nurse" },
-  { value: "pharmacist", label: "Pharmacist" },
-  // Add more options as needed
-];
 
 function SignUp() {
   const [formData, setFormData] = useState({

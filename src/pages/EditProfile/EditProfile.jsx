@@ -5,19 +5,9 @@ import axios from "axios";
 import Navbar from "../../components/header/Navbar";
 import { toast } from "react-toastify";
 
-import { BsPersonCircle } from "react-icons/bs";
+import roleOptions from "../../utils/roleOptions";
 
-const roleOptions = [
-  { value: "", label: "Select" },
-  { value: "student", label: "Student" },
-  { value: "academician", label: "Academician" },
-  { value: "researcher", label: "Researcher" },
-  { value: "engineer", label: "Engineer" },
-  { value: "doctor", label: "Doctor" },
-  { value: "nurse", label: "Nurse" },
-  { value: "pharmacist", label: "Pharmacist" },
-  // Add more options as needed
-];
+import { BsPersonCircle } from "react-icons/bs";
 
 function EditProfile() {
   const navigate = useNavigate();
