@@ -45,7 +45,15 @@ function HomeContent({ signedIn }) {
                 href="/sign-in"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign In
+                Explore Projects & Datasets
+              </a>
+            )}
+            {signedIn && (
+              <a
+                href="/explore"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Explore Projects & Datasets
               </a>
             )}
             <a
