@@ -29,7 +29,6 @@ const roleOptions = [
     { value: "radiologist", label: "Radiologist" },
     { value: "researcher", label: "Researcher" },
     { value: "resident physician", label: "Resident Physician" },
-    { value: "sales manager", label: "Sales Manager" },
     { value: "software engineer", label: "Software Engineer" },
     { value: "specialist physician", label: "Specialist Physician" },
     { value: "surgeon", label: "Surgeon" },
