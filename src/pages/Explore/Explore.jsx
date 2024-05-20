@@ -11,11 +11,8 @@ const Explore = () => {
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [sortBy, setSortBy] = useState({ value: "name", label: "Name" });
-  const [sortOrder, setSortOrder] = useState({
-    value: "desc",
-    label: "Descending",
-  });
+  const [sortBy, setSortBy] = useState({ value: "", label: "Select..." });
+  const [sortOrder, setSortOrder] = useState({ value: "",label: "Select..." });
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [noProjectsFound, setNoProjectsFound] = useState(true);
@@ -87,8 +84,8 @@ const Explore = () => {
 
   const handleClearFilters = (e) => {
     setSelectedTags([]);
-    setSortBy({ value: "name", label: "Name" });
-    setSortOrder({ value: "desc", label: "Descending" });
+    setSortBy({ value: "", label: "Select..." });
+    setSortOrder({ value: "", label: "Select..." });
     setSearchQuery("");
     setPage(1); // Reset page to 1 when clearing filters
     setClearFiltersPressed(clearFiltersPressed + 1);
@@ -125,6 +122,7 @@ const Explore = () => {
               value={sortBy}
               onChange={handleSortByChange}
               options={[
+                { value: "", label: "Select..." },
                 { value: "name", label: "Name" },
                 { value: "description", label: "Description" },
                 { value: "updated_at", label: "Updated At" },
@@ -136,6 +134,7 @@ const Explore = () => {
               value={sortOrder}
               onChange={handleSortOrderChange}
               options={[
+                { value: "", label: "Select..." },
                 { value: "desc", label: "Descending" },
                 { value: "asc", label: "Ascending" },
               ]}
