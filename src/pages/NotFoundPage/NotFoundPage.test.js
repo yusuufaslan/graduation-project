@@ -20,6 +20,6 @@ describe('NotFoundPage', () => {
     render(<NotFoundPage />);
     const goBackButton = screen.getByText(/Go back/i);
     expect(goBackButton).toBeInTheDocument();
-    expect(goBackButton).toHaveAttribute('href', '/about');
+    expect(goBackButton).toHaveAttribute('href', '/welcome');
   });
 });
