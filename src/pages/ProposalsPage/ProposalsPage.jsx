@@ -118,6 +118,11 @@ const ProposalsPage = () => {
 
       setProposals(proposalsList);
       setLoading(false); // Set loading to false after fetching proposals
+      
+      // Automatically select the first proposal in the list if there are proposals
+      if (proposalsList.length > 0) {
+        handleProposalClick(proposalsList[0]);
+      }
     } catch (error) {
       console.error("Error fetching proposals:", error);
       setLoading(false); // Ensure loading is set to false in case of an error
