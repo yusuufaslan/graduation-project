@@ -13,13 +13,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function WelcomeNavbar({signedIn}) {
   const location = useLocation(); // to get pathname
   const navigate = useNavigate();
 
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/home", current: false },
+    { name: "Home", href: "/welcome", current: false },
     { name: "About", href: "/about", current: false },
     { name: "Contact Us", href: "/contact-us", current: false },
     // { name: "Proposals", href: "/proposals/sent", current: false },
@@ -111,12 +111,12 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  onClick={handleSignInClick}
-                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                <a
+                href="/sign-in"
+                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Sign In
-                </button>
+                Sign In
+                </a>
               </div>
             </div>
           </div>

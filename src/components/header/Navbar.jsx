@@ -20,7 +20,7 @@ export default function Navbar() {
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
     { name: "Explore", href: "/explore", current: false },
-    { name: "Proposals", href: "/proposals/sent", current: false },
+    { name: "Data Access Proposals", href: "/proposals/sent", current: false },
     { name: "Create Project", href: "/project/create", current: false },
     { name: "About", href: "/about", current: false },
     { name: "Contact Us", href: "/contact-us", current: false },
@@ -196,7 +196,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Proposals
+                            Data Access Proposals
                           </Link>
                         )}
                       </Menu.Item>
