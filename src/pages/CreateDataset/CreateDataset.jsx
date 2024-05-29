@@ -174,7 +174,7 @@ const CreateDataset = () => {
           <p className="text-2xl font-bold mb-4">Dataset Information</p>
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              Name:
+              Title:
               <input
                 type="text"
                 name="name"

@@ -155,7 +155,7 @@ const ProjectDetailPage = () => {
           <div className="px-6 py-4">
             <p className="text-2xl font-bold mb-4">Project Information</p>
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Name:</span>{" "}
+              <span className="text-gray-700 font-bold">Title:</span>{" "}
               <p className="text-gray-700 font-normal">{project.name}</p>
             </div>
             <div className="mb-4">
