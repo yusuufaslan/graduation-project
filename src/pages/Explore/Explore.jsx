@@ -8,6 +8,8 @@ import Pagination from "../../components/Pagination/Pagination";
 
 const Explore = () => {
   const [totalPages, setTotalPages] = useState(0);
+  const [pageLimit, setPageLimit] = useState(5);
+  const [totalProjectsFound, settotalProjectsFound] = useState(0);
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -43,7 +45,7 @@ const Explore = () => {
     try {
       let tagNames = selectedTags.map((tag) => tag.label).join(",");
       const response = await axios.get(
-        `http://localhost:3838/api/project?page=${page}&limit=5&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}&tags=${tagNames}`,
+        `http://localhost:3838/api/project?page=${page}&limit=${pageLimit}&sortOrder=${sortOrder.value}&sortBy=${sortBy.value}&search=${searchQuery}&tags=${tagNames}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -54,6 +56,7 @@ const Explore = () => {
         setProjects(response.data.projects);
         setTotalPages(response.data.totalPages);
         setNoProjectsFound(response.data.projects.length === 0);
+        settotalProjectsFound(totalPages * pageLimit);
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -116,7 +119,7 @@ const Explore = () => {
           </form>
         </div>
         <div className="flex">
-          <div className="w-full md:w-1/4 pr-4">
+          <div className="w-full md:w-1/4 pr-4 mt-2">
             <h2 className="text-xl font-semibold mb-2">Sort by</h2>
             <Select
               value={sortBy}
@@ -171,7 +174,10 @@ const Explore = () => {
           <div className="w-full md:w-3/4">
             <div className="mt-1">
               {projects.length > 0 ? (
-                <ProjectList projects={projects} mode="detail" />
+                <>
+                  <h2 className="text-center mb-3">Total {totalProjectsFound} projects were found.</h2>
+                  <ProjectList projects={projects} mode="detail" />
+                </>
               ) : (
                 <div className="text-center text-gray-600">
                   {noProjectsFound ? (
