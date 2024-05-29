@@ -221,14 +221,14 @@ const CreateDataset = () => {
             )}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
               {dataset.columnNames.map((columnName, columnIndex) => (
-                <div key={columnName} className="mb-4">
+                <div key={columnName} className="mb-4 text-sm">
                   <label className="block mb-1 ml-1 font-normal">
                     {columnName}
                   </label>
                   <select
                     value={dataset.columnActions[columnIndex] || "none"}
                     onChange={(e) => handleColumnActionChange(e, columnIndex)}
-                    className="border border-gray-400 rounded-md p-1 w-full font-normal"
+                    className="border border-gray-400 rounded-md p-1 w-full font-normal text-sm"
                     disabled={autoSelectedColumns.includes(columnName) && (dataset.columnActions[columnIndex] === "none" || dataset.columnActions[columnIndex] === undefined)}
                   >
                     <option value="none" disabled={autoSelectedColumns.includes(columnName)}>No Action</option>
