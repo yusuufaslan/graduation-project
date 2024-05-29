@@ -15,10 +15,34 @@ const ProposalsPage = () => {
   const [processing, setProcessing] = useState(false); // State for indicating request processing
   const [projectDetails, setProjectDetails] = useState({}); // State for storing project details
   const [applicantNames, setApplicantNames] = useState({}); // State for storing applicant names
+  const [institutionOptions, setInstitutionOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/institution/get");
+        if (response.status === 200) {
+          setInstitutionOptions(response.data);
+        } else {
+          throw new Error("Failed to fetch institutions");
+        }
+      } catch (error) {
+        console.error("Error fetching institutions:", error);
+        // Handle error or display a message to the user
+      }
+    };
+
+    fetchInstitutions();
+  }, []); // Empty dependency array ensures this effect runs only once on mount
+
+  function findInstitutionNameById(id) {
+    const institution = institutionOptions.find(inst => inst._id === id);
+    return institution ? institution.name : "Loading...";
+  }  
 
   useEffect(() => {
     fetchProposals();
-  }, [pageType]);
+  }, [pageType, institutionOptions]);
 
   const fetchProposals = async () => {
     setLoading(true);
@@ -84,7 +108,7 @@ const ProposalsPage = () => {
           // Update applicantNames state with the new applicant data
           setApplicantNames((prevNames) => ({
             ...prevNames,
-            [userId]: `${data.userNameInfo.name} ${data.userNameInfo.surname}`,
+            [userId]: `${data.userNameInfo.name} ${data.userNameInfo.surname} (${findInstitutionNameById(data.userNameInfo.institutionId)})`,
           }));
         }
       });
@@ -200,9 +224,10 @@ const ProposalsPage = () => {
                       onClick={() => handleProposalClick(proposal)}
                       className="p-4 hover:bg-gray-50 cursor-pointer"
                     >
-                      <p className="text-1xl font-bold text-gray-600">
-                        Applicant: {applicantNames[proposal.applicatorId]}
-                      </p>
+                    <p className="text-1xl font-bold text-gray-600">
+                      Applicant: {applicantNames[proposal.applicatorId] || "Loading..."}
+                    </p>
+
                       <p className="text-m font-medium">
                         Project Name: {projectName}
                       </p>
