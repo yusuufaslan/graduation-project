@@ -19,6 +19,7 @@ export default function Navbar() {
 
   // Define initial state for navigation items
   const [navigation, setNavigation] = useState([
+    { name: "Home", href: "/home", current: false },
     { name: "About", href: "/about", current: false },
     { name: "Contact Us", href: "/contact-us", current: false },
     // { name: "Proposals", href: "/proposals/sent", current: false },
@@ -80,14 +81,16 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src={ViteLogo}
-                    alt="Your Company"
-                  />
+                  <Link to="/welcome"> {/* Add Link wrapper */}
+                    <img
+                      className="h-8 w-auto"
+                      src={ViteLogo}
+                      alt="Your Company"
+                    />
+                  </Link>
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                <div className="hidden sm:ml-6 sm:block flex-grow">
+                  <div className="flex justify-end space-x-4">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
@@ -101,7 +104,6 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                         onClick={() => handleNavItemClick(item)}
                       >
-                        {/* {item.name + " " + item.current} */}
                         {item.name}
                       </Link>
                     ))}

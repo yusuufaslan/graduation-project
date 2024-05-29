@@ -84,11 +84,13 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src={ViteLogo}
-                    alt="Your Company"
-                  />
+                  <Link to="/welcome"> {/* Add Link wrapper */}
+                    <img
+                      className="h-8 w-auto"
+                      src={ViteLogo}
+                      alt="Your Company"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
