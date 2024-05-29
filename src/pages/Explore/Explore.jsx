@@ -156,7 +156,7 @@ const Explore = () => {
               onClick={fetchData}
               className="bg-blue-500 text-white px-3 py-2 rounded-md text-sm"
               >
-              Set Filters
+              Apply Filters
               </button>
 
               <button
