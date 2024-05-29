@@ -201,13 +201,13 @@ const CreateProject = () => {
           {!project.isPublic && (
             <div className="mb-4 font-bold">
               <label className="block mb-1">
-                User Emails:
+                Collaborators:
                 <input
                   type="text"
                   name="emails"
                   onKeyDown={handleEmailsChange}
                   className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                  placeholder="Provide user email and press enter"
+                  placeholder="Provide collaborator email and press enter"
                 />
               </label>
               <div className="flex flex-wrap mt-2">
