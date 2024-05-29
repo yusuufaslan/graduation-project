@@ -246,9 +246,9 @@ const CreateDataset = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="bg-green-700 text-white px-4 py-2 rounded-md my-4"
+            className="bg-green-700 text-white px-4 py-2 rounded-md my-4 font-bold"
           >
-            Submit Dataset
+            + Add Dataset to the Project
           </button>
         </form>
       </div>
