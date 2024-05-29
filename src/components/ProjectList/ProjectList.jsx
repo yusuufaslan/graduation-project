@@ -69,7 +69,7 @@ const ProjectList = ({ projects, mode }) => {
       month: 'short',
       year: 'numeric',
     }).replace(/ /g, ' '); // Replace space between date components with desired format
-  };
+  };  
 
   return (
     <div>
@@ -81,9 +81,9 @@ const ProjectList = ({ projects, mode }) => {
                 ? project.name.substring(0, 300) + "..."
                 : project.name}
             </h3>
-            <p className="text-sm text-gray-700 mb-0.5">
-              {project.ownerName} {project.ownerSurname}{" "} {`(${findInstitutionNameById(project.ownerInstitutionId)}) `}
-              <span className="text-sm text-gray-500 mb-3">
+            <p className="text-sm text-gray-900 mb-0.5">
+              {project.ownerName} {project.ownerSurname}{" "} {`| ${findInstitutionNameById(project.ownerInstitutionId)} `}
+              <span className="text-sm text-gray-700 mb-3">
                 | Last Updated: {formatDate(project.updated_at)}
               </span>
             </p>
