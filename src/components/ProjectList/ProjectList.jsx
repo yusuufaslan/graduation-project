@@ -3,8 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+
 const ProjectList = ({ projects, mode }) => {
   const [projectsWithUsers, setProjectsWithUsers] = useState([]);
+  const [institutionOptions, setInstitutionOptions] = useState([]);
+
+  function findInstitutionNameById(id) {
+    const institution = institutionOptions.find(inst => inst._id === id);
+    return institution ? institution.name : null;
+  }
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,6 +31,7 @@ const ProjectList = ({ projects, mode }) => {
                 ...project,
                 ownerName: response.data.userNameInfo.name,
                 ownerSurname: response.data.userNameInfo.surname,
+                ownerInstitutionId: response.data.userNameInfo.institutionId
               };
             }
           } catch (error) {
@@ -35,6 +43,22 @@ const ProjectList = ({ projects, mode }) => {
       setProjectsWithUsers(projectsWithUsersData);
     };
 
+    const fetchInstitutions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/institution/get");
+        if (response.status === 200) {
+          setInstitutionOptions(response.data);
+          console.log(institutionOptions);
+        } else {
+          throw new Error("Failed to fetch institutions");
+        }
+      } catch (error) {
+        console.error("Error fetching institutions:", error);
+        // Handle error or display a message to the user
+      }
+    };
+
+    fetchInstitutions();
     fetchUsers();
   }, [projects]);
 
@@ -54,7 +78,7 @@ const ProjectList = ({ projects, mode }) => {
                 : project.name}
             </h3>
             <p className="text-sm text-gray-700 mb-0.5">
-              {project.ownerName} {project.ownerSurname}{" "}
+              {project.ownerName} {project.ownerSurname}{" "} {`(${findInstitutionNameById(project.ownerInstitutionId)}) `}
               <span className="text-sm text-gray-500 mb-3">
                 | Last Updated: {formatDate(project.updated_at)}
               </span>
