@@ -227,12 +227,16 @@ const ProposalsPage = () => {
                     <div
                       key={proposal._id}
                       onClick={() => handleProposalClick(proposal)}
-                      className="p-4 hover:bg-gray-50 cursor-pointer"
+                      className={`p-4 cursor-pointer ${
+                        selectedProposal && selectedProposal._id === proposal._id
+                          ? "bg-blue-100" // Change background color when selected
+                          : "hover:bg-gray-50" // Change background color on hover when not selected
+                      }`}
                     >
-                    <p className="text-1xl font-bold text-gray-600">
-                      Applicant: {applicantNames[proposal.applicatorId] || "Loading..."}
-                    </p>
-
+                      <p className="text-1xl font-bold text-gray-600">
+                        Applicant:{" "}
+                        {applicantNames[proposal.applicatorId] || "Loading..."}
+                      </p>
                       <p className="text-m font-medium">
                         Project Name: {projectName}
                       </p>
