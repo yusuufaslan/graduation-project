@@ -15,6 +15,7 @@ const EditProjectForm = () => {
 
   const [project, setProject] = useState(null);
   const [tagList, setTagList] = useState([]);
+  const [institutionOptions, setInstitutionOptions] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [userList, setUserList] = useState([]);
   const [userDetails, setUserDetails] = useState({});
@@ -28,6 +29,11 @@ const EditProjectForm = () => {
   const [editedProjectDescription, setEditedProjectDescription] = useState("");
   const [editedProjectAbstract, setEditedProjectAbstract] = useState("");
   const [editedProjectTagIds, setEditedProjectTagIds] = useState([]);
+
+  function findInstitutionNameById(id) {
+    const institution = institutionOptions.find(inst => inst._id === id);
+    return institution ? institution.name : null;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +87,7 @@ const EditProjectForm = () => {
               ...prevProject,
               ownerName: ownerData.name,
               ownerSurname: ownerData.surname,
+              ownerInstitutionId: ownerData.institutionId
             }));
           }
 
@@ -111,6 +118,22 @@ const EditProjectForm = () => {
       }
     };
 
+    const fetchInstitutions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/institution/get");
+        if (response.status === 200) {
+          setInstitutionOptions(response.data);
+          console.log(institutionOptions);
+        } else {
+          throw new Error("Failed to fetch institutions");
+        }
+      } catch (error) {
+        console.error("Error fetching institutions:", error);
+        // Handle error or display a message to the user
+      }
+    };
+
+    fetchInstitutions();
     fetchData();
   }, [projectId, navigate]);
 
@@ -320,7 +343,7 @@ const EditProjectForm = () => {
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Owner:</span>{" "}
               <p className="text-gray-700 font-normal mt-1">
-                {project.ownerName} {project.ownerSurname}
+                {project.ownerName} {project.ownerSurname} {`(${findInstitutionNameById(project.ownerInstitutionId)})`}
               </p>
             </div>
             <div className="mb-4">
@@ -365,7 +388,7 @@ const EditProjectForm = () => {
                         className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                       >
                         {userDetail ? (
-                          `${userDetail.name} ${userDetail.surname} (${userDetail.email})`
+                          `${userDetail.name} ${userDetail.surname} (${findInstitutionNameById(userDetail.institutionId)})`
                         ) : (
                           "Loading..."
                         )}
