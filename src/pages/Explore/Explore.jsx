@@ -9,7 +9,6 @@ import Pagination from "../../components/Pagination/Pagination";
 const Explore = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageLimit, setPageLimit] = useState(5);
-  const [totalProjectsFound, settotalProjectsFound] = useState(0);
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -56,7 +55,6 @@ const Explore = () => {
         setProjects(response.data.projects);
         setTotalPages(response.data.totalPages);
         setNoProjectsFound(response.data.projects.length === 0);
-        settotalProjectsFound(totalPages * pageLimit);
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -175,7 +173,7 @@ const Explore = () => {
             <div className="mt-1">
               {projects.length > 0 ? (
                 <>
-                  <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalProjectsFound} {totalProjectsFound === 1 ? "project was": "projects were"} found.</h2>
+                  <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalPages * pageLimit} {totalPages * pageLimit === 1 ? "project was": "projects were"} found.</h2>
                   <ProjectList projects={projects} mode="detail" />
                 </>
               ) : (
