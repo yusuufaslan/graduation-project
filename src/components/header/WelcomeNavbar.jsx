@@ -13,7 +13,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function WelcomeNavbar({signedIn}) {
+export default function WelcomeNavbar({}) {
   const location = useLocation(); // to get pathname
   const navigate = useNavigate();
 
