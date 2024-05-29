@@ -39,7 +39,10 @@ const ParticipatedProjects = () => {
         {loading ? (
           <p className="text-center">Loading...</p>
         ) : participatedProjects.length > 0 ? (
-          <ProjectList projects={participatedProjects} mode="detail"/>
+          <>
+            <h2 className="text-center mb-3 font-bold text-gray-600">{participatedProjects.length} {participatedProjects.length === 1 ? "project was": "projects were"} found.</h2>
+            <ProjectList projects={participatedProjects} mode="detail" />
+          </>
         ) : (
           <p className="text-center text-gray-600 mt-8">
             You are not participating in any projects currently.
