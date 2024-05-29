@@ -271,7 +271,11 @@ const EditProjectForm = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString();
+    return date.toLocaleDateString("en-GB", {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).replace(/ /g, ' '); // Replace space between date components with desired format
   };
 
   if (!project) {

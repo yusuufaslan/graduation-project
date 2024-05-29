@@ -64,7 +64,11 @@ const ProjectList = ({ projects, mode }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString(); // You can customize this further based on your preference
+    return date.toLocaleDateString("en-GB", {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).replace(/ /g, ' '); // Replace space between date components with desired format
   };
 
   return (
