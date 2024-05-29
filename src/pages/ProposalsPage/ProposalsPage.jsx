@@ -238,7 +238,7 @@ const ProposalsPage = () => {
                         {applicantNames[proposal.applicatorId] || "Loading..."}
                       </p>
                       <p className="text-m font-medium">
-                        Project Name: {projectName}
+                        Project Title: {projectName}
                       </p>
                       <p className="text-sm text-gray-600">
                         Proposal Text: {proposal.proposalText.substring(0, 50)}...

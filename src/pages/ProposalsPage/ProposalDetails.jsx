@@ -105,7 +105,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
     <div className="bg-gray-100 p-4 rounded">
       <h2 className="text-4xl font-semibold mb-5">Proposal Details</h2>
       <p>
-        <strong>Project Name:</strong> {projectName}
+        <strong>Project Title:</strong> {projectName}
       </p>
         
       <p className="mt-5">
