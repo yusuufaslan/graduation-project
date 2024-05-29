@@ -13,6 +13,13 @@ const ProjectDetailPage = () => {
   const [user, setUser] = useState(null);
   const [hasAccess, setHasAccess] = useState(false);
 
+  const [institutionOptions, setInstitutionOptions] = useState([]);
+
+  function findInstitutionNameById(id) {
+    const institution = institutionOptions.find(inst => inst._id === id);
+    return institution ? institution.name : null;
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -65,6 +72,7 @@ const ProjectDetailPage = () => {
         if (ownerResponse.status === 200) {
           projectData.ownerName = ownerResponse.data.userNameInfo.name;
           projectData.ownerSurname = ownerResponse.data.userNameInfo.surname;
+          projectData.ownerInstitutionId = ownerResponse.data.userNameInfo.institutionId;
         }
 
         setProject(projectData);
@@ -77,6 +85,22 @@ const ProjectDetailPage = () => {
       }
     };
 
+    const fetchInstitutions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/institution/get");
+        if (response.status === 200) {
+          setInstitutionOptions(response.data);
+          console.log(institutionOptions);
+        } else {
+          throw new Error("Failed to fetch institutions");
+        }
+      } catch (error) {
+        console.error("Error fetching institutions:", error);
+        // Handle error or display a message to the user
+      }
+    };
+
+    fetchInstitutions();
     fetchData();
   }, [projectId, navigate]);
 
@@ -145,7 +169,7 @@ const ProjectDetailPage = () => {
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Owner:</span>{" "}
               <p className="text-gray-700 font-normal">
-                {project.ownerName} {project.ownerSurname}
+                {project.ownerName} {project.ownerSurname} {`(${findInstitutionNameById(project.ownerInstitutionId)})`}
               </p>
             </div>
             <div className="mb-4">
