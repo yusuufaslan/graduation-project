@@ -4,6 +4,30 @@ import axios from "axios";
 const ProposalDetails = ({ proposal, projectName }) => {
   const [applicantName, setApplicantName] = useState("");
   const [otherApplicants, setOtherApplicants] = useState([]);
+  const [institutionOptions, setInstitutionOptions] = useState([]);
+
+  function findInstitutionNameById(id) {
+    const institution = institutionOptions.find(inst => inst._id === id);
+    return institution ? institution.name : null;
+  }
+
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3838/api/institution/get");
+        if (response.status === 200) {
+          setInstitutionOptions(response.data);
+        } else {
+          throw new Error("Failed to fetch institutions");
+        }
+      } catch (error) {
+        console.error("Error fetching institutions:", error);
+        // Handle error or display a message to the user
+      }
+    };
+
+    fetchInstitutions();
+  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   useEffect(() => {
     const fetchApplicantName = async () => {
@@ -20,7 +44,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
 
         if (response.status === 200) {
           setApplicantName(
-            `${response.data.userNameInfo.name} ${response.data.userNameInfo.surname} (${response.data.userNameInfo.email})`
+            `${response.data.userNameInfo.name} ${response.data.userNameInfo.surname} (${findInstitutionNameById(response.data.userNameInfo.institutionId)})`
           );
         }
       } catch (error) {
@@ -50,9 +74,11 @@ const ProposalDetails = ({ proposal, projectName }) => {
       }
     };
 
-    fetchApplicantName();
-    fetchOtherApplicants();
-  }, [proposal.applicatorId, proposal.applicantUserIds]);
+    if (institutionOptions.length > 0) {
+      fetchApplicantName();
+      fetchOtherApplicants();
+    }
+  }, [proposal.applicatorId, proposal.applicantUserIds, institutionOptions]);
 
   // Status variables
   let statusColorClass = "";
@@ -81,15 +107,12 @@ const ProposalDetails = ({ proposal, projectName }) => {
       <p>
         <strong>Project Name:</strong> {projectName}
       </p>
-      
+        
       <p className="mt-5">
-        <strong>Applicant:</strong> <span className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 ">{applicantName}</span>
+        <strong>Applicant:</strong>{" "}
+        <span className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 ">{applicantName}</span>
       </p>
 
-      {/* <p className="mt-5">
-        <strong>Applicant:</strong> {applicantName}
-      </p> */}
-    
       {otherApplicants.length > 0 && (
         <div className="mt-5">
           <p className="text-gray-800">
@@ -100,7 +123,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
                   key={index}
                   className="bg-gray-300 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
                 >
-                  {applicant.name} {applicant.surname} ({applicant.email})
+                  {applicant.name} {applicant.surname} ({findInstitutionNameById(applicant.institutionId)})
                 </span>
               ))}
             </span>
