@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
-import Select from "react-select"; // Import react-select
-
+import Select from "react-select";
 import axios from "axios";
 
 const CreateProject = () => {
   const navigate = useNavigate();
   const [tagList, setTagList] = useState([]);
+  const [newTagName, setNewTagName] = useState("");
   const [project, setProject] = useState({
     name: "",
     description: "",
@@ -68,16 +68,46 @@ const CreateProject = () => {
     setProject({ ...project, selectedTags });
   };
 
+  const handleNewTagInputChange = (inputValue) => {
+    setNewTagName(inputValue);
+  };
+
+  const handleCreateTag = async () => {
+    try {
+      const response = await axios.post("http://localhost:3838/api/tag/add", {
+        name: newTagName,
+      });
+      if (response.status === 200) {
+        // Refetch the tag list after adding the new tag
+        await fetchTagList();
+        
+        // Find the new tag in the updated tag list
+        const newTag = tagList.find(tag => tag.label === newTagName);
+
+        if (newTag) {
+          // Add the new tag to the selected tags
+          setProject((prevProject) => ({
+            ...prevProject,
+            selectedTags: [...prevProject.selectedTags, newTag.value],
+          }));
+        }
+
+        setNewTagName("");
+      }
+    } catch (error) {
+      console.error("Error creating new tag:", error);
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       let emails = Array.isArray(project.emails) ? project.emails : [];
-      
-      // Extract tag names from selected tags
+
       const selectedTags = project.selectedTags.map(tagId => {
         const tag = tagList.find(tag => tag.value === tagId);
         return tag ? tag.label : "";
       });
-  
+
       let data = JSON.stringify({
         name: project.name,
         description: project.description,
@@ -86,9 +116,6 @@ const CreateProject = () => {
         userEmails: emails,
         tags: selectedTags,
       });
-  
-      // console.log(localStorage.getItem("token"));
-      // console.log(data);
 
       let config = {
         method: "post",
@@ -100,7 +127,7 @@ const CreateProject = () => {
         },
         data: data,
       };
-  
+
       const response = await axios.request(config);
       navigate(`/project/edit/${response.data.projectId._id}`);
     } catch (error) {
@@ -111,7 +138,6 @@ const CreateProject = () => {
       }
     }
   };
-  
 
   return (
     <>
@@ -211,6 +237,21 @@ const CreateProject = () => {
               options={tagList}
               value={tagList.filter(tag => project.selectedTags.includes(tag.value))}
               onChange={handleTagSelection}
+              onInputChange={handleNewTagInputChange}
+              placeholder="Select or create tags"
+              noOptionsMessage={() =>
+                newTagName ? (
+                  <button
+                    type="button"
+                    onClick={handleCreateTag}
+                    className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2"
+                  >
+                    Add "{newTagName}" as a new tag
+                  </button>
+                ) : (
+                  "No options"
+                )
+              }
             />
           </div>
 
