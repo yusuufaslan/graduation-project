@@ -159,13 +159,13 @@ const ProjectDetailPage = () => {
               <p className="text-gray-700 font-normal">{project.name}</p>
             </div>
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Description:</span>{" "}
+              <span className="text-gray-700 font-bold">Summary:</span>{" "}
               <p className="text-gray-700 font-normal">{project.description}</p>
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <span className="text-gray-700 font-bold">Abstract:</span>{" "}
               <p className="text-gray-700 font-normal">{project.abstract}</p>
-            </div>
+            </div> */}
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Owner:</span>{" "}
               <p className="text-gray-700 font-normal">

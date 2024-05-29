@@ -325,21 +325,21 @@ const EditProjectForm = () => {
               />
             </div>
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Description:</span>{" "}
+              <span className="text-gray-700 font-bold">Summary:</span>{" "}
               <textarea
                 value={editedProjectDescription}
                 onChange={(e) => setEditedProjectDescription(e.target.value)}
-                className="text-gray-700 font-normal border rounded-lg border-gray-300 focus:outline-none p-2 w-full h-20 mt-1"
+                className="text-gray-700 font-normal border rounded-lg border-gray-300 focus:outline-none p-2 w-full h-64 mt-1"
               />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <span className="text-gray-700 font-bold">Abstract:</span>{" "}
               <textarea
                 value={editedProjectAbstract}
                 onChange={(e) => setEditedProjectAbstract(e.target.value)}
                 className="text-gray-700 font-normal rounded-lg border border-gray-300 focus:outline-none p-2 w-full h-20 mt-1"
               />
-            </div>
+            </div> */}
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Owner:</span>{" "}
               <p className="text-gray-700 font-normal mt-1">

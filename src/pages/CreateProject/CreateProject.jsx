@@ -162,18 +162,18 @@ const CreateProject = () => {
           </div>
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              Description:
+              Summary:
               <textarea
                 name="description"
                 value={project.description}
                 onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Enter project description"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1 h-64"
+                placeholder="Enter project description or summary."
                 rows="4"
               ></textarea>
             </label>
           </div>
-          <div className="mb-4 font-bold">
+          {/* <div className="mb-4 font-bold">
             <label className="block mb-1">
               Abstract:
               <textarea
@@ -185,7 +185,7 @@ const CreateProject = () => {
                 rows="4"
               ></textarea>
             </label>
-          </div>
+          </div> */}
           <div className="mb-4 font-bold">
             <label className="flex items-center">
               <input
