@@ -208,6 +208,17 @@ const CreateDataset = () => {
                 className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
               />
             </label>
+            {dataset.columnNames.length === 0 && (
+              <div className="mb-8 px-2 py-2 bg-blue-50 rounded-lg shadow-md border border-blue-200">
+                <div className="text-sm text-blue-900">
+                  <p className="flex">
+                    <BsInfoCircle className="mr-1 mt-1" /><strong className="mr-1">Note: </strong>You can only upload datasets in .json or .csv format.
+                  </p>
+                </div>
+              </div>
+            )}
+
+
             {dataset.file && (
               <p className="font-bold mt-3">
                 Uploaded File Type:{" "}
@@ -226,20 +237,23 @@ const CreateDataset = () => {
                 <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. For example, randomizing the number 123456 might produce: seiskjedbrsqlyplrymsvoc</p>
               </div>
             </div> */}
-            <div className="mb-8 px-4 py-6 bg-blue-50 rounded-lg shadow-md border border-blue-200">
-              <p className="text-lg font-bold mb-2 text-blue-800 flex"> <BsInfoCircle className="mr-2 mt-1"/> Column Action Options</p>
-              <div className="text-sm text-gray-900 mb-4">
-                <p><strong>Mask:</strong> Masking replaces sensitive data with placeholder characters. e.g., 123456 {"—>"} **********</p>
-                <p><strong>Hash:</strong> Hashing converts data into a unique string of fixed length, making it irreversible. e.g., 123456 {"—>"} 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b</p>
-                <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. e.g., 123456 {"—>"} seiskjedbrsqlyplrymsvoc</p>
-                <p><strong>Remove:</strong> Completely removes the column from the dataset.</p>
-                <p><strong>Empty:</strong> Empties the values in the column, converting them to empty strings. e.g., 123456 {"—>"} ""</p>
-                <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and forces dataset creators to choose one of the options.</p>
-              </div>
-            </div>
+
 
             {dataset.columnNames.length > 0 && (
-              <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
+              <>
+                <div className="mb-8 px-4 py-6 bg-blue-50 rounded-lg shadow-md border border-blue-200">
+                  <p className="text-lg font-bold mb-2 text-blue-800 flex"> <BsInfoCircle className="mr-2 mt-1"/> Column Action Options</p>
+                  <div className="text-sm text-gray-900 mb-4">
+                    <p><strong>Mask:</strong> Masking replaces sensitive data with placeholder characters. e.g., 123456 {"—>"} **********</p>
+                    <p><strong>Hash:</strong> Hashing converts data into a unique string of fixed length, making it irreversible. e.g., 123456 {"—>"} 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b</p>
+                    <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. e.g., 123456 {"—>"} seiskjedbrsqlyplrymsvoc</p>
+                    <p><strong>Remove:</strong> Completely removes the column from the dataset.</p>
+                    <p><strong>Empty:</strong> Empties the values in the column, converting them to empty strings. e.g., 123456 {"—>"} ""</p>
+                    <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and forces dataset creators to choose one of the options.</p>
+                  </div>
+                </div>
+                <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
+              </>
             )}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
               {dataset.columnNames.map((columnName, columnIndex) => (
