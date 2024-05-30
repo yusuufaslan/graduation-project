@@ -61,6 +61,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     // Redirect to sign-in page
     navigate("/welcome");
+    window.location.reload();
     toast.success("Logout successful!");
   };
 
