@@ -11,7 +11,7 @@ function HomeContent({ signedIn }) {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative isolate px-6 pt-14 lg:px-8 text-left">
+      <section className="relative isolate px-6  lg:px-8 text-left">
         {" "}
         {/* Add text-left class */}
         {/* Background shape */}
@@ -28,8 +28,8 @@ function HomeContent({ signedIn }) {
           ></div>
         </div>
         {/* Content */}
-        <div className="mx-auto max-w-7xl py-32 sm:py-48 lg:py-56">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+        <div className="mx-auto max-w-7xl py-8 sm:py-12 lg:py-24">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Empowering Healthcare Data Collaboration: Find, Share, Securely.
           </h1>
           <p className="mt-12 text-xl leading-8 text-gray-600">
@@ -59,7 +59,7 @@ function HomeContent({ signedIn }) {
               </a>
             )}
             <a
-              href="#about"
+              href="/about"
               className="text-md font-semibold leading-6 text-gray-900"
             >
               Learn more <span aria-hidden="true">→</span>
@@ -68,7 +68,7 @@ function HomeContent({ signedIn }) {
         </div>
       </section>
       
-      <FooterSection />
+      {/* <FooterSection /> */}
         
       {/* <img src={getImgUrl("../../assets/vesikalik.jpg")} alt="image" /> */}
     </>
