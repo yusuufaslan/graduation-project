@@ -13,6 +13,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 export default function WelcomeNavbar({}) {
   const location = useLocation(); // to get pathname
   const navigate = useNavigate();
@@ -81,20 +82,19 @@ export default function WelcomeNavbar({}) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Link to="/welcome"> {/* Add Link wrapper */}
+                  <a href="/welcome"> {/* Add Link wrapper */}
                     <img
                       className="h-8 w-auto"
                       src={ViteLogo}
                       alt="Your Company"
                     />
-                  </Link>
+                  </a>
                 </div>
                 <div className="hidden sm:ml-6 sm:block flex-grow">
                   <div className="flex justify-end space-x-4">
                     {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href} // Use "to" prop instead of "href"
+                      <a
+                        href={item.href} // Use "to" prop instead of "href"
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
@@ -105,7 +105,7 @@ export default function WelcomeNavbar({}) {
                         onClick={() => handleNavItemClick(item)}
                       >
                         {item.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
