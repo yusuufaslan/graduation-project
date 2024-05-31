@@ -77,10 +77,18 @@ const CreateDataset = () => {
             previewData = jsonArray.slice(0, 2);
           }
         } else if (fileExtension === "csv") {
+          // Parse CSV data
           const csvArray = content.split("\n");
           if (csvArray.length > 0) {
             columnNames = csvArray[0].split(",");
-            previewData = csvArray.slice(1, 3);
+            // Convert CSV to JSON
+            previewData = csvArray.slice(1, 3).map((row) => {
+              const values = row.split(",");
+              return columnNames.reduce((obj, columnName, index) => {
+                obj[columnName] = values[index];
+                return obj;
+              }, {});
+            });
           }
         }
         columnActions = new Array(columnNames.length).fill("none");
@@ -302,7 +310,7 @@ const CreateDataset = () => {
 
             {dataset.previewData.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-xl font-bold mb-4">Preview Data <span className="text-sm">(only first 2 rows)</span></h2>
+                <h2 className="text-xl font-bold mb-1">Preview Dataset</h2>
                 <div className="overflow-x-auto">
                   <table className="table-auto w-full text-sm">
                     <thead>
@@ -322,6 +330,11 @@ const CreateDataset = () => {
                       ))}
                     </tbody>
                   </table>
+                </div>
+                <div className="text-sm text-blue-900 mb-4">
+                  <p className="flex">
+                    <BsInfoCircle className="mr-1 mt-1" />For preview purposes, only the first two records of the dataset are displayed.
+                  </p>
                 </div>
               </div>
             )}
