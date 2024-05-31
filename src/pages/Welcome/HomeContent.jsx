@@ -37,8 +37,8 @@ function HomeContent({ signedIn }) {
             Our web-based platform offers a secure space for medical
             professionals to connect, share anonymized patient data, and
             innovate together. With cutting-edge technology and a user-friendly
-            interface, we're empowering practitioners worldwide to propel
-            healthcare advancements and improve patient outcomes. Connect with
+            interface, we're empowering practitioners worldwide to advance
+            the healthcare and improve patient outcomes. Connect with
             us and be part of the future of healthcare innovation!
           </p>
           {/* <div className="mt-3 flex items-center justify-center gap-x-6"> */}
