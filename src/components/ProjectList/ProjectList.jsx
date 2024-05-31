@@ -88,7 +88,7 @@ const ProjectList = ({ projects, mode }) => {
               </span>
             </p>
             <p
-              className="text-sm text-gray-700 mb-3"
+              className="text-sm text-gray-700 mb-3 mt-3"
               style={{
                 overflow: "hidden",
                 textOverflow: "ellipsis",

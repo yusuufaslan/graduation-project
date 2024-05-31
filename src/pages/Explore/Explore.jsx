@@ -8,6 +8,7 @@ import Pagination from "../../components/Pagination/Pagination";
 
 const Explore = () => {
   const [totalPages, setTotalPages] = useState(0);
+  const [totalProjects, setTotalProjects] = useState(0);
   const [pageLimit, setPageLimit] = useState(4);
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
@@ -54,6 +55,7 @@ const Explore = () => {
       if (response.status === 200) {
         setProjects(response.data.projects);
         setTotalPages(response.data.totalPages);
+        setTotalProjects(response.data.totalProjects);
         setNoProjectsFound(response.data.projects.length === 0);
       }
     } catch (error) {
@@ -173,7 +175,7 @@ const Explore = () => {
             <div className="mt-1">
               {projects.length > 0 ? (
                 <>
-                  <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalPages * pageLimit} {totalPages * pageLimit === 1 ? "project was": "projects were"} found.</h2>
+                  <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalProjects} {totalProjects === 1 ? "project was": "projects were"} found.</h2>
                   <ProjectList projects={projects} mode="detail" />
                 </>
               ) : (
