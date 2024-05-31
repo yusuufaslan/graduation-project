@@ -119,7 +119,7 @@ const EditProjectForm = () => {
           );
           await Promise.all(userDetailsPromises);
 
-          // Fetching user details
+          // Fetching collaborator details
           const collaboratorDetailsPromises = data.project.collaboratorIds.map(
             async (collaboratorId) => {
               const collaboratorResponse = await axios.get(
