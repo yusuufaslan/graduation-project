@@ -253,7 +253,7 @@ const CreateProject = () => {
           {!project.isPublic && (
             <div className="mb-4 font-bold">
               <label className="block mb-1">
-                User Emails:
+                Shared with Users:
                 <input
                   type="text"
                   name="emails"

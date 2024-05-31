@@ -431,7 +431,7 @@ const EditProjectForm = () => {
             </div>
             <div className="mb-4">
               <span className="text-gray-700 font-bold">
-                Users that are currently working on the project:
+                Shared with Users:
               </span>{" "}
               {userList.length === 0 ? (
                 <div>No users are currently working on this project.</div>
