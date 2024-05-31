@@ -9,6 +9,8 @@ import axios from "axios";
 import Select from "react-select"; // Import react-select
 
 import Pagination from "../../components/Pagination/Pagination";
+import FooterSection from '../../components/footer/FooterSection'
+
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -112,7 +114,7 @@ export default function Welcome() {
     <div >
         <WelcomeNavbar signedIn={false}/>
         <HomeContent signedIn={false}/>
-        <div className="container mx-auto px-10 max-w-7xl">
+        <div className="container mx-auto px-10 max-w-7xl ">
           <div className="mb-8 max-w-5xl mx-auto text-center">
             <h1 className="text-3xl font-semibold">Explore Projects</h1>
             <form onSubmit={handleSearch}>
@@ -184,9 +186,9 @@ export default function Welcome() {
                 Clear Filters
                 </button>
               </div>
-              
+
             </div>
-            <div className="w-full md:w-3/4">
+            <div className="w-full md:w-3/4 mb-10">
               <div className="mt-1">
                 {projects.length > 0 ? (
                   <>
@@ -206,7 +208,7 @@ export default function Welcome() {
                   </div>
                 )}
 
-                {projects.length > 0 && 
+                {projects.length > 0 &&
                   <Pagination
                     currentPage={page}
                     totalPages={totalPages}
@@ -217,8 +219,7 @@ export default function Welcome() {
             </div>
           </div>
         </div>
-
-
+        {/* <FooterSection /> */}
     </div>
   );
 }
