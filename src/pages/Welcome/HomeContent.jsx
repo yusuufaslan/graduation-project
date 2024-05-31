@@ -29,10 +29,10 @@ function HomeContent({ signedIn }) {
         </div>
         {/* Content */}
         <div className="mx-auto max-w-7xl py-4 sm:py-8 lg:py-16">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Empowering Healthcare Data Collaboration: Find, Share, Securely.
           </h1>
-          <p className="mt-12 text-xl leading-8 text-gray-600">
+          <p className="mt-12 text-md leading-8 text-gray-600">
             Join the movement towards revolutionizing healthcare collaboration!
             Our web-based platform offers a secure space for medical
             professionals to connect, share anonymized patient data, and

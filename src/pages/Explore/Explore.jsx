@@ -175,7 +175,7 @@ const Explore = () => {
             <div className="mt-1">
               {projects.length > 0 ? (
                 <>
-                  <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalProjects} {totalProjects === 1 ? "project was": "projects were"} found.</h2>
+                  <h2 className="mb-3 text-gray-600 font-bold"> {totalProjects} {totalProjects === 1 ? "project was": "projects were"} found.</h2>
                   <ProjectList projects={projects} mode="detail" />
                 </>
               ) : (

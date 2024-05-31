@@ -115,10 +115,10 @@ export default function Welcome() {
         <WelcomeNavbar signedIn={false}/>
         <HomeContent signedIn={false}/>
         <div className="container mx-auto px-10 max-w-7xl ">
-          <div className="mb-8 max-w-5xl mx-auto text-center">
-            <h1 className="text-3xl font-semibold">Explore Projects</h1>
+          <div className="mb-8 max-w-7xl mx-auto text-center">
+            {/* <h1 className="text-3xl font-semibold">Explore Projects</h1> */}
             <form onSubmit={handleSearch}>
-              <div className="flex mt-2">
+              <div className="flex">
                 <input
                   type="text"
                   value={searchQuery}
@@ -192,7 +192,7 @@ export default function Welcome() {
               <div className="mt-1">
                 {projects.length > 0 ? (
                   <>
-                    <h2 className="text-center mb-3 text-gray-600 font-bold"> {totalProjects} {totalProjects === 1 ? "project was": "projects were"} found.</h2>
+                    <h2 className="text-left mb-3 text-gray-600 font-bold"> {totalProjects} {totalProjects === 1 ? "project was": "projects were"} found.</h2>
                     <ProjectList projects={projects} mode="detail" />
                   </>
                 ) : (
