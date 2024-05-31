@@ -17,8 +17,13 @@ const EditProjectForm = () => {
   const [tagList, setTagList] = useState([]);
   const [institutionOptions, setInstitutionOptions] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+
   const [userList, setUserList] = useState([]);
+  const [collaboratorsList, setCollaboratorsList] = useState([]);
+  
   const [userDetails, setUserDetails] = useState({});
+  const [collaboratorDetails, setCollaboratorDetails] = useState([]);
+  
   const [user, setUser] = useState(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [datasetIdToRemove, setDatasetIdToRemove] = useState(null);
@@ -71,6 +76,7 @@ const EditProjectForm = () => {
           }
 
           setUserList(data.project.userIds);
+          setCollaboratorsList(data.project.collaboratorIds);
 
           const ownerResponse = await axios.get(
             `http://localhost:3838/api/user/name-from-id?userId=${data.project.ownerId}`,
@@ -112,6 +118,29 @@ const EditProjectForm = () => {
             }
           );
           await Promise.all(userDetailsPromises);
+
+          // Fetching user details
+          const collaboratorDetailsPromises = data.project.collaboratorIds.map(
+            async (collaboratorId) => {
+              const collaboratorResponse = await axios.get(
+                `http://localhost:3838/api/user/name-from-id?userId=${collaboratorId}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              if (collaboratorResponse.status === 200) {
+                const collaboratorData = collaboratorResponse.data.userNameInfo;
+                setCollaboratorDetails((prevCollaboratorDetails) => ({
+                  ...prevCollaboratorDetails,
+                  [collaboratorId]: collaboratorData,
+                }));
+              }
+            }
+          );
+          await Promise.all(collaboratorDetailsPromises);
+
         }
       } catch (error) {
         console.error("Error fetching project data:", error);
@@ -123,7 +152,6 @@ const EditProjectForm = () => {
         const response = await axios.get("http://localhost:3838/api/institution/get");
         if (response.status === 200) {
           setInstitutionOptions(response.data);
-          console.log(institutionOptions);
         } else {
           throw new Error("Failed to fetch institutions");
         }
@@ -341,11 +369,40 @@ const EditProjectForm = () => {
               />
             </div> */}
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Owner:</span>{" "}
-              <p className="text-gray-700 font-normal mt-1">
+              <p className="text-gray-700 font-bold mb-1">Owner:</p>{" "}
+              <span className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
                 {project.ownerName} {project.ownerSurname} {`(${findInstitutionNameById(project.ownerInstitutionId)})`}
-              </p>
+              </span>
             </div>
+            
+            <div className="mb-4">
+              <span className="text-gray-700 font-bold">
+                Collaborators:
+              </span>{" "}
+              {collaboratorsList.length === 0 ? (
+                <div>No collaborators are currently working on this project.</div>
+              ) : (
+                
+                <span className="flex flex-wrap mt-2">
+                  {collaboratorsList.map((collaboratorId) => {
+                    const collaboratorDetail = collaboratorDetails[collaboratorId];
+                    return (
+                      <span
+                        key={collaboratorId}
+                        className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+                      >
+                        {collaboratorDetail ? (
+                          `${collaboratorDetail.name} ${collaboratorDetail.surname} (${findInstitutionNameById(collaboratorDetail.institutionId)})`
+                        ) : (
+                          "Loading..."
+                        )}
+                      </span>
+                    );
+                  })}
+                </span>
+              )}
+            </div>
+
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Is Public:</span>{" "}
               <p className="text-gray-700 font-normal mt-1">
