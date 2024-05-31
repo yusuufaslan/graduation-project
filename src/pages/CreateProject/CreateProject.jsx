@@ -9,12 +9,15 @@ import axios from "axios";
 const CreateProject = () => {
   const navigate = useNavigate();
   const [tagList, setTagList] = useState([]);
+  const [newTagName, setNewTagName] = useState("");
+
   const [project, setProject] = useState({
     name: "",
     description: "",
     abstract: "",
     isPublic: true,
     emails: [],
+    collaboratorEmails: [],
     datasets: [],
     selectedTags: [],
   });
@@ -63,9 +66,52 @@ const CreateProject = () => {
     });
   };
 
+
+  const handleCollaboratorEmailsChange = (e) => {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
+      const newEmail = e.target.value.trim();
+      setProject({ ...project, collaboratorEmails: [...project.collaboratorEmails, newEmail] });
+      e.target.value = "";
+    }
+  };
+
+  const handleRemoveCollaboratorEmail = (emailToRemove) => {
+    setProject({
+      ...project,
+      emails: project.collaboratorEmails.filter((email) => email !== emailToRemove),
+    });
+  };
+
   const handleTagSelection = (selectedOptions) => {
     const selectedTags = selectedOptions.map((option) => option.value);
     setProject({ ...project, selectedTags });
+  };
+
+  const handleNewTagInputChange = (inputValue) => {
+    setNewTagName(inputValue);
+  };
+
+  const handleCreateTag = async () => {
+    try {
+      const response = await axios.post("http://localhost:3838/api/tag/add", {
+        name: newTagName,
+      });
+      if (response.status === 200) {
+        await fetchTagList();
+        const newTag = tagList.find(tag => tag.label === newTagName);
+
+        if (newTag) {
+          setProject((prevProject) => ({
+            ...prevProject,
+            selectedTags: [...prevProject.selectedTags, newTag.value],
+          }));
+        }
+
+        setNewTagName("");
+      }
+    } catch (error) {
+      console.error("Error creating new tag:", error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -84,6 +130,7 @@ const CreateProject = () => {
         abstract: project.abstract,
         isPublic: project.isPublic,
         userEmails: emails,
+        collaboratorEmails: project.collaboratorEmails,
         tags: selectedTags,
       });
   
@@ -136,7 +183,7 @@ const CreateProject = () => {
           </div>
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              Description:
+              Summary:
               <textarea
                 name="description"
                 value={project.description}
@@ -147,7 +194,7 @@ const CreateProject = () => {
               ></textarea>
             </label>
           </div>
-          <div className="mb-4 font-bold">
+          {/* <div className="mb-4 font-bold">
             <label className="block mb-1">
               Abstract:
               <textarea
@@ -159,7 +206,38 @@ const CreateProject = () => {
                 rows="4"
               ></textarea>
             </label>
+          </div> */}
+
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">
+              Collaborators:
+              <input
+                type="text"
+                name="collaboratorEmails"
+                onKeyDown={handleCollaboratorEmailsChange}
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                placeholder="Provide user email and press enter"
+              />
+            </label>
+            <div className="flex flex-wrap mt-2">
+              {project.collaboratorEmails.map((email, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
+                >
+                  <span className="mr-1">{email}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCollaboratorEmail(email)}
+                    className="text-red-600 font-bold focus:outline-none"
+                  >
+                    <AiOutlineCloseCircle className="ml-1" />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
+
           <div className="mb-4 font-bold">
             <label className="flex items-center">
               <input
@@ -211,6 +289,21 @@ const CreateProject = () => {
               options={tagList}
               value={tagList.filter(tag => project.selectedTags.includes(tag.value))}
               onChange={handleTagSelection}
+              onInputChange={handleNewTagInputChange}
+              placeholder="Select or create tags"
+              noOptionsMessage={() =>
+                newTagName ? (
+                  <button
+                    type="button"
+                    onClick={handleCreateTag}
+                    className="bg-blue-500 text-white px-2 py-1 rounded-md mt-2"
+                  >
+                    Add "{newTagName}" as a new tag
+                  </button>
+                ) : (
+                  "No options"
+                )
+              }
             />
           </div>
 
