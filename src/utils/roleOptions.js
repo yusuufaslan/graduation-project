@@ -19,6 +19,7 @@ const roleOptions = [
     { value: "medical technologist", label: "Medical Technologist" },
     { value: "nurse", label: "Nurse" },
     { value: "nurse practitioner", label: "Nurse Practitioner" },
+    { value: "nutritionist", label: "Nutritionist" },
     { value: "pharmacist", label: "Pharmacist" },
     { value: "physician assistant", label: "Physician Assistant" },
     { value: "product manager", label: "Product Manager" },

@@ -8,7 +8,7 @@ import Pagination from "../../components/Pagination/Pagination";
 
 const Explore = () => {
   const [totalPages, setTotalPages] = useState(0);
-  const [pageLimit, setPageLimit] = useState(5);
+  const [pageLimit, setPageLimit] = useState(4);
   const [projects, setProjects] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);

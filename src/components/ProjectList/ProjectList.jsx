@@ -93,7 +93,7 @@ const ProjectList = ({ projects, mode }) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
-                WebkitLineClamp: 2,
+                WebkitLineClamp: 5,
                 WebkitBoxOrient: "vertical",
               }}
             >
