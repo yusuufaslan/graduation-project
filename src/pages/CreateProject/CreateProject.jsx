@@ -14,8 +14,8 @@ const CreateProject = () => {
     description: "",
     abstract: "",
     isPublic: true,
-    emails: [],
-    datasets: [],
+    userEmails: [],
+    collaboratorEmails: [],
     selectedTags: [],
   });
 
@@ -48,18 +48,18 @@ const CreateProject = () => {
     setProject({ ...project, [name]: checked });
   };
 
-  const handleEmailsChange = (e) => {
+  const handleEmailsChange = (e, type) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newEmail = e.target.value.trim();
-      setProject({ ...project, emails: [...project.emails, newEmail] });
+      setProject({ ...project, [type]: [...project[type], newEmail] });
       e.target.value = "";
     }
   };
 
-  const handleRemoveEmail = (emailToRemove) => {
+  const handleRemoveEmail = (emailToRemove, type) => {
     setProject({
       ...project,
-      emails: project.emails.filter((email) => email !== emailToRemove),
+      [type]: project[type].filter((email) => email !== emailToRemove),
     });
   };
 
@@ -78,14 +78,10 @@ const CreateProject = () => {
         name: newTagName,
       });
       if (response.status === 200) {
-        // Refetch the tag list after adding the new tag
         await fetchTagList();
-        
-        // Find the new tag in the updated tag list
         const newTag = tagList.find(tag => tag.label === newTagName);
 
         if (newTag) {
-          // Add the new tag to the selected tags
           setProject((prevProject) => ({
             ...prevProject,
             selectedTags: [...prevProject.selectedTags, newTag.value],
@@ -101,23 +97,19 @@ const CreateProject = () => {
 
   const handleSubmit = async () => {
     try {
-      let emails = Array.isArray(project.emails) ? project.emails : [];
+      const { userEmails, collaboratorEmails, selectedTags, ...rest } = project;
 
-      const selectedTags = project.selectedTags.map(tagId => {
-        const tag = tagList.find(tag => tag.value === tagId);
-        return tag ? tag.label : "";
-      });
+      const data = {
+        ...rest,
+        tags: selectedTags.map(tagId => {
+          const tag = tagList.find(tag => tag.value === tagId);
+          return tag ? tag.label : "";
+        }),
+        userEmails: Array.isArray(userEmails) ? userEmails : [],
+        collaboratorEmails: Array.isArray(collaboratorEmails) ? collaboratorEmails : [],
+      };
 
-      let data = JSON.stringify({
-        name: project.name,
-        description: project.description,
-        abstract: project.abstract,
-        isPublic: project.isPublic,
-        userEmails: emails,
-        tags: selectedTags,
-      });
-
-      let config = {
+      const config = {
         method: "post",
         maxBodyLength: Infinity,
         url: "http://localhost:3838/api/project/create",
@@ -125,7 +117,7 @@ const CreateProject = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        data: data,
+        data: JSON.stringify(data),
       };
 
       const response = await axios.request(config);
@@ -173,6 +165,36 @@ const CreateProject = () => {
               ></textarea>
             </label>
           </div>
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">
+              Collaborators:
+              <input
+                type="text"
+                name="collaboratorEmails"
+                onKeyDown={(e) => handleEmailsChange(e, "collaboratorEmails")}
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                placeholder="Provide collaborator email and press enter"
+              />
+            </label>
+            <div className="flex flex-wrap mt-2">
+              {project.collaboratorEmails.map((email, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
+                >
+                  <span className="mr-1">{email}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEmail(email, "collaboratorEmails")}
+                    className="text-red-600 font-bold focus:outline-none"
+                  >
+                    <AiOutlineCloseCircle className="ml-1" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* <div className="mb-4 font-bold">
             <label className="block mb-1">
               Abstract:
