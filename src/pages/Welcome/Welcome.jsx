@@ -114,7 +114,7 @@ export default function Welcome() {
     <div >
         <WelcomeNavbar signedIn={false}/>
         <HomeContent signedIn={false}/>
-        <div className="container mx-auto px-10 max-w-7xl ">
+        <div className="container mx-auto pl-10 pr-20 max-w-7xl ">
           <div className="mb-8 max-w-7xl mx-auto text-center">
             {/* <h1 className="text-3xl font-semibold">Explore Projects</h1> */}
             <form onSubmit={handleSearch}>
