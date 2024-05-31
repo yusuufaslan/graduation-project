@@ -12,16 +12,25 @@ const CreateDataset = () => {
   const [project, setProject] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [autoSelectedColumns, setAutoSelectedColumns] = useState([]);
-
+  
   const [dataset, setDataset] = useState({
     projectId: projectId,
     name: "",
     description: "",
     file: null,
-    extension: "", 
+    extension: "",
     columnNames: [],
     columnActions: [],
+    datasetContent: [],
+    previewData: [], // New state to store preview data
   });
+
+  useEffect(() => {
+    // Call handleColumnActionChange for each automatically selected column
+    autoSelectedColumns.forEach((columnName, index) => {
+      handleColumnActionChange({ target: { value: "hash" } }, dataset.columnNames.indexOf(columnName));
+    });
+  }, [autoSelectedColumns]); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -60,15 +69,18 @@ const CreateDataset = () => {
         const content = event.target.result;
         let columnNames = [];
         let columnActions = [];
+        let previewData = [];
         if (fileExtension === "json") {
           const jsonArray = JSON.parse(content);
           if (jsonArray.length > 0) {
             columnNames = Object.keys(jsonArray[0]);
+            previewData = jsonArray.slice(0, 2);
           }
         } else if (fileExtension === "csv") {
           const csvArray = content.split("\n");
           if (csvArray.length > 0) {
             columnNames = csvArray[0].split(",");
+            previewData = csvArray.slice(1, 3);
           }
         }
         columnActions = new Array(columnNames.length).fill("none");
@@ -120,6 +132,8 @@ const CreateDataset = () => {
           extension: fileExtension, 
           columnNames: columnNames,
           columnActions: columnActions,
+          previewData: previewData,
+          datasetContent: previewData
         });
         const automaticallySelectedColumns = columnNames.filter((name, index) => columnActions[index] === "hash");
         if (automaticallySelectedColumns.length > 0) {
@@ -135,10 +149,41 @@ const CreateDataset = () => {
 
   const handleColumnActionChange = (e, columnIndex) => {
     const { value } = e.target;
-    const updatedColumnActions = [...dataset.columnActions];
-    updatedColumnActions[columnIndex] = value;
-    setDataset({ ...dataset, columnActions: updatedColumnActions });
+  
+    // Update the dataset state using the functional form of setDataset
+    setDataset(prevDataset => {
+      const updatedColumnActions = [...prevDataset.columnActions];
+      updatedColumnActions[columnIndex] = value;
+  
+      // Make the API call with the updated state
+      const token = localStorage.getItem("token");
+      axios.post(
+        "http://localhost:3838/api/project/live-preview",
+        {
+          data: prevDataset.datasetContent,
+          columnNames: prevDataset.columnNames.join(','),
+          columnActions: updatedColumnActions.join(',')
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        // Set the updated preview data in state
+        setDataset(prevDataset => ({ ...prevDataset, previewData: response.data.anonymizedData }));
+      })
+      .catch((error) => {
+        console.error("Error updating preview data:", error);
+      });
+  
+      // Return the updated dataset state
+      return { ...prevDataset, columnActions: updatedColumnActions };
+    });
   };
+  
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -218,6 +263,7 @@ const CreateDataset = () => {
               </div>
             )}
 
+            {console.log(dataset.previewData)}
 
             {dataset.file && (
               <p className="font-bold mt-3">
@@ -238,7 +284,6 @@ const CreateDataset = () => {
               </div>
             </div> */}
 
-
             {dataset.columnNames.length > 0 && (
               <>
                 <div className="mb-8 px-4 py-6 bg-blue-50 rounded-lg shadow-md border border-blue-200">
@@ -252,9 +297,36 @@ const CreateDataset = () => {
                     <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and <strong>forces dataset creators to choose one of the options.</strong></p>
                   </div>
                 </div>
-                <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
               </>
             )}
+
+            {dataset.previewData.length > 0 && (
+              <div className="mt-8">
+                <h2 className="text-xl font-bold mb-4">Preview Data <span className="text-sm">(only first 2 rows)</span></h2>
+                <div className="overflow-x-auto">
+                  <table className="table-auto w-full text-sm">
+                    <thead>
+                      <tr>
+                        {Object.keys(dataset.previewData[0]).map((columnName, index) => (
+                          <th key={index} className="px-4 py-2">{columnName}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataset.previewData.map((rowData, rowIndex) => (
+                        <tr key={rowIndex}>
+                          {Object.values(rowData).map((cellData, cellIndex) => (
+                            <td key={cellIndex} className="border px-4 py-2">{cellData}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
               {dataset.columnNames.map((columnName, columnIndex) => (
                 <div key={columnName} className="mb-4 text-sm">
