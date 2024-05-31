@@ -13,6 +13,9 @@ const ProjectDetailPage = () => {
   const [user, setUser] = useState(null);
   const [hasAccess, setHasAccess] = useState(false);
 
+  const [collaboratorsList, setCollaboratorsList] = useState([]);  
+  const [collaboratorDetails, setCollaboratorDetails] = useState([]);
+
   const [institutionOptions, setInstitutionOptions] = useState([]);
 
   function findInstitutionNameById(id) {
@@ -60,6 +63,8 @@ const ProjectDetailPage = () => {
 
         const projectData = projectResponse.data.project;
 
+        setCollaboratorsList(projectData.collaboratorIds);
+
         const ownerResponse = await axios.get(
           `http://localhost:3838/api/user/name-from-id?userId=${projectData.ownerId}`,
           {
@@ -77,6 +82,28 @@ const ProjectDetailPage = () => {
 
         setProject(projectData);
 
+        // Fetching collaborator details
+        const collaboratorDetailsPromises = projectData.collaboratorIds.map(
+          async (collaboratorId) => {
+            const collaboratorResponse = await axios.get(
+              `http://localhost:3838/api/user/name-from-id?userId=${collaboratorId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (collaboratorResponse.status === 200) {
+              const collaboratorData = collaboratorResponse.data.userNameInfo;
+              setCollaboratorDetails((prevCollaboratorDetails) => ({
+                ...prevCollaboratorDetails,
+                [collaboratorId]: collaboratorData,
+              }));
+            }
+          }
+        );
+        await Promise.all(collaboratorDetailsPromises);
+
         if (userData && userData._id && projectData.userIds.includes(userData._id)) {
           setHasAccess(true);
         }
@@ -90,7 +117,6 @@ const ProjectDetailPage = () => {
         const response = await axios.get("http://localhost:3838/api/institution/get");
         if (response.status === 200) {
           setInstitutionOptions(response.data);
-          console.log(institutionOptions);
         } else {
           throw new Error("Failed to fetch institutions");
         }
@@ -167,11 +193,40 @@ const ProjectDetailPage = () => {
               <p className="text-gray-700 font-normal">{project.abstract}</p>
             </div> */}
             <div className="mb-4">
-              <span className="text-gray-700 font-bold">Owner:</span>{" "}
-              <p className="text-gray-700 font-normal">
+              <p className="text-gray-700 font-bold mb-1">Owner:</p>{" "}
+              <span className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
                 {project.ownerName} {project.ownerSurname} {`(${findInstitutionNameById(project.ownerInstitutionId)})`}
-              </p>
+              </span>
             </div>
+
+            <div className="mb-4">
+              <span className="text-gray-700 font-bold">
+                Collaborators:
+              </span>{" "}
+              {collaboratorsList.length === 0 ? (
+                <div>No collaborators are currently working on this project.</div>
+              ) : (
+                
+                <span className="flex flex-wrap mt-2">
+                  {collaboratorsList.map((collaboratorId) => {
+                    const collaboratorDetail = collaboratorDetails[collaboratorId];
+                    return (
+                      <span
+                        key={collaboratorId}
+                        className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+                      >
+                        {collaboratorDetail ? (
+                          `${collaboratorDetail.name} ${collaboratorDetail.surname} (${findInstitutionNameById(collaboratorDetail.institutionId)})`
+                        ) : (
+                          "Loading..."
+                        )}
+                      </span>
+                    );
+                  })}
+                </span>
+              )}
+            </div>
+
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Last Update Date:</span>{" "}
               <p className="text-gray-700 font-normal">{formatDate(project.updated_at)}</p>
