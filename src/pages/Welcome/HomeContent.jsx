@@ -1,6 +1,6 @@
 import React from "react";
 import ContactForm from "../../components/ContactForm/ContactForm"; // Assuming you have a ContactForm component
-
+import { FaArrowRight } from "react-icons/fa6";
 import FooterSection from "../../components/footer/FooterSection";
 
 function HomeContent({ signedIn }) {
@@ -28,7 +28,7 @@ function HomeContent({ signedIn }) {
           ></div>
         </div>
         {/* Content */}
-        <div className="mx-auto max-w-7xl py-8 sm:py-12 lg:py-24">
+        <div className="mx-auto max-w-7xl py-4 sm:py-8 lg:py-16">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Empowering Healthcare Data Collaboration: Find, Share, Securely.
           </h1>
@@ -41,8 +41,8 @@ function HomeContent({ signedIn }) {
             healthcare advancements and improve patient outcomes. Connect with
             us and be part of the future of healthcare innovation!
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            {!signedIn && (
+          {/* <div className="mt-3 flex items-center justify-center gap-x-6"> */}
+            {/* {!signedIn && (
               <a
                 href="/sign-in"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -57,14 +57,14 @@ function HomeContent({ signedIn }) {
               >
                 Explore Projects & Datasets
               </a>
-            )}
-            <a
+            )} */}
+            {/* <a
               href="/about"
-              className="text-md font-semibold leading-6 text-gray-900"
+              className="text-md font-semibold text-white rounded-md bg-gray-600 px-3.5 py-2.5 flex"
             >
-              Learn more <span aria-hidden="true">→</span>
-            </a>
-          </div>
+              Learn more <FaArrowRight className="text-lg mt-1 ml-2"/>
+            </a> */}
+          {/* </div> */}
         </div>
       </section>
       

@@ -92,8 +92,9 @@ export default function WelcomeNavbar({}) {
                 </div>
                 <div className="hidden sm:ml-6 sm:block flex-grow">
                   <div className="flex justify-end space-x-4">
-                    {navigation.map((item) => (
+                    {navigation.map((item, index) => (
                       <a
+                        key={index}
                         href={item.href} // Use "to" prop instead of "href"
                         className={classNames(
                           item.current

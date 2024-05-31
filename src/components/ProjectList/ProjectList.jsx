@@ -48,7 +48,6 @@ const ProjectList = ({ projects, mode }) => {
         const response = await axios.get("http://localhost:3838/api/institution/get");
         if (response.status === 200) {
           setInstitutionOptions(response.data);
-          console.log(institutionOptions);
         } else {
           throw new Error("Failed to fetch institutions");
         }
