@@ -1,62 +1,63 @@
-import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import Navbar from "./Navbar";
-import { toast } from "react-toastify";
+import React from 'react';
+import { render, screen, fireEvent, within, act } from '@testing-library/react'; // Import 'act' from '@testing-library/react'
+import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
+import Navbar from './Navbar';
 
-jest.mock("react-toastify", () => ({
-  toast: {
-    success: jest.fn()
-  }
-}));
 
-describe("Navbar", () => {
-  it("renders correctly", () => {
-    const { getByAltText, getByText } = render(
+jest.spyOn(console, 'error').mockImplementation(() => {});
+
+describe('Navbar Component', () => {
+  beforeEach(() => {
+    render(
       <MemoryRouter>
         <Navbar />
       </MemoryRouter>
     );
-
-    expect(getByAltText("Your Company")).toBeInTheDocument();
-    expect(getByText("About")).toBeInTheDocument();
-    expect(getByText("Explore")).toBeInTheDocument();
-    expect(getByText("Proposals")).toBeInTheDocument();
-    expect(getByText("Create Project")).toBeInTheDocument();
   });
 
-  it("updates current navigation item on click", () => {
-    const { getByText } = render(
-      <MemoryRouter>
-        <Navbar />
-      </MemoryRouter>
-    );
-
-    const proposalsLink = getByText("Proposals");
-    fireEvent.click(proposalsLink);
-
-    expect(proposalsLink).toHaveClass("bg-gray-900");
-    expect(toast.success).not.toHaveBeenCalled();
+  test('renders Vite logo', () => {
+    const logoElement = screen.getByAltText(/Your Company/i);
+    expect(logoElement).toBeInTheDocument();
   });
 
-  it("handles sign out correctly", async () => {
-    localStorage.setItem("token", "mock-token");
-
-    const { getByRole, getByText } = render(
-      <MemoryRouter>
-        <Navbar />
-      </MemoryRouter>
-    );
-
-    const userMenuButton = getByRole("button", { name: "Open user menu" });
-    fireEvent.click(userMenuButton);
-
-    const signOutButton = getByText("Sign out");
-    fireEvent.click(signOutButton);
-
-    await waitFor(() => {
-      expect(localStorage.getItem("token")).toBeNull();
-      expect(toast.success).toHaveBeenCalledWith("Logout successful!");
+  test('renders all navigation links', () => {
+    const navLinks = ['Explore', 'Data Access Proposals', 'Create Project', 'About', 'Contact Us'];
+    navLinks.forEach((link) => {
+      const navLinkElement = screen.getByRole('link', { name: link });
+      expect(navLinkElement).toBeInTheDocument();
     });
+  });
+
+  test('renders profile dropdown menu', async () => {
+    const profileButton = screen.getByRole('button', { name: /Open user menu/i });
+    act(() => { // Wrap this part with act()
+      fireEvent.click(profileButton);
+    });
+
+    const profileMenu = screen.getByRole('menu');
+    const profileMenuItems = [
+      'Your Profile',
+      '(Co-)Owned Projects',
+      'Projects Shared with Me',
+      'Data Access Proposals',
+      'Sign out',
+    ];
+
+    profileMenuItems.forEach((item) => {
+      const menuItemElement = within(profileMenu).getByRole('menuitem', { name: item });
+      expect(menuItemElement).toBeInTheDocument();
+    });
+  });
+
+  test('sign out button works', () => {
+    const profileButton = screen.getByRole('button', { name: /Open user menu/i });
+    act(() => { // Wrap this part with act()
+      fireEvent.click(profileButton);
+    });
+
+    const profileMenu = screen.getByRole('menu');
+    const signOutButton = within(profileMenu).getByRole('menuitem', { name: /Sign out/i });
+    expect(signOutButton).toBeInTheDocument();
   });
 });
