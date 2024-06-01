@@ -171,7 +171,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Shared Projects
+                            (Co-)Owned Projects
                           </Link>
                         )}
                       </Menu.Item>
@@ -184,7 +184,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Participated Projects
+                            Projects Shared with Me
                           </Link>
                         )}
                       </Menu.Item>
