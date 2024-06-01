@@ -17,6 +17,8 @@ const ProjectDetailPage = () => {
   const [collaboratorDetails, setCollaboratorDetails] = useState([]);
 
   const [institutionOptions, setInstitutionOptions] = useState([]);
+  const [uploaderDetails, setUploaderDetails] = useState({}); 
+
 
   function findInstitutionNameById(id) {
     const institution = institutionOptions.find(inst => inst._id === id);
@@ -103,6 +105,26 @@ const ProjectDetailPage = () => {
           }
         );
         await Promise.all(collaboratorDetailsPromises);
+
+        // Fetch uploader details for each dataset
+        const uploaderDetailsPromises = projectData.datasetIds.map(async (dataset) => {
+          const uploaderResponse = await axios.get(
+            `http://localhost:3838/api/user/name-from-id?userId=${dataset.uploadedBy}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (uploaderResponse.status === 200) {
+            const uploaderData = uploaderResponse.data.userNameInfo;
+            setUploaderDetails((prevUploaderDetails) => ({
+              ...prevUploaderDetails,
+              [dataset._id]: uploaderData,
+            }));
+          }
+        });
+        await Promise.all(uploaderDetailsPromises);
 
         if (userData && userData._id && projectData.userIds.includes(userData._id)) {
           setHasAccess(true);
@@ -279,17 +301,27 @@ const ProjectDetailPage = () => {
                   <div>
                   <h3 className="text-2xl font-semibold mb-1">
                       
-                      <span className="text-2xl font-normal"> {dataset.name}</span>
+                      <span className="text-2xl font-semibold"> {dataset.name}</span>
                     </h3>
-                    <h3 className="text-md mb-2">
+                    <h3 className="text-md mb-2 font-semibold">
                       Description:
                       <span className="text-md font-normal text-gray-600"> {dataset.description}</span>
                     </h3>
-                    <h3 className="text-md mb-2">
+
+                    {uploaderDetails[dataset._id] && (
+                      <h3 className="text-md mb-2 font-semibold">
+                        Uploaded By:
+                        <span className="bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm font-semibold mx-2 mb-2">
+                          {uploaderDetails[dataset._id].name} {uploaderDetails[dataset._id].surname} {`(${findInstitutionNameById(uploaderDetails[dataset._id].institutionId)})`}
+                        </span>
+                      </h3>
+                    )}
+
+                    <h3 className="text-md mb-2 font-semibold">
                       Last Update Date:
                       <span className="text-md font-normal text-gray-600"> {formatDate(dataset.created_at)}</span>
                     </h3>
-                    <h3 className="text-md mb-2">
+                    <h3 className="text-md mb-2 font-semibold">
                       File Type:
                       <span className="text-md font-normal text-gray-600"> .{dataset.extension}</span>
                     </h3>
