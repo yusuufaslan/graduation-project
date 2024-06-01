@@ -480,44 +480,9 @@ const EditProjectForm = () => {
               </div>
             </div>
 
-            {/* User Emails */}
-            <div className="form-group mb-4">
-              <label htmlFor="userEmails" className="block text-md font-bold text-gray-700 mb-1">User Emails</label>
-              <div className="flex mb-2">
-                <input
-                  type="email"
-                  className="form-control flex-grow px-2 py-1 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                  placeholder="Add user email"
-                  value={newUserEmail}
-                  onChange={(e) => setNewUserEmail(e.target.value)}
-                />
-                <button
-                  className="btn bg-blue-500 text-white px-3 py-1 rounded-r hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  type="button"
-                  onClick={addUserEmail}
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="list-group space-y-1">
-                {userEmails.map((email, index) => (
-                  <li key={index} className="list-group-item flex justify-between items-center px-3 py-1 bg-gray-100 rounded shadow-sm">
-                    <span className="text-sm text-gray-700">{email}</span>
-                    <button
-                      type="button"
-                      className="text-red-500 hover:text-red-700 focus:outline-none"
-                      onClick={() => removeUserEmail(email)}
-                    >
-                      <TiDeleteOutline className="text-lg" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             {/* Collaborator Emails */}
             <div className="form-group mb-4">
-              <label htmlFor="collaboratorEmails" className="block text-md font-bold text-gray-700 mb-1">Collaborator Emails</label>
+              <label htmlFor="collaboratorEmails" className="block text-md font-bold text-gray-700 mb-1">Collaborators</label>
               <div className="flex mb-2">
                 <input
                   type="email"
@@ -534,10 +499,10 @@ const EditProjectForm = () => {
                   Add
                 </button>
               </div>
-              <ul className="list-group space-y-1">
+              <div className="flex flex-wrap -m-1">
                 {collaboratorEmails.map((email, index) => (
-                  <li key={index} className="list-group-item flex justify-between items-center px-3 py-1 bg-gray-100 rounded shadow-sm">
-                    <span className="text-sm text-gray-700">{email}</span>
+                  <div key={index} className="flex items-center bg-gray-100 rounded shadow-sm px-3 py-1 m-1">
+                    <span className="text-sm text-gray-700 mr-2">{email}</span>
                     <button
                       type="button"
                       className="text-red-500 hover:text-red-700 focus:outline-none"
@@ -545,11 +510,45 @@ const EditProjectForm = () => {
                     >
                       <TiDeleteOutline className="text-lg" />
                     </button>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
+            {/* User Emails */}
+            <div className="form-group mb-4">
+              <label htmlFor="userEmails" className="block text-md font-bold text-gray-700 mb-1">Shared with Users</label>
+              <div className="flex mb-2">
+                <input
+                  type="email"
+                  className="form-control flex-grow px-2 py-1 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  placeholder="Add user email"
+                  value={newUserEmail}
+                  onChange={(e) => setNewUserEmail(e.target.value)}
+                />
+                <button
+                  className="btn bg-blue-500 text-white px-3 py-1 rounded-r hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  type="button"
+                  onClick={addUserEmail}
+                >
+                  Add
+                </button>
+              </div>
+              <div className="flex flex-wrap -m-1">
+                {userEmails.map((email, index) => (
+                  <div key={index} className="flex items-center bg-gray-100 rounded shadow-sm px-3 py-1 m-1">
+                    <span className="text-sm text-gray-700 mr-2">{email}</span>
+                    <button
+                      type="button"
+                      className="text-red-500 hover:text-red-700 focus:outline-none"
+                      onClick={() => removeUserEmail(email)}
+                    >
+                      <TiDeleteOutline className="text-lg" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* <div className="mb-4">
               <span className="text-gray-700 font-bold">
