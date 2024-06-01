@@ -360,8 +360,10 @@ const EditProjectForm = () => {
   };
 
   const addUserEmail = () => {
-    setUserEmails([...userEmails, newUserEmail]);
-    setNewUserEmail("");
+    if (newUserEmail !== "") {
+      setUserEmails([...userEmails, newUserEmail]);
+      setNewUserEmail("");
+    }  
   };
 
   const addCollaboratorEmail = () => {
@@ -479,36 +481,34 @@ const EditProjectForm = () => {
             </div>
 
             {/* User Emails */}
-            <div className="form-group">
-              <label htmlFor="userEmails">User Emails</label>
-              <div className="input-group mb-3">
+            <div className="form-group mb-4">
+              <label htmlFor="userEmails" className="block text-md font-bold text-gray-700 mb-1">User Emails</label>
+              <div className="flex mb-2">
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control flex-grow px-2 py-1 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
                   placeholder="Add user email"
                   value={newUserEmail}
                   onChange={(e) => setNewUserEmail(e.target.value)}
                 />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={addUserEmail}
-                  >
-                    Add
-                  </button>
-                </div>
+                <button
+                  className="btn bg-blue-500 text-white px-3 py-1 rounded-r hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  type="button"
+                  onClick={addUserEmail}
+                >
+                  Add
+                </button>
               </div>
-              <ul className="list-group">
+              <ul className="list-group space-y-1">
                 {userEmails.map((email, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    {email}
+                  <li key={index} className="list-group-item flex justify-between items-center px-3 py-1 bg-gray-100 rounded shadow-sm">
+                    <span className="text-sm text-gray-700">{email}</span>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm"
+                      className="text-red-500 hover:text-red-700 focus:outline-none"
                       onClick={() => removeUserEmail(email)}
                     >
-                      <TiDeleteOutline />
+                      <TiDeleteOutline className="text-lg" />
                     </button>
                   </li>
                 ))}
@@ -516,41 +516,40 @@ const EditProjectForm = () => {
             </div>
 
             {/* Collaborator Emails */}
-            <div className="form-group">
-              <label htmlFor="collaboratorEmails">Collaborator Emails</label>
-              <div className="input-group mb-3">
+            <div className="form-group mb-4">
+              <label htmlFor="collaboratorEmails" className="block text-md font-bold text-gray-700 mb-1">Collaborator Emails</label>
+              <div className="flex mb-2">
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control flex-grow px-2 py-1 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
                   placeholder="Add collaborator email"
                   value={newCollaboratorEmail}
                   onChange={(e) => setNewCollaboratorEmail(e.target.value)}
                 />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={addCollaboratorEmail}
-                  >
-                    Add
-                  </button>
-                </div>
+                <button
+                  className="btn bg-blue-500 text-white px-3 py-1 rounded-r hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  type="button"
+                  onClick={addCollaboratorEmail}
+                >
+                  Add
+                </button>
               </div>
-              <ul className="list-group">
+              <ul className="list-group space-y-1">
                 {collaboratorEmails.map((email, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    {email}
+                  <li key={index} className="list-group-item flex justify-between items-center px-3 py-1 bg-gray-100 rounded shadow-sm">
+                    <span className="text-sm text-gray-700">{email}</span>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm"
+                      className="text-red-500 hover:text-red-700 focus:outline-none"
                       onClick={() => removeCollaboratorEmail(email)}
                     >
-                      <TiDeleteOutline />
+                      <TiDeleteOutline className="text-lg" />
                     </button>
                   </li>
                 ))}
               </ul>
             </div>
+
 
             {/* <div className="mb-4">
               <span className="text-gray-700 font-bold">
