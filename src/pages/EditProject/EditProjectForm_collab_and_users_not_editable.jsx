@@ -35,11 +35,6 @@ const EditProjectForm = () => {
   const [editedProjectAbstract, setEditedProjectAbstract] = useState("");
   const [editedProjectTagIds, setEditedProjectTagIds] = useState([]);
 
-  const [userEmails, setUserEmails] = useState([]);
-  const [collaboratorEmails, setCollaboratorEmails] = useState([]);
-  const [newUserEmail, setNewUserEmail] = useState("");
-  const [newCollaboratorEmail, setNewCollaboratorEmail] = useState("");
-
   function findInstitutionNameById(id) {
     const institution = institutionOptions.find(inst => inst._id === id);
     return institution ? institution.name : null;
@@ -119,13 +114,6 @@ const EditProjectForm = () => {
                   ...prevUserDetails,
                   [userId]: userData,
                 }));
-                setUserEmails((prevUserEmails) => {
-                  const newEmails = [...prevUserEmails];
-                  if (!newEmails.includes(userData.email)) {
-                    newEmails.push(userData.email);
-                  }
-                  return newEmails;
-                });
               }
             }
           );
@@ -148,13 +136,6 @@ const EditProjectForm = () => {
                   ...prevCollaboratorDetails,
                   [collaboratorId]: collaboratorData,
                 }));
-                setCollaboratorEmails((prevCollaboratorEmails) => {
-                  const newEmails = [...prevCollaboratorEmails];
-                  if (!newEmails.includes(collaboratorData.email)) {
-                    newEmails.push(collaboratorData.email);
-                  }
-                  return newEmails;
-                });
               }
             }
           );
@@ -312,15 +293,6 @@ const EditProjectForm = () => {
   };
 
   const handleEditProject = async () => {
-    // console.log("project: ", project);
-    // console.log("userlist: ", userList);
-    // console.log("collaboratorlist: ", collaboratorsList);
-    // console.log("userDetails: ", userDetails);
-    // console.log("collaboratorDetails: ", collaboratorDetails);
-
-    // console.log("userEmails: ", userEmails);
-    // console.log("collaboratorEmails: ", collaboratorEmails);
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -331,8 +303,6 @@ const EditProjectForm = () => {
           description: editedProjectDescription,
           abstract: editedProjectAbstract,
           tagIds: editedProjectTagIds,
-          userEmails: userEmails,
-          collaboratorEmails: collaboratorEmails,
         },
         {
           headers: {
@@ -357,24 +327,6 @@ const EditProjectForm = () => {
       month: 'short',
       year: 'numeric',
     }).replace(/ /g, ' '); // Replace space between date components with desired format
-  };
-
-  const addUserEmail = () => {
-    setUserEmails([...userEmails, newUserEmail]);
-    setNewUserEmail("");
-  };
-
-  const addCollaboratorEmail = () => {
-    setCollaboratorEmails([...collaboratorEmails, newCollaboratorEmail]);
-    setNewCollaboratorEmail("");
-  };
-
-  const removeUserEmail = (email) => {
-    setUserEmails(userEmails.filter((userEmail) => userEmail !== email));
-  };
-
-  const removeCollaboratorEmail = (email) => {
-    setCollaboratorEmails(collaboratorEmails.filter((collaboratorEmail) => collaboratorEmail !== email));
   };
 
   if (!project) {
@@ -423,7 +375,7 @@ const EditProjectForm = () => {
               </span>
             </div>
             
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <span className="text-gray-700 font-bold">
                 Collaborators:
               </span>{" "}
@@ -449,7 +401,7 @@ const EditProjectForm = () => {
                   })}
                 </span>
               )}
-            </div> */}
+            </div>
 
             <div className="mb-4">
               <span className="text-gray-700 font-bold">Is Public:</span>{" "}
@@ -477,82 +429,7 @@ const EditProjectForm = () => {
                 />
               </div>
             </div>
-
-            {/* User Emails */}
-            <div className="form-group">
-              <label htmlFor="userEmails">User Emails</label>
-              <div className="input-group mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Add user email"
-                  value={newUserEmail}
-                  onChange={(e) => setNewUserEmail(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={addUserEmail}
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-              <ul className="list-group">
-                {userEmails.map((email, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    {email}
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => removeUserEmail(email)}
-                    >
-                      <TiDeleteOutline />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Collaborator Emails */}
-            <div className="form-group">
-              <label htmlFor="collaboratorEmails">Collaborator Emails</label>
-              <div className="input-group mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Add collaborator email"
-                  value={newCollaboratorEmail}
-                  onChange={(e) => setNewCollaboratorEmail(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={addCollaboratorEmail}
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-              <ul className="list-group">
-                {collaboratorEmails.map((email, index) => (
-                  <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                    {email}
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => removeCollaboratorEmail(email)}
-                    >
-                      <TiDeleteOutline />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <span className="text-gray-700 font-bold">
                 Shared with Users:
               </span>{" "}
@@ -577,8 +454,7 @@ const EditProjectForm = () => {
                   })}
                 </span>
               )}
-            </div> */}
-            
+            </div>
           </div>
 
           <div className="flex justify-end flex-wrap gap-x-2 gap-y-2 mx-5 mb-5">
