@@ -286,6 +286,10 @@ const ProjectDetailPage = () => {
                       <span className="text-md font-normal text-gray-600"> {dataset.description}</span>
                     </h3>
                     <h3 className="text-md mb-2">
+                      Last Update Date:
+                      <span className="text-md font-normal text-gray-600"> {formatDate(dataset.created_at)}</span>
+                    </h3>
+                    <h3 className="text-md mb-2">
                       File Type:
                       <span className="text-md font-normal text-gray-600"> .{dataset.extension}</span>
                     </h3>
