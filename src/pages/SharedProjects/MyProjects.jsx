@@ -42,7 +42,7 @@ const MyProjects = () => {
           <p className="text-center">Loading...</p>
         ) : sharedProjects.length > 0 ? (
           <>
-            <h2 className="text-center mb-3 font-bold text-gray-600">{sharedProjects.length} {sharedProjects.length === 1 ? "project was": "projects were"} found.</h2>
+            <h2 className="mb-3 font-bold text-gray-600">{sharedProjects.length} {sharedProjects.length === 1 ? "project was": "projects were"} found.</h2>
             <ProjectList projects={sharedProjects} mode="edit" />
           </>
         ) : (
