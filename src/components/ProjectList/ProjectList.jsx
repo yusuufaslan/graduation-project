@@ -7,6 +7,7 @@ import axios from 'axios';
 const ProjectList = ({ projects, mode }) => {
   const [projectsWithUsers, setProjectsWithUsers] = useState([]);
   const [institutionOptions, setInstitutionOptions] = useState([]);
+  const [user, setUser] = useState(null);
 
   function findInstitutionNameById(id) {
     const institution = institutionOptions.find(inst => inst._id === id);
@@ -57,8 +58,33 @@ const ProjectList = ({ projects, mode }) => {
       }
     };
 
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // If token does not exist, redirect to sign-in page
+          navigate("/sign-in");
+        } else {
+          const response = await axios.get(
+            "http://localhost:3838/api/user/detail",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          const userData = response.data.user;
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     fetchInstitutions();
     fetchUsers();
+    fetchUserData();
   }, [projects]);
 
   const formatDate = (dateString) => {
@@ -73,7 +99,16 @@ const ProjectList = ({ projects, mode }) => {
   return (
     <div>
       {projectsWithUsers.map((project) => (
-        <Link to={`/project/${mode}/${project._id}`} key={project._id}>
+          <Link
+            to={
+              mode === "edit" && user && user._id === project.ownerId
+                ? `/project/edit/${project._id}`
+                : mode === "edit" && user && user._id !== project.ownerId
+                ? `/project/collaborator/edit/${project._id}`
+                : `/project/detail/${project._id}`
+            }
+            key={project._id}
+          >
           <div className="border border-gray-300 p-2 rounded-md mb-4 hover:border-blue-500 transition duration-300">
             <h3 className="text-md font-semibold mb-0.5">
               {project.name.length > 300
