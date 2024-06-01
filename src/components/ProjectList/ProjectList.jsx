@@ -63,7 +63,7 @@ const ProjectList = ({ projects, mode }) => {
         const token = localStorage.getItem("token");
         if (!token) {
           // If token does not exist, redirect to sign-in page
-          navigate("/sign-in");
+          // navigate("/sign-in");
         } else {
           const response = await axios.get(
             "http://localhost:3838/api/user/detail",
