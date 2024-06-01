@@ -188,7 +188,7 @@ const CreateProject = () => {
                 name="description"
                 value={project.description}
                 onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal h-64 mt-1"
                 placeholder="Enter project description"
                 rows="4"
               ></textarea>
