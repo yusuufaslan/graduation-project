@@ -13,6 +13,9 @@ const CreateDataset = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [autoSelectedColumns, setAutoSelectedColumns] = useState([]);
   
+  const [user, setUser] = useState(null);
+
+
   const [dataset, setDataset] = useState({
     projectId: projectId,
     name: "",
@@ -52,7 +55,33 @@ const CreateDataset = () => {
         console.error("Error fetching project detail:", error);
       }
     };
+
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // If token does not exist, redirect to sign-in page
+          // navigate("/sign-in");
+        } else {
+          const response = await axios.get(
+            "http://localhost:3838/api/user/detail",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          const userData = response.data.user;
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     fetchProjectDetail();
+    fetchUserData();
   }, [projectId]);
 
   const handleChange = (e) => {
@@ -209,7 +238,14 @@ const CreateDataset = () => {
     })
     .then((response) => {
       console.log("Dataset submitted:", response.data);
-      navigate(`/project/edit/${dataset.projectId}`);
+      // navigate users accordingly
+
+      if (user && user._id === project.ownerId) {
+        navigate(`/project/edit/${dataset.projectId}`);
+      } else {
+        navigate(`/project/collaborator/edit/${dataset.projectId}`);
+      }
+
     })
     .catch((error) => {
       console.error("Error submitting dataset:", error);
@@ -271,7 +307,7 @@ const CreateDataset = () => {
               </div>
             )}
 
-            {console.log(dataset.previewData)}
+            {/* {console.log(dataset.previewData)} */}
 
             {dataset.file && (
               <p className="font-bold mt-3">

@@ -321,6 +321,16 @@ const CollaboratorEditProjectForm = () => {
     // console.log("userEmails: ", userEmails);
     // console.log("collaboratorEmails: ", collaboratorEmails);
 
+    console.log(        {
+      projectId,
+      name: editedProjectName,
+      description: editedProjectDescription,
+      abstract: editedProjectAbstract,
+      tagIds: editedProjectTagIds,
+      userEmails: userEmails,
+      collaboratorEmails: collaboratorEmails,
+    })
+
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(

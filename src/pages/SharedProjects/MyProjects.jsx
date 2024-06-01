@@ -7,7 +7,7 @@ const MyProjects = () => {
   const [sharedProjects, setSharedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(sharedProjects);
+  // console.log(sharedProjects);
 
   useEffect(() => {
     fetchSharedProjects();
