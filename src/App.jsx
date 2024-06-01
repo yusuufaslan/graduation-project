@@ -23,6 +23,7 @@ import ParticipatedProjects from './pages/ParticipatedProjects/ParticipatedProje
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ContactUs from './pages/ContactUs/ContactUs';
+import CollaboratorEditProjectForm from './pages/EditProject/CollaboratorEditProjectForm';
 
 // ProtectedRoute component
 const ProtectedRoute = ({ isAuthenticated, element, loading }) => {
@@ -69,6 +70,7 @@ function App() {
             {/* Protected routes */}
             <Route path='/project/create' element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateProject />} loading={loading} />} />
             <Route path="/project/edit/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProjectForm />} loading={loading} />} />
+            <Route path="/project/collaborator/edit/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CollaboratorEditProjectForm />} loading={loading} />} />
             <Route path="/project/detail/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProjectDetailPage />} loading={loading} />} />
             <Route path="/dataset/create/:projectId" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateDataset />} loading={loading} />} />
             <Route path="/proposals/:type" element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<ProposalsPage />} loading={loading} />} />
