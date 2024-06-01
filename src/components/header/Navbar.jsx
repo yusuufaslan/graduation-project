@@ -59,12 +59,16 @@ export default function Navbar() {
   const handleSignOut = () => {
     // Clear token from localStorage
     localStorage.removeItem("token");
-    // Redirect to sign-in page
-    navigate("/welcome");
-    window.location.reload();
+    // Show first toast notification
     toast.success("Logout successful!");
+    // Show second toast notification after a delay
+    setTimeout(() => {
+      // toast.success("Redirecting to sign-in page...");
+      // Redirect to sign-in page using href after displaying the second toast
+      window.location.href = "/welcome";
+    }, 2000); // Adjust the delay time as needed
   };
-
+  
   return (
     <Disclosure as="nav" className="bg-gray-800 relative z-10">
       {({ open }) => (
