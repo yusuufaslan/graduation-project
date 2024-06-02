@@ -334,8 +334,8 @@ const CreateDataset = () => {
                   <p className="text-lg font-bold mb-2 text-blue-800 flex"> <BsInfoCircle className="mr-2 mt-1"/> Column Action Options</p>
                   <div className="text-sm text-gray-900 mb-4">
                     <p><strong>Mask:</strong> Masking replaces sensitive data with placeholder characters. e.g., 123456 {"—>"} **********</p>
-                    <p><strong>Hash:</strong> Hashing converts data into a unique string of fixed length, making it irreversible. e.g., 123456 {"—>"} 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b</p>
-                    <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. e.g., 123456 {"—>"} seiskjedbrsqlyplrymsvoc</p>
+                    <p><strong>Hash:</strong> Hashing converts data into a unique string of fixed length, making it irreversible. e.g., 123456 {"—>"} 6b86b273ff34fce19d6b804eff5a3f57471234xxx22f1d49c01e52ddb7875b4b</p>
+                    <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. e.g., 123456 {"—>"} seisqweadbrsqlyplrymsvoc</p>
                     <p><strong>Remove:</strong> Completely removes the column from the dataset.</p>
                     <p><strong>Empty:</strong> Empties the values in the column, converting them to empty strings. e.g., 123456 {"—>"} ""</p>
                     <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and <strong>forces dataset creators to choose one of the options.</strong></p>
@@ -388,7 +388,8 @@ const CreateDataset = () => {
                     className="border border-gray-400 rounded-md p-1 w-full font-normal text-sm"
                     disabled={autoSelectedColumns.includes(columnName) && (dataset.columnActions[columnIndex] === "none" || dataset.columnActions[columnIndex] === undefined)}
                   >
-                    <option value="none" disabled={autoSelectedColumns.includes(columnName)}>No Action</option>
+                    {/* <option value="none" disabled={autoSelectedColumns.includes(columnName)}>No Action</option> */}
+                    <option value="none">No Action</option>
                     <option value="mask">Mask</option>
                     <option value="hash">Hash</option>
                     <option value="randomize">Randomize</option>

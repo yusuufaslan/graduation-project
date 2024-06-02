@@ -4,6 +4,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Navbar from "../../components/header/Navbar";
 import Select from "react-select"; // Import react-select
 
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const CreateProject = () => {
@@ -78,7 +79,7 @@ const CreateProject = () => {
   const handleRemoveCollaboratorEmail = (emailToRemove) => {
     setProject({
       ...project,
-      emails: project.collaboratorEmails.filter((email) => email !== emailToRemove),
+      collaboratorEmails: project.collaboratorEmails.filter((email) => email !== emailToRemove),
     });
   };
 
@@ -153,8 +154,10 @@ const CreateProject = () => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         console.log(error.response.data.error);
+        toast.error("All or some of the email addresses of the users are not registered in the system.");
       } else {
         console.log(error);
+        toast.error("Project could not be created.");
       }
     }
   };
@@ -216,7 +219,7 @@ const CreateProject = () => {
                 name="collaboratorEmails"
                 onKeyDown={handleCollaboratorEmailsChange}
                 className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Provide user email and press enter"
+                placeholder="Provide collaborator email and press enter"
               />
             </label>
             <div className="flex flex-wrap mt-2">
@@ -250,37 +253,36 @@ const CreateProject = () => {
               <span>Is Public</span>
             </label>
           </div>
-          {!project.isPublic && (
-            <div className="mb-4 font-bold">
-              <label className="block mb-1">
-                Shared with Users:
-                <input
-                  type="text"
-                  name="emails"
-                  onKeyDown={handleEmailsChange}
-                  className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                  placeholder="Provide user email and press enter"
-                />
-              </label>
-              <div className="flex flex-wrap mt-2">
-                {project.emails.map((email, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
+
+          <div className="mb-4 font-bold">
+            <label className="block mb-1">
+              Shared with Users:
+              <input
+                type="text"
+                name="emails"
+                onKeyDown={handleEmailsChange}
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                placeholder="Provide user email and press enter"
+              />
+            </label>
+            <div className="flex flex-wrap mt-2">
+              {project.emails.map((email, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-full py-1 px-3 mr-2 mb-2 flex items-center font-normal"
+                >
+                  <span className="mr-1">{email}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEmail(email)}
+                    className="text-red-600 font-bold focus:outline-none"
                   >
-                    <span className="mr-1">{email}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveEmail(email)}
-                      className="text-red-600 font-bold focus:outline-none"
-                    >
-                      <AiOutlineCloseCircle className="ml-1" />
-                    </button>
-                  </div>
-                ))}
-              </div>
+                    <AiOutlineCloseCircle className="ml-1" />
+                  </button>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
 
           <div className="mb-4 font-bold ">
             <label className="block mb-2">Tags:</label>
