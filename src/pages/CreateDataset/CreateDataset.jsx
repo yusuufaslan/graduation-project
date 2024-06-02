@@ -386,7 +386,7 @@ const CreateDataset = () => {
                     value={dataset.columnActions[columnIndex] || "none"}
                     onChange={(e) => handleColumnActionChange(e, columnIndex)}
                     className="border border-gray-400 rounded-md p-1 w-full font-normal text-sm"
-                    disabled={autoSelectedColumns.includes(columnName) && (dataset.columnActions[columnIndex] === "none" || dataset.columnActions[columnIndex] === undefined)}
+                    // disabled={autoSelectedColumns.includes(columnName) && (dataset.columnActions[columnIndex] === "none" || dataset.columnActions[columnIndex] === undefined)}
                   >
                     {/* <option value="none" disabled={autoSelectedColumns.includes(columnName)}>No Action</option> */}
                     <option value="none">No Action</option>
