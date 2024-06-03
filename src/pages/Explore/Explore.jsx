@@ -126,8 +126,8 @@ const Explore = () => {
               onChange={handleSortByChange}
               options={[
                 { value: "", label: "Select..." },
-                { value: "name", label: "Name" },
-                { value: "description", label: "Description" },
+                { value: "name", label: "Title" },
+                { value: "description", label: "Summary" },
                 { value: "updated_at", label: "Updated At" },
               ]}
             />
