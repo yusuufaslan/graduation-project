@@ -116,7 +116,7 @@ const ProposalDetails = ({ proposal, projectName }) => {
       {otherApplicants.length > 0 && (
         <div className="mt-5">
           <p className="text-gray-800">
-            <span className="font-bold">Other Applicants:</span>{" "}
+            <span className="font-bold">Proposal Collaborators:</span>{" "}
             <span className="flex flex-wrap mt-2">
               {otherApplicants.map((applicant, index) => (
                 <span
