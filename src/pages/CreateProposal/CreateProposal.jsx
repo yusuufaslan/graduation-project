@@ -115,7 +115,7 @@ const CreateProposal = () => {
                 name="proposalText"
                 value={proposal.proposalText}
                 onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1 h-64"
                 placeholder="Enter proposal text"
                 rows="4"
               ></textarea>
@@ -128,7 +128,7 @@ const CreateProposal = () => {
                 name="potentialResearchBenefits"
                 value={proposal.potentialResearchBenefits}
                 onChange={handleChange}
-                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
+                className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1 h-48"
                 placeholder="Enter potential research benefits"
                 rows="4"
               ></textarea>
@@ -136,7 +136,7 @@ const CreateProposal = () => {
           </div>
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              User Emails (Emails of other users you want to add to the proposal):
+              Proposal Collaborators:
               <input
                 type="text"
                 name="emails"

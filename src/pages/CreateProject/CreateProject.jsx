@@ -173,14 +173,14 @@ const CreateProject = () => {
         <form className="max-w-7xl mx-auto bg-white shadow-md rounded-lg border-2 p-6 mb-40">
           <div className="mb-4 font-bold">
             <label className="block mb-1">
-              Name:
+              Title:
               <input
                 type="text"
                 name="name"
                 value={project.name}
                 onChange={handleChange}
                 className="border border-gray-400 rounded-md p-2 w-full font-normal mt-1"
-                placeholder="Enter project name"
+                placeholder="Enter project title"
               />
             </label>
           </div>
@@ -192,7 +192,7 @@ const CreateProject = () => {
                 value={project.description}
                 onChange={handleChange}
                 className="border border-gray-400 rounded-md p-2 w-full font-normal h-64 mt-1"
-                placeholder="Enter project description"
+                placeholder="Enter project summary"
                 rows="4"
               ></textarea>
             </label>
