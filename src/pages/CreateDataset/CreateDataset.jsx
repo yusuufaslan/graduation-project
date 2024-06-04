@@ -338,7 +338,7 @@ const CreateDataset = () => {
                     <p><strong>Randomize:</strong> Randomizes the data in the column, preserving the same length and format. e.g., 123456 {"—>"} seisqweadbrsqlyplrymsvoc</p>
                     <p><strong>Remove:</strong> Completely removes the column from the dataset.</p>
                     <p><strong>Empty:</strong> Empties the values in the column, converting them to empty strings. e.g., 123456 {"—>"} ""</p>
-                    <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and <strong>forces dataset creators to choose one of the options.</strong></p>
+                    <p className="mt-4 text-red-600"><strong>Note: </strong>Our system automatically detects the critical personal information that can identify users directly, and <strong>notifies dataset creators to choose one of the options.</strong></p>
                   </div>
                 </div>
               </>
