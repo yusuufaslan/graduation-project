@@ -375,7 +375,12 @@ const CreateDataset = () => {
               </div>
             )}
 
-            <h2 className="text-lg font-bold mb-2 mt-10">Column Actions:</h2>
+            {dataset.columnNames.length > 0 && (
+              <>
+                <h2 className="text-xl font-bold mb-2 mt-10">Column Actions</h2>
+              </>
+            )}
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3">
               {dataset.columnNames.map((columnName, columnIndex) => (
                 <div key={columnName} className="mb-4 text-sm">
