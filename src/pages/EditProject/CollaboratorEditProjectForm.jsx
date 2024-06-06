@@ -378,8 +378,13 @@ const CollaboratorEditProjectForm = () => {
         toast.success("Project details updated successfully.");
       }
     } catch (error) {
-      toast.error("Error updating project details.");
-      console.error("Error updating project details:", error);
+      if (error.response && error.response.status === 400) {
+        console.log(error.response.data.error);
+        toast.error("All or some of the email addresses of the users are not registered in the system.");
+      } else {
+        console.log(error);
+        toast.error("Project details could not be updated.");
+      }
     }
   };
 
